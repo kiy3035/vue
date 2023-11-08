@@ -2,7 +2,7 @@
   <div>
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <strong>web2gether@!!!!!!!!!!</strong>
+    <strong>web2gether@!!!!!!!!!!test</strong>
   </div>
 </template>
 
