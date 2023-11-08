@@ -36,11 +36,12 @@
       </tbody>
     </table>
   </div>
-  <div><br><br>
+  <!-- <div>
+    <br><br>
     <button type="button" class="list_" @click="listKindTab('all', 'list')">전체글</button>
     <button type="button" class="list_" style="margin-left: 5px;" @click="listKindTab('recommend', 'list')">베스트글</button>
     <button type="button" id="btn_write" class="list_" style="background-color: blue;margin-left: 1260px;" @click="goWrite('')">글쓰기</button>
-  </div>
+  </div> -->
 </template>
 <style>
 .table-divider {
