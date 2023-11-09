@@ -1,15 +1,28 @@
 <template>
-  <div class="layout">
-    <div class="sidebar">
-      <h1>sidebar</h1>
-    </div>
-    <div class="content">
-      <header>
-        <h1>header</h1>
-      </header>
-      <main>
-        <router-view></router-view>
-      </main>
-    </div>
+  <div style="width:70%; margin: 0 auto;">
+    <header>
+      <TopComp/>
+      <HeaderComp/>
+    </header>
+    <main>
+      <router-view></router-view>
+    </main>
   </div>
 </template>
+
+<script>
+  import HeaderComp from './HeaderComp';
+  import TopComp from './TopComp';
+
+  export default {
+  name: 'App',
+  components: {
+    HeaderComp,
+    TopComp
+  },
+  data() {
+    return {};
+  },
+  
+};
+</script>
