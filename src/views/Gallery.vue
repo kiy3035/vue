@@ -1,23 +1,23 @@
 <template>
   <div>
     <!-- 파일 업로드 폼 -->
-    <input type="text" v-model="videoData.title" placeholder="제목t" />
+    <input type="text" v-model="videoData.title" placeholder="제목" />
     <input type="text" v-model="videoData.description" placeholder="설명" />
     <input type="file" @change="handleFileChange" accept="video/*" />
     <button @click="uploadVideo">업로드</button>
 
     <!-- 업로드된 동영상 목록 -->
-    <div v-for="video in uploadedVideos" :key="video._id">
+    <div v-for="video in uploadedVideos" :key="video.id">
       <h3>{{ video.title }}</h3>
       <p>{{ video.description }}</p>
-      <video :src="`/uploads/${video.videoPath}`" controls></video>
+      <video :src="video.videoPath" controls></video>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name:'kk-',
+  name: "Gallery",
   data() {
     return {
       videoData: {
@@ -29,6 +29,7 @@ export default {
     };
   },
   methods: {
+    name:'ho-',
     handleFileChange(event) {
       this.videoData.videoFile = event.target.files[0];
     },
@@ -39,8 +40,7 @@ export default {
       formData.append("video", this.videoData.videoFile);
 
       try {
-        // 동영상 업로드 API 엔드포인트로 POST 요청 보내기
-        const response = await fetch("http://localhost:3000/upload", {
+        const response = await fetch("http://localhost:8080/api/videos/upload", {
           method: "POST",
           body: formData,
         });
@@ -58,9 +58,9 @@ export default {
     },
     async getUploadedVideos() {
       try {
-        // 동영상 목록 API 엔드포인트로 GET 요청 보내서 업로드된 동영상 목록 가져오기
-        const response = await fetch("http://localhost:3000/videos");
-        this.uploadedVideos = await response.json();
+        const response = await fetch("http://localhost:8080/api/videos");
+        const data = await response.json();
+        this.uploadedVideos = data.data;
       } catch (error) {
         console.error("동영상 목록 가져오기 오류:", error);
       }
