@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="로그인/로그아웃">
+    <span>로그인, 로그아웃페이지입니다</span>
   </div>
 </template>

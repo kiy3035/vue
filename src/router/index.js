@@ -1,10 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import AboutView from '../views/AboutView.vue';
-import RegisterPage from '../views/RegisterPage.vue';
+import LoginPage from '../views/LoginPage.vue';
 import PageLayout from '../components/PageLayout.vue';
-import Notice from '../views/BoardNotice.vue';
 import Gallery from '../views/Gallery.vue';
+
 
 
 const routes = [
@@ -37,14 +37,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: RegisterPage,
-  },
-  {
-    path: '/abc',
-    name: 'Notice',
-    component: Notice,
+    path: '/login',
+    name: 'login',
+    component: LoginPage,
   },
   {
     path: '/gallery',
