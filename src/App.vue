@@ -2,7 +2,8 @@
   <nav>
     <PageLayout/>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> 
+    <router-link to="/abc">게시판</router-link> |
+    <router-link to="/gallery">갤러리</router-link> 
     <router-view></router-view>
   </nav>
 </template>

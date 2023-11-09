@@ -1,8 +1,8 @@
-<template>   
+<template><br><br><br> 
   <div>
     <div id="survey" style="display: none;"></div>
     <table class="gall_list">
-      <caption>게시판</caption>
+      <!-- <caption>게시판</caption> -->
       <colgroup>
         <col style="width:7%">
         <col>
@@ -13,7 +13,7 @@
       </colgroup>
       <thead>
         <tr>
-          <th scope="col">번호</th>
+          <th scope="col">번호11</th>
           <th scope="col">제목</th>
           <th scope="col">글쓴이</th>
           <th scope="col">작성일</th>

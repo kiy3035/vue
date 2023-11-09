@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue';
 import RegisterPage from '../views/RegisterPage.vue';
 import PageLayout from '../components/PageLayout.vue';
 import Notice from '../views/BoardNotice.vue';
+import Gallery from '../views/Gallery.vue';
 
 
 const routes = [
@@ -44,6 +45,11 @@ const routes = [
     path: '/abc',
     name: 'Notice',
     component: Notice,
+  },
+  {
+    path: '/gallery',
+    name: 'Gallery',
+    component: Gallery,
   },
 ]
 
