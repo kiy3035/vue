@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 파일 업로드 폼 -->
-    <input type="text" v-model="videoData.title" placeholder="제목" />
+    <input type="text" v-model="videoData.title" placeholder="제목t" />
     <input type="text" v-model="videoData.description" placeholder="설명" />
     <input type="file" @change="handleFileChange" accept="video/*" />
     <button @click="uploadVideo">업로드</button>
