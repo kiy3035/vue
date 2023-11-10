@@ -1,8 +1,8 @@
 <template>
     <div style="float:right;">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/login">login</router-link> |
-        <router-link to="/myPage">mypage</router-link>
+        <a href="/">Home</a> |
+        <a href="/login">login</a> |
+        <a href="/myPage">mypage</a>
     </div>
 </template>
 

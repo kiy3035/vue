@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "Gallery",
+  name: "GalleryView",
   data() {
     return {
       videoData: {
