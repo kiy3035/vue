@@ -1,7 +1,7 @@
 <template>  
   <nav>
     <PageLayout/>
-    <router-link to="/gallery">갤러리</router-link> 
+    <!-- <router-link to="/gallery">갤러리</router-link>  -->
 
     <router-view></router-view>
   </nav>

@@ -1,4 +1,7 @@
 <template>
+
+<link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css /> <!-- font awesome 라이브러리 -->
+
   <div class="container2">
     <!-- Heading -->
     <h1 class="h1man">SIGN IN</h1>
@@ -6,10 +9,10 @@
     <!-- Links -->
     <ul class="links">
       <li>
-        <a href="#" id="signin">SIGN IN</a>
+        <a href="#" id="signin" >SIGN IN</a>
       </li>
       <li>
-        <a href="#" id="signup">SIGN UP</a>
+        <a href="#" id="signup" >SIGN UP</a>
       </li>
       <li>
         <a href="#" id="reset" style="float:right;">RESET</a>
@@ -17,21 +20,21 @@
     </ul>
     
     <!-- Form -->
-    <form action="" method="post">
+    <form action="http://localhost:7001/login" method="post" id="loginForm" >
       <!-- email input -->
       <div class="first-input input__block first-input__block">
-        <input type="email" placeholder="Email" class="input" id="email"   />
+        <input type="email" class="input" id="email" name="email" placeholder="Email" />
       </div>
       <!-- password input -->
       <div class="input__block">
-        <input type="password" placeholder="Password" class="input" id="password"    />
+        <input type="password" class="input" id="password" name="password"  placeholder="Password" />
       </div>
       <!-- repeat password input -->
       <div class="input__block">
-        <input type="password" placeholder="Repeat password" class="input repeat__password" id="repeat__password"    />
+        <input type="password" class="input repeat__password" id="repeat__password" placeholder="Repeat password" />
       </div>
       <!-- sign in button -->
-      <button class="signin__btn">
+      <button type="button" class="signin__btn" id="btnSubmit">
         Sign in
       </button>
     </form>
@@ -41,47 +44,49 @@
     </div>
     <!-- google button -->
     <button class="google__btn">
-      <i class="fa fa-google"></i>
+      <i class="fab fa fa-google"></i>
       Sign in with Google
     </button>
     <!-- google button -->
     <button class="github__btn">
-      <i class="fa fa-github"></i>
+      <i class="fab fa fa-github"></i>
       Sign in with GitHub
     </button>
 
     <footer>
       <p>
-        Thank you for watching
-        <i class="fa fa-heart"></i> 
-        <i class="fa fa-heart"></i> 
-        <i class="fa fa-heart"></i> 
+        <i class="fa fa-star"></i> 
+        Thank you for visiting
+        <i class="fa fa-star"></i> 
       </p>
       <p>
         Chouaib Blgn :
         <a href="https://www.facebook.com/chouaib45" >
-          <i class="fa fa-facebook"></i>
+          <i class="fab fa fa-facebook"></i>
         </a>
         <a href="http://twitter.com/chouaibblgn45">
-          <i class="fa fa-twitter"></i> 
+          <i class="fab fa fa-twitter"></i> 
         </a>
         <a href="http://instagram.com/chouaib_blgn">
-          <i class="fa fa-instagram"></i> 
+          <i class="fab fa fa-instagram"></i> 
         </a>
         <a href="http://linkedin.com/in/chouaibblgn/">
-          <i class="fa fa-linkedin"></i>
+          <i class="fab fa fa-linkedin"></i>
         </a>
         <a href="https://www.behance.net/geek30">
-          <i class="fa fa-behance"></i>
+          <i class="fab fa fa-behance"></i>
         </a>
       </p>
     </footer>
   </div>
+
 </template>
 
 
 <script>
 import $ from 'jquery';
+
+  var type;
 
   $(document).ready(function(){
     let signup = $(".links").find("li").find("#signup") ; 
@@ -92,7 +97,10 @@ import $ from 'jquery';
     let signin_btn  = $("form").find(".signin__btn");
   
     //----------- sign up ---------------------
-    signup.on("click",function(e){
+    signup.on("click", function(e){
+
+    console.log("signup클릭")
+
       e.preventDefault();
       $(this).parent().parent().siblings("h1").text("SIGN UP");
       $(this).parent().css("opacity","1");
@@ -103,11 +111,15 @@ import $ from 'jquery';
         "display" : "block"
       });
       signin_btn.text("Sign up");
+
+
     });
     
   
    //----------- sign in ---------------------
-   signin.on("click",function(e){
+   signin.on("click", function(e){
+    
+    console.log("signin클릭")
       e.preventDefault();
       $(this).parent().parent().siblings("h1").text("SIGN IN");
       $(this).parent().css("opacity","1");
@@ -122,7 +134,7 @@ import $ from 'jquery';
     });
    
    //----------- reset ---------------------
-   reset.on("click",function(e){
+   reset.on("click", function(e){
      e.preventDefault();
      $(this).parent().parent().siblings("form")
      .find(".input__block").find(".input").val("");
@@ -131,9 +143,107 @@ import $ from 'jquery';
 
 export default {
   mounted() {
-    // jQuery를 사용한 작업 수행
-    $('#elementId').hide();
+    document.getElementById("btnSubmit").addEventListener("click", submitForm);
   },
+}
+
+function validation() {
+
+  type = $(".h1man").text(); // signin, signup
+  var email = $("#email").val();
+  var password = $("#password").val();
+  var repeatPassword = $("#repeat__password").val();
+
+  if(type === "SIGN UP"){
+    if(email === ''){
+      alert("email 을 입력하세요.");
+      $("#email").focus();
+      return;
+    }
+    if(password !== '' && repeatPassword !== ''){
+      if(password !== repeatPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
+        $("#password").focus();
+        return;
+      }
+    }
+    if(password === '' || repeatPassword === ''){
+      alert("password 을 입력하세요.");
+      $("#password").focus();
+      return;
+    }
+  }
+  else if(type === "SIGN IN"){
+    if(email === '' && password === ''){
+      alert("email 을 입력하세요.");
+      $("#email").focus();
+      return;
+    }
+    if(email === '' && password !== ''){
+      alert("email 을 입력하세요.");
+      $("#email").focus();
+      return;
+    }
+    if(password === '' && email !== ''){
+      alert("password 를 입력하세요.");
+      $("#password").focus();
+      return;
+    }
+  }
+
+  return true;
+}
+
+function submitForm(event) {
+    event.preventDefault();
+    var valid = validation();
+
+    if(!valid){
+      return false;
+    }
+
+    // 폼 내부 데이터 가져오기
+    var formData = new FormData(document.getElementById("loginForm"));
+
+    // FormData 객체를 JSON 객체로 변환
+    var formDataJSON = {};
+
+    formData.forEach(function (value, key) {
+      formDataJSON[key] = value;
+    });
+
+    if(type === "SIGN UP"){
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:7001/signUp",
+        data: JSON.stringify(formDataJSON),
+        contentType: 'application/json',
+        success: function() {
+          alert("회원가입을 축하드립니다.");
+          window.location.href = '/';
+        }
+      });
+    }else if(type === "SIGN IN"){
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:7001/login",
+        data: JSON.stringify(formDataJSON),
+        contentType: 'application/json',
+        success: function(response) {
+
+          alert(response);
+
+          if (response == "로그인 성공.") {
+            window.location.href = '/';
+          }
+          
+        },
+        error: function(xhr, status, error) {
+          // 서버와의 통신 중 에러가 발생했을 때의 처리
+          alert("에러 발생: " + error);
+        }
+      });
+    }
 }
 
 </script>
