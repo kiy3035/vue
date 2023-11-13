@@ -2,7 +2,7 @@
   <div id="app">
     <LayoutComp/>
     <div id="content">
-      <AddVideoComp/>
+      <AddVideoComp v-if="shouldShowAddVideo"/>
       <router-view></router-view>
     </div>
   </div>
@@ -14,9 +14,14 @@ import AddVideoComp from "@/components/AddVideoComp.vue";
 
 export default {
   components: {
-    LayoutComp,
-    AddVideoComp
+    AddVideoComp,
+    LayoutComp
+  },data() {
+    return {
+      shouldShowAddVideo: true, // 기본적으로는 표시
+    };
   },
+    // LayoutComp,
 };
 </script>
 

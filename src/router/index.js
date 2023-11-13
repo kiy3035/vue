@@ -5,7 +5,6 @@ import GalleryView from '../views/GalleryView.vue';
 
 
 const routes = [
-
   {
     path: '/login',
     name: 'login',

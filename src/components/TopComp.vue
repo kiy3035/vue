@@ -1,10 +1,11 @@
 <template>
-    <div style="float:right;">
-        <a href="/">Home</a> |
-        <a href="/login">login</a> |
-        <a href="/myPage">mypage</a>
-    </div>
+  <div style="float:right;">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/login">Login</router-link> |
+    <router-link to="/myPage">My Page</router-link>
+  </div>
 </template>
+
 
 
 <script>
