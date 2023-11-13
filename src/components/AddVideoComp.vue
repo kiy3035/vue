@@ -11,7 +11,8 @@
 
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import $ from 'jquery';
 
 export default {
   methods: {
@@ -29,15 +30,33 @@ export default {
         // 여기에서 파일을 업로드하는 로직을 구현
         // 예: axios를 사용하여 서버에 파일 업로드 요청
         // axios.post('/api/upload', formData)
-        axios.post('http://localhost:7001/api/upload', formData)
-          .then(response => {
-            // 업로드 성공 시 처리
-            console.log("파일이 성공적으로 업로드되었습니다.", response.data);
-          })
-          .catch(error => {
-            // 업로드 실패 시 처리
-            console.error("파일 업로드 중 오류가 발생했습니다.", error);
-          });
+
+
+        $.ajax({
+        type: "POST",
+        url: "http://localhost:7001/api/upload",
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        success: function(response) {
+          alert(response)
+        },
+        error: function(xhr, status, error) {
+          // 서버와의 통신 중 에러가 발생했을 때의 처리
+          alert("에러 발생: " + error);
+        }
+      });
+
+
+
+        // axios.post('http://localhost:7001/api/upload', formData)
+        //   .then(response => {
+        //     // 업로드 성공 시 처리
+        //     console.log("파일이 성공적으로 업로드되었습니다.", response.data);
+        //   })
+        //   .catch(error => {
+        //     // 업로드 실패 시 처리
+        //     console.error("파일 업로드 중 오류가 발생했습니다.", error);
+        //   });
       }
     },
   },

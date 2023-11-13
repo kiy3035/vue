@@ -99,9 +99,7 @@ export default {
     };
   },
   computed: {
-    
     pageTitle() {
-      console.log("11")
       return this.currentPage === 'signin' ? 'SIGN IN' :
              this.currentPage === 'signup' ? 'SIGN UP' :
              this.currentPage === 'reset' ? 'RESET' : '';
@@ -109,7 +107,6 @@ export default {
   },
   methods: {
     changePage($event, page) {
-console.log("22")
       let first_input = $("form").find(".first-input");
       let hidden_input = $("form").find(".input__block").find("#repeat__password");
       let signin_btn  = $("form").find(".signin__btn");
@@ -234,13 +231,13 @@ function submitForm(event) {
         data: JSON.stringify(formDataJSON),
         contentType: 'application/json',
         success: function(response) {
-
-          alert(response);
-
-          if (response == "로그인 성공.") {
+          if (response.includes("@")) {
+            alert("로그인 성공");
+            sessionStorage.setItem('userEmail', response);
             window.location.href = '/';
+          }else{
+            alert("로그인 실패.\n아이디와 비밀번호를 확인하세요.");
           }
-          
         },
         error: function(xhr, status, error) {
           // 서버와의 통신 중 에러가 발생했을 때의 처리
@@ -250,6 +247,19 @@ function submitForm(event) {
     }
 }
 
+// async function getUserEmail(){
+//   console.log("async옴")
+//   try {
+//   const response = await $.ajax({
+//     url: 'http://localhost:7001/getuseremail',
+//     method: 'GET',
+//     dataType: 'json', // 예상되는 응답 형식에 따라 조정
+//   });
+//   console.log(response);
+// } catch (error) {
+//   console.error('Error fetching user data:', error);
+// }
+// }
 </script>
 
 
