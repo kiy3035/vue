@@ -1,17 +1,16 @@
 <template>
   <div class="home">
-    <!-- <PageLayout/> -->
-    <!-- <ADDVideo/> -->
+    <AddVideoComp/>
   </div>
 </template>
 
-<script>
-// import '../node_modules/bootstrap/js/src/button.js'
 
-// export default {
-  // name: 'HomeView',
-  // components: {
-  //   HelloWorld
-  // }
-// }
+<script>
+import AddVideoComp from "@/components/AddVideoComp.vue";
+
+export default {
+  components: {
+    AddVideoComp
+  },
+};
 </script>
