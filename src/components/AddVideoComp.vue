@@ -53,10 +53,11 @@ export default {
   display: inline-block;
   border-radius: 8px;
   transition: background-color 0.3s ease; /* 트랜지션 효과 추가 */
-
-  /* 마우스를 올렸을 때의 스타일 */
-  &:hover {
-    background-color: #ddd;
-  }
 }
+
+/* 마우스를 올렸을 때의 스타일 */
+.dotted-border:hover {
+  background-color: #ddd;
+}
+
 </style>
