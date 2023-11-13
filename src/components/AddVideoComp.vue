@@ -25,18 +25,19 @@ export default {
       if (file) {
         // FormData 객체 생성
         const formData = new FormData();
-        formData.append('video', file);
+        formData.append('videoFile', file);
 
         // 여기에서 파일을 업로드하는 로직을 구현
         // 예: axios를 사용하여 서버에 파일 업로드 요청
         // axios.post('/api/upload', formData)
 
 
-        $.ajax({
+      $.ajax({
         type: "POST",
         url: "http://localhost:7001/api/upload",
-        data: JSON.stringify(formData),
-        contentType: 'application/json',
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function(response) {
           alert(response)
         },
