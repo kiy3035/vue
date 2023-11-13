@@ -1,21 +1,21 @@
 <template>
 
-  
   <div class="container2">
     <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css /> <!-- font awesome 라이브러리 -->
+    
     <!-- Heading -->
-    <h1 class="h1man">SIGN IN</h1>
+    <h1 class="h1man">{{ pageTitle }}</h1>
     
     <!-- Links -->
     <ul class="links">
       <li>
-        <a href="#" id="signin" >SIGN IN</a>
+        <a href="#" @click="changePage($event, 'signin')">SIGN IN</a>
       </li>
       <li>
-        <a href="#" id="signup" >SIGN UP</a>
+        <a href="#" @click="changePage($event, 'signup')">SIGN UP</a>
       </li>
       <li>
-        <a href="#" id="reset" style="float:right;">RESET</a>
+        <a href="#" @click="changePage($event, 'reset')" style="float:right;">RESET</a>
       </li>
     </ul>
     
@@ -89,59 +89,63 @@ import $ from 'jquery';
   var type;
 
   $(document).ready(function(){
-    let signup = $(".links").find("li").find("#signup") ; 
-    let signin = $(".links").find("li").find("#signin") ;
-    let reset  = $(".links").find("li").find("#reset")  ; 
-    let first_input = $("form").find(".first-input");
-    let hidden_input = $("form").find(".input__block").find("#repeat__password");
-    let signin_btn  = $("form").find(".signin__btn");
-  
-    //----------- sign up ---------------------
-    signup.on("click", function(e){
 
-    console.log("signup클릭")
-
-      e.preventDefault();
-      $(this).parent().parent().siblings("h1").text("SIGN UP");
-      $(this).parent().css("opacity","1");
-      $(this).parent().siblings().css("opacity",".6");
-      first_input.removeClass("first-input__block").addClass("signup-input__block");
-      hidden_input.css({
-        "opacity" : "1",
-        "display" : "block"
-      });
-      signin_btn.text("Sign up");
-
-
-    });
-    
-  
-   //----------- sign in ---------------------
-   signin.on("click", function(e){
-    
-    console.log("signin클릭")
-      e.preventDefault();
-      $(this).parent().parent().siblings("h1").text("SIGN IN");
-      $(this).parent().css("opacity","1");
-      $(this).parent().siblings().css("opacity",".6");
-      first_input.addClass("first-input__block")
-        .removeClass("signup-input__block");
-      hidden_input.css({
-        "opacity" : "0",
-        "display" : "none"
-      });
-      signin_btn.text("Sign in");
-    });
-   
-   //----------- reset ---------------------
-   reset.on("click", function(e){
-     e.preventDefault();
-     $(this).parent().parent().siblings("form")
-     .find(".input__block").find(".input").val("");
-   })
-});
+  });
 
 export default {
+  data() {
+    return {
+      currentPage: 'signin', // Default page
+    };
+  },
+  computed: {
+    
+    pageTitle() {
+      console.log("11")
+      return this.currentPage === 'signin' ? 'SIGN IN' :
+             this.currentPage === 'signup' ? 'SIGN UP' :
+             this.currentPage === 'reset' ? 'RESET' : '';
+    },
+  },
+  methods: {
+    changePage($event, page) {
+console.log("22")
+      let first_input = $("form").find(".first-input");
+      let hidden_input = $("form").find(".input__block").find("#repeat__password");
+      let signin_btn  = $("form").find(".signin__btn");
+
+      if(page === "signin"){
+        $($event.currentTarget).parent().parent().siblings("h1").text("SIGN IN");
+        $($event.currentTarget).parent().css("opacity","1");
+        $($event.currentTarget).parent().siblings().css("opacity",".6");
+        first_input.addClass("first-input__block").removeClass("signup-input__block");
+        hidden_input.css({
+          "opacity" : "0",
+          "display" : "none"
+        });
+        signin_btn.text("Sign in");
+        this.currentPage = page;
+      }
+      else if(page === "signup"){
+        $($event.currentTarget).parent().parent().siblings("h1").text("SIGN UP");
+        $($event.currentTarget).parent().css("opacity","1");
+        $($event.currentTarget).parent().siblings().css("opacity",".6");
+        first_input.removeClass("first-input__block").addClass("signup-input__block");
+        hidden_input.css({
+          "opacity" : "1",
+          "display" : "block"
+        });
+        signin_btn.text("Sign up");
+        this.currentPage = page;
+      }
+      else if(page === "reset"){
+        $('input').each(function() {
+          $(this).val('');
+          $("#email").focus();
+        });
+      }
+    },
+  },
   mounted() {
     document.getElementById("btnSubmit").addEventListener("click", submitForm);
   },
@@ -215,12 +219,12 @@ function submitForm(event) {
     if(type === "SIGN UP"){
       $.ajax({
         type: "POST",
-        url: "http://localhost:7001/signUp",
+        url: "http://localhost:7001/signup",
         data: JSON.stringify(formDataJSON),
         contentType: 'application/json',
         success: function() {
           alert("회원가입을 축하드립니다.");
-          window.location.href = '/';
+          window.location.href = '/login';
         }
       });
     }else if(type === "SIGN IN"){
