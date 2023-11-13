@@ -1,8 +1,8 @@
 <template>
 
-<link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css /> <!-- font awesome 라이브러리 -->
-
+  
   <div class="container2">
+    <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css /> <!-- font awesome 라이브러리 -->
     <!-- Heading -->
     <h1 class="h1man">SIGN IN</h1>
     
