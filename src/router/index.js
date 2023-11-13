@@ -1,27 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import LoginPage from '../views/LoginPage.vue';
-import PageLayout from '../components/PageLayout.vue';
+import AddVideo from '../components/AddVideo.vue';
+
 import GalleryView from '../views/GalleryView.vue';
 
 
 
 const routes = [
-  {
-    path: '/',
-    component: PageLayout,
-    // children: [
-    //   {
-    //     path: '',
-    //     component: HomeView,
-    //   },
-    //   {
-    //     path: 'about',
-    //     component: AboutView, // about 페이지 컨텐츠
-    //   },
-    // ],
-  },
-  {
+    {
     path: '/',
     name: 'home',
     component: HomeView
@@ -35,6 +22,11 @@ const routes = [
     path: '/gallery',
     name: 'gallery',
     component: GalleryView,
+  },
+  {
+    path: '/',
+    name: 'AddVideo',
+    component: AddVideo,
   },
 ]
 

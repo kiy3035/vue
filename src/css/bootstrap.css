@@ -38,6 +38,7 @@
   --bs-gray-800: #333;
   --bs-gray-900: #222;
   --bs-primary: #eb6864;
+  --bs-kiy: #f57a00;
   --bs-secondary: #aaa;
   --bs-success: #22b24c;
   --bs-info: #369;
@@ -8946,7 +8947,7 @@ textarea.form-control-lg {
 }
 
 .bg-kiy {
-  background-color: var(--bs-success) !important;
+  background-color: var(--bs-kiy) !important;
 }
 
 .bg-gradient {

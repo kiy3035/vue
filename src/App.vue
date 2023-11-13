@@ -1,14 +1,20 @@
 <template>  
-  <nav>
+  <div id="app">
     <PageLayout/>
-    <!-- <router-link to="/gallery">갤러리</router-link>  -->
-
-    <router-view></router-view>
-  </nav>
+    <div id="content">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
+import PageLayout from "@/components/PageLayout.vue";
 
+export default {
+  components: {
+    PageLayout,
+  },
+};
 </script>
 
 <style>
@@ -31,9 +37,7 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
-
   margin-top: 60px;
-
   margin-top: 60px;
 }
 </style>
