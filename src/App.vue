@@ -1,6 +1,6 @@
 <template>  
   <div id="app">
-    <PageLayout/>
+    <LayoutComp/>
     <div id="content">
       <router-view></router-view>
     </div>
@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import PageLayout from "@/components/PageLayout.vue";
+import LayoutComp from "@/components/LayoutComp.vue";
 
 export default {
   components: {
-    PageLayout,
+    LayoutComp,
   },
 };
 </script>
