@@ -1,17 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
-import AddVideoComp from '../components/AddVideoComp.vue';
+// import AddVideoComp from '../components/AddVideoComp.vue';
 import GalleryView from '../views/GalleryView.vue';
 
 
 const routes = [
-    {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
- {
+
+  {
     path: '/login',
     name: 'login',
     component: LoginView,
@@ -21,11 +16,11 @@ const routes = [
     name: 'gallery',
     component: GalleryView,
   },
-  {
-    path: '/',
-    name: 'AddVideo',
-    component: AddVideoComp,
-  },
+  // {
+  //   path: '/add-video',
+  //   name: 'AddVideo',
+  //   component: AddVideoComp,
+  // },
 ]
 
 const router = createRouter({
