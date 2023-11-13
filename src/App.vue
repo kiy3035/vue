@@ -2,6 +2,7 @@
   <div id="app">
     <LayoutComp/>
     <div id="content">
+      <AddVideoComp/>
       <router-view></router-view>
     </div>
   </div>
@@ -9,10 +10,12 @@
 
 <script>
 import LayoutComp from "@/components/LayoutComp.vue";
+import AddVideoComp from "@/components/AddVideoComp.vue";
 
 export default {
   components: {
     LayoutComp,
+    AddVideoComp
   },
 };
 </script>
