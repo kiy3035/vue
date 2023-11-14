@@ -39,19 +39,19 @@ export default {
 </script>
 
 <style scoped>
-.video-list {
-  display: flex;
-  flex-direction: column; /* 수정된 부분: 수직으로 나열 */
-  align-items: center; /* 추가된 부분: 중앙 정렬 */
-}
+  .video-list {
+    display: flex;
+    flex-direction: column; /* 수정된 부분: 수직으로 나열 */
+    align-items: center; /* 추가된 부분: 중앙 정렬 */
+  }
 
-.video-item {
-  width: 300px;
-  margin: 20px;
-}
+  .video-item {
+    width: 500px;
+    margin: 40px;
+  }
 
-iframe {
-  width: 100%;
-  height: 200px;
-}
+  iframe {
+    width: 100%;
+    height: 300px;
+  }
 </style>
