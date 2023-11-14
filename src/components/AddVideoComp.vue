@@ -5,6 +5,10 @@
       <button @click="openFileInput" class="dotted-border">
         <font-awesome-icon :icon="['fas', 'plus-circle']" style="width:150px; height:150px;"/>
       </button>
+      <div v-if="selectedFile">
+      <p>Selected File: {{ selectedFile.name }}</p>
+      <input v-model="fileTitle" placeholder="Enter file title" />
+    </div>
     </div>
   </div>
 </template>
@@ -15,6 +19,12 @@
 import $ from 'jquery';
 
 export default {
+  data() {
+    return {
+      selectedFile: null,
+      fileTitle: "", // 파일 제목을 저장할 데이터
+    };
+  },
   methods: {
     openFileInput() {
       // 파일 입력란 클릭 시 파일 다이얼로그 열기
@@ -23,45 +33,54 @@ export default {
     handleFileChange(event) {
       const file = event.target.files[0];
       if (file) {
-        // FormData 객체 생성
-        const formData = new FormData();
-        formData.append('videoFile', file);
+        // 파일 선택 시 파일 제목을 입력할 수 있는 input 다이얼로그를 열기
+        const fileTitle = prompt("Enter file title:", "");
+        const fileType = file.type;
+        const fileTime = formatDate(file.lastModifiedDate);
+        const fileNo = event._vts;
+        if (fileTitle !== null) {
+          // 사용자가 취소하지 않았다면 파일 제목 데이터에 저장
+          this.fileTitle = fileTitle;
+          this.fileType = fileType;
+          this.fileTime = fileTime;
+          this.fileNo = fileNo; // 고유번호
 
-        // 여기에서 파일을 업로드하는 로직을 구현
-        // 예: axios를 사용하여 서버에 파일 업로드 요청
-        // axios.post('/api/upload', formData)
+          // FormData 객체 생성
+          const formData = new FormData();
+          formData.append('videoFile', file);
+          formData.append('title', this.fileTitle);
+          formData.append('type', this.fileType);
+          formData.append('inp_dt', this.fileTime);
+          formData.append('video_no', this.fileNo);
 
-
-      $.ajax({
-        type: "POST",
-        url: "http://localhost:7001/api/upload",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-          alert(response)
-        },
-        error: function(xhr, status, error) {
-          // 서버와의 통신 중 에러가 발생했을 때의 처리
-          alert("에러 발생: " + error);
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:7001/api/upload",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              alert(response);
+            },
+            error: function(xhr, status, error) {
+              // 서버와의 통신 중 에러가 발생했을 때의 처리
+              alert("에러 발생: " + error);
+            }
+          });
         }
-      });
-
-
-
-        // axios.post('http://localhost:7001/api/upload', formData)
-        //   .then(response => {
-        //     // 업로드 성공 시 처리
-        //     console.log("파일이 성공적으로 업로드되었습니다.", response.data);
-        //   })
-        //   .catch(error => {
-        //     // 업로드 실패 시 처리
-        //     console.error("파일 업로드 중 오류가 발생했습니다.", error);
-        //   });
       }
     },
   },
 };
+
+function formatDate(date) {
+  const year = String(date.getFullYear()).slice(-2);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}${month}${day}`;
+}
+
 </script>
 
 
