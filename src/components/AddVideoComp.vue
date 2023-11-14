@@ -27,6 +27,11 @@ export default {
         const formData = new FormData();
         formData.append('videoFile', file);
 
+        // 여기에서 파일을 업로드하는 로직을 구현
+        // 예: axios를 사용하여 서버에 파일 업로드 요청
+        // axios.post('/api/upload', formData)
+
+
       $.ajax({
         type: "POST",
         url: "http://localhost:7001/api/upload",
@@ -41,6 +46,18 @@ export default {
           alert("에러 발생: " + error);
         }
       });
+
+
+
+        // axios.post('http://localhost:7001/api/upload', formData)
+        //   .then(response => {
+        //     // 업로드 성공 시 처리
+        //     console.log("파일이 성공적으로 업로드되었습니다.", response.data);
+        //   })
+        //   .catch(error => {
+        //     // 업로드 실패 시 처리
+        //     console.error("파일 업로드 중 오류가 발생했습니다.", error);
+        //   });
       }
     },
   },
