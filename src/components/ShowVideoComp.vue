@@ -17,13 +17,13 @@ export default {
           id: 1,
           title: "Video 1",
           description: "Description of Video 1",
-          url: "https://www.youtube.com/embed/VIDEO_ID_1"
+          url: "https://www.youtube.com/watch?v=cMTdq4VGqoI"
         },
         {
           id: 2,
           title: "Video 2",
           description: "Description of Video 2",
-          url: "https://www.youtube.com/embed/VIDEO_ID_2"
+          url: "https://www.youtube.com/watch?v=oqkv5CGFukQ"
         },
         // Add more video objects as needed
       ]
