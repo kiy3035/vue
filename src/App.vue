@@ -2,6 +2,7 @@
   <div id="app">
     <LayoutComp/>
     <div id="content">
+    <SidebarComp/>
       <router-view></router-view>
     </div>
   </div>
@@ -9,10 +10,13 @@
 
 <script>
 import LayoutComp from "@/components/LayoutComp.vue";
+import SidebarComp from "@/components/SidebarComp.vue";
 
 export default {
   components: {
-    LayoutComp
+    LayoutComp,
+    SidebarComp
+
   },
   mounted() {
   },

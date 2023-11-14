@@ -13,7 +13,7 @@ import ShowVideoComp from "@/components/ShowVideoComp.vue";
 export default {
   components: {
     AddVideoComp,
-    ShowVideoComp
+    ShowVideoComp,
   },
 };
 </script>
