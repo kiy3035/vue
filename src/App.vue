@@ -1,8 +1,8 @@
 <template>  
   <div id="app">
     <LayoutComp/>
-    <div id="content">
     <SidebarComp/>
+    <div id="content">
       <router-view></router-view>
     </div>
   </div>
