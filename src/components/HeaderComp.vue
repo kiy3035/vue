@@ -1,6 +1,6 @@
 <template>
   <div>
-    <br /><br />
+    <br><br><br>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:80px;">
         <div class="container-fluid">
         <!-- <a class="navbar-brand" href="#">Navbar</a>
@@ -20,14 +20,14 @@
                             Dropdown
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <router-link to="/action" v-slot="{ href, navigate }">
+                            <router-link to="/" v-slot="{ href, navigate }">
                             <li><a class="dropdown-item" :href="href" @click="navigate">Action</a></li>
                             </router-link>
-                            <router-link to="/another-action" v-slot="{ href, navigate }">
+                            <router-link to="/" v-slot="{ href, navigate }">
                             <li><a class="dropdown-item" :href="href" @click="navigate">Another action</a></li>
                             </router-link>
                             <li><hr class="dropdown-divider"></li>
-                            <router-link to="/something-else" v-slot="{ href, navigate }">
+                            <router-link to="/" v-slot="{ href, navigate }">
                             <li><a class="dropdown-item" :href="href" @click="navigate">Something else here</a></li>
                             </router-link>
                         </ul>

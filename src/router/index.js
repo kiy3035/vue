@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import AddVideoComp from '../components/AddVideoComp.vue';
 import LoginView from '../views/LoginView.vue';
+import HomeView from '../views/HomeView.vue';
 import MypageView from '../views/MypageView.vue';
 
 
 const routes = [
   {
     path: '/',
-    component: AddVideoComp,
+    component: HomeView,
   },
   {
     path: '/login',

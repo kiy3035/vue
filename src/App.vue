@@ -15,11 +15,6 @@ export default {
     LayoutComp
   },
   mounted() {
-    // const userEmail = sessionStorage.getItem("userEmail");
-    // console.log("1!!!!" + userEmail);
-    // if(userEmail){
-
-    // }
   },
 };
 

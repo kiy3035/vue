@@ -1,19 +1,154 @@
 <template>
-    <h1>
-        {{userEmail}}
-    </h1>
+    <div class="form-container">
+        <form action="http://localhost:7001" method="post" id="updateForm" >
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" v-model="email" :readonly="isReadonly" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="password2">Repeat Password</label>
+            <input type="password" id="password2" name="password2" required>
+
+            <button type="button" id="btnSubmit">변경</button>
+        </form>
+  </div>
 </template>
 
 
 <script>
+import $ from 'jquery';
+
 export default {
   data() {
     return {
-      userEmail: "", // userEmail을 Vue 데이터로 정의
+      email: sessionStorage.getItem('userEmail') || '',
+      password: '',
+      password2: '',
+      isReadonly: true,
     };
   },
+  methods: {
+    handleSubmit() {
+
+    },
+  },
+  created() {
+    const storedEmail = sessionStorage.getItem('userEmail');
+    if (storedEmail) {
+      this.email = storedEmail;
+    }
+  },
   mounted() {
-    this.userEmail = sessionStorage.getItem("userEmail");
+    document.getElementById("btnSubmit").addEventListener("click", submitForm);
   },
 };
+
+  function validation() {
+
+    var password = $("#password").val();
+    var password2 = $("#password2").val();
+
+    if(password === ""){
+      alert("패스워드 입력란이 비어있습니다.");
+      $("#password").focus();
+      return;
+    }
+    if(password2 === ""){
+      alert("패스워드 확인란이 비어있습니다.");
+      $("#password2").focus();
+      return;
+    }
+    if(password !== password2){
+      alert("비밀번호가 일치하지 않습니다.");
+      $("#password2").focus();
+      return;
+    }
+    
+    return true;
+  }
+
+
+  function submitForm(event) {
+      event.preventDefault();
+      var valid = validation();
+
+      if(!valid){
+        return false;
+      }
+
+      // 폼 내부 데이터 가져오기
+      var formData = new FormData(document.getElementById("updateForm"));
+
+      // FormData 객체를 JSON 객체로 변환
+      var formDataJSON = {};
+
+      formData.forEach(function (value, key) {
+        formDataJSON[key] = value;
+      });
+
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:7001/updateUserInfo",
+        data: JSON.stringify(formDataJSON),
+        contentType: 'application/json',
+        success: function() {
+          alert("정상적으로 수정되었습니다.");
+          window.location.href = '/';
+        }
+      });
+      
+  }
+
+
 </script>
+
+
+<style scoped>
+
+.form-container {
+  width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #007bb5;
+}
+
+input[readonly] {
+  background-color: #f2f2f2; /* 회색 배경색 */
+  color: #666; /* 글자 색 */
+  cursor: not-allowed; /* 마우스 커서를 표시하지 않음 */
+}
+
+</style>

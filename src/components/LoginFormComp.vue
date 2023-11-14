@@ -247,19 +247,7 @@ function submitForm(event) {
     }
 }
 
-// async function getUserEmail(){
-//   console.log("async옴")
-//   try {
-//   const response = await $.ajax({
-//     url: 'http://localhost:7001/getuseremail',
-//     method: 'GET',
-//     dataType: 'json', // 예상되는 응답 형식에 따라 조정
-//   });
-//   console.log(response);
-// } catch (error) {
-//   console.error('Error fetching user data:', error);
-// }
-// }
+
 </script>
 
 
