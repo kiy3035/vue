@@ -6,9 +6,10 @@
         <font-awesome-icon :icon="['fas', 'plus-circle']" style="width:150px; height:150px;"/>
       </button>
       <div v-if="selectedFile">
-      <p>Selected File: {{ selectedFile.name }}</p>
-      <input v-model="fileTitle" placeholder="Enter file title" />
-    </div>
+        <p>Selected File: {{ selectedFile.name }}</p>
+        <input v-model="fileTitle" placeholder="Enter file title" />
+      </div>
+      <ModalComponent/>
     </div>
   </div>
 </template>
@@ -17,18 +18,29 @@
 <script>
 // import axios from 'axios';
 import $ from 'jquery';
+import ModalComponent from "@/components/ModalComp.vue";
 
 export default {
   data() {
     return {
       selectedFile: null,
       fileTitle: "", // 파일 제목을 저장할 데이터
+      // ModalComponent
     };
+  },
+  components: {
+    ModalComponent,
   },
   methods: {
     openFileInput() {
+        //  this.$nextTick(() => {
+        // console.log(this.$refs.modalComponent);
+        // // 모달 열기
+        // this.$refs.modalComponent.openModal();
+        // });
+
       // 파일 입력란 클릭 시 파일 다이얼로그 열기
-      this.$refs.videoInput.click();
+      // this.$refs.videoInput.click();
     },
     handleFileChange(event) {
       const file = event.target.files[0];
@@ -71,6 +83,7 @@ export default {
       }
     },
   },
+
 };
 
 function formatDate(date) {

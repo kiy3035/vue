@@ -71,7 +71,7 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    background: #ffA500;
+    background: #AFA5D9;
     color: #fff;
     transition: 0.5s;
     transform-origin: bottom;
@@ -90,7 +90,7 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    background: #ea004f;
+    background: #6623d9;
     color: #fff;
     transition: 0.5s;
     transform-origin: top;
