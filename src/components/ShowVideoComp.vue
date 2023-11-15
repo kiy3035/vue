@@ -1,7 +1,7 @@
 <template>
   <div class="video-list">
     <div v-for="video in videos" :key="video.id" class="video-item">
-      <iframe :src="getVideoEmbedUrl(video.url)" frameborder="0" allowfullscreen></iframe>
+      <video :src="video.path" controls></video>
       <h3>{{ video.title }}</h3>
       <p>{{ video.description }}</p>
     </div>
@@ -12,37 +12,47 @@
 export default {
   data() {
     return {
-      videos: [
-        {
-          id: 1,
-          title: "Video 1",
-          description: "Description of Video 1",
-          url: "https://www.youtube.com/watch?v=cMTdq4VGqoI"
-        },
-        {
-          id: 2,
-          title: "Video 2",
-          description: "Description of Video 2",
-          url: "https://www.youtube.com/watch?v=oqkv5CGFukQ"
-        },
-        // Add more video objects as needed
-      ]
+      videos: [],
     };
   },
+  mounted() {
+    // 컴포넌트가 마운트되면 비디오 데이터를 가져옴
+    this.fetchVideos();
+  },
   methods: {
-    getVideoEmbedUrl(url) {
-      const videoId = url.split("v=")[1];
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-  }
+    async fetchVideos() {
+      try {
+        // 비디오 데이터 가져오는 API 호출
+        const response = await fetch('http://localhost:7001/api/videos');
+        const data = await response.json();
+        // 가져온 데이터를 컴포넌트의 데이터에 할당
+        this.videos = data.map(video => {
+          console.log(video);
+          return {
+            id: video.video_no,
+            title: video.title,
+            path: video.video_no,
+            // description: video.description,       부가적인 설명인듯? 내용?
+            // filePath: `data:${video.contentType};base64,${video.base64Data}`,
+            // path: video.path,
+            // path: '1699953924404.mp4',
+            // path: video.video_no,
+            // path: process.env.BASE_URL + video.path,
+          };
+        });
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
   .video-list {
     display: flex;
-    flex-direction: column; /* 수정된 부분: 수직으로 나열 */
-    align-items: center; /* 추가된 부분: 중앙 정렬 */
+    flex-direction: column;
+    align-items: center;
   }
 
   .video-item {
@@ -50,8 +60,8 @@ export default {
     margin: 40px;
   }
 
-  iframe {
+  video {
     width: 100%;
-    height: 300px;
+    height: auto;
   }
 </style>

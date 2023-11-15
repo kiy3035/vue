@@ -40,7 +40,7 @@ export default {
         // });
 
       // 파일 입력란 클릭 시 파일 다이얼로그 열기
-      // this.$refs.videoInput.click();
+      this.$refs.videoInput.click();
     },
     handleFileChange(event) {
       const file = event.target.files[0];
