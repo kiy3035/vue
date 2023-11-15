@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div style="margin-top:20%;" >
+    <div style="margin-top:10%;" >
       <input type="file" ref="videoInput" style="display: none" @change="handleFileChange" />
-      <button @click="openFileInput" class="dotted-border">
-        <font-awesome-icon :icon="['fas', 'plus-circle']" style="width:150px; height:150px;"/>
+      <button class="dotted-border">
+        <font-awesome-icon :icon="['fas', 'plus-circle']"  @click="openFileInput" style="width:150px; height:150px;"/>
+        <AddVideoDetailComp v-if="showComp" ref="detailCompRef" @closeForm="handleCloseForm"/>
       </button>
       <div v-if="selectedFile">
         <p>Selected File: {{ selectedFile.name }}</p>
@@ -16,23 +17,29 @@
 
 <script>
 // import axios from 'axios';
-import $ from 'jquery';
+// import $ from 'jquery';
+import AddVideoDetailComp from "@/components/AddVideoDetailComp.vue";
 
 export default {
   data() {
     return {
       selectedFile: null,
       fileTitle: "", // 파일 제목을 저장할 데이터
-      // ModalComponent
+      showComp: false,
     };
   },
   components: {
+    AddVideoDetailComp
   },
   methods: {
     openFileInput() {
-       
+      this.showComp = true;
+
       // 파일 입력란 클릭 시 파일 다이얼로그 열기
-      this.$refs.videoInput.click();
+      // this.$refs.videoInput.click();
+    },
+     handleCloseForm() {
+      this.showComp = false;
     },
     handleFileChange(event) {
       const file = event.target.files[0];
@@ -57,24 +64,25 @@ export default {
           formData.append('inp_dt', this.fileTime);
           formData.append('video_no', this.fileNo);
 
-          $.ajax({
-            type: "POST",
-            url: "http://localhost:7001/api/upload",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-              alert(response);
-            },
-            error: function(xhr, status, error) {
-              // 서버와의 통신 중 에러가 발생했을 때의 처리
-              alert("에러 발생: " + error);
-            }
-          });
+          // $.ajax({
+          //   type: "POST",
+          //   url: "http://localhost:7001/api/upload",
+          //   data: formData,
+          //   processData: false,
+          //   contentType: false,
+          //   success: function(response) {
+          //     alert(response);
+          //   },
+          //   error: function(xhr, status, error) {
+          //     // 서버와의 통신 중 에러가 발생했을 때의 처리
+          //     alert("에러 발생: " + error);
+          //   }
+          // });
         }
       }
     },
-    
+
+
   },
 
 };
@@ -93,11 +101,12 @@ function formatDate(date) {
 <style>
 .dotted-border {
   border: 2px dotted #333;
-  padding: 10px;
+  padding: 5px;
   background-color: #fff;
   cursor: pointer;
   display: inline-block;
   border-radius: 8px;
+  width: 450px;
   transition: background-color 0.3s ease; /* 트랜지션 효과 추가 */
 }
 
