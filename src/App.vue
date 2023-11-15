@@ -15,11 +15,9 @@ import SidebarComp from "@/components/SidebarComp.vue";
 export default {
   components: {
     LayoutComp,
-    SidebarComp
+    SidebarComp,
+  },
 
-  },
-  mounted() {
-  },
 };
 
 
