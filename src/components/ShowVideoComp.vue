@@ -67,6 +67,12 @@ export default {
 
           // 전체 바디에 배경색 적용
           document.body.style.background = 'black';
+
+          // 중앙으로 스크롤 조절
+          const rect = entry.target.getBoundingClientRect();
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const centerY = rect.top + scrollTop - window.innerHeight / 2 + rect.height / 2;
+          window.scrollTo({ top: centerY, behavior: 'smooth' });
         } else {
           videoElement.pause();
           videoElement.currentTime = 0;
