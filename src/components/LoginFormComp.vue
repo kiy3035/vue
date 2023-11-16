@@ -27,11 +27,11 @@
       </div>
       <!-- name input -->
       <div class="input__block">
-        <input type="inp_usr" class="input" id="inp_usr" name="inp_usr" placeholder="Name" />
+        <input type="inp_usr" class="input repeat__password" id="inp_usr" name="inp_usr" placeholder="Name" />
       </div>
       <!-- nickname input -->
       <div class="input__block">
-        <input type="nickname" class="input" id="nickname" name="nickname" placeholder="Nickname" />
+        <input type="nickname" class="input repeat__password" id="nickname" name="nickname" placeholder="Nickname" />
       </div>
       <!-- password input -->
       <div class="input__block">
