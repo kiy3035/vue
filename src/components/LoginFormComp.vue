@@ -25,6 +25,14 @@
       <div class="first-input input__block first-input__block">
         <input type="email" class="input" id="email" name="email" placeholder="Email" />
       </div>
+      <!-- name input -->
+      <div class="input__block">
+        <input type="inp_usr" class="input" id="inp_usr" name="inp_usr" placeholder="Name" />
+      </div>
+      <!-- nickname input -->
+      <div class="input__block">
+        <input type="nickname" class="input" id="nickname" name="nickname" placeholder="Nickname" />
+      </div>
       <!-- password input -->
       <div class="input__block">
         <input type="password" class="input" id="password" name="password"  placeholder="Password" />
@@ -108,7 +116,7 @@ export default {
   methods: {
     changePage($event, page) {
       let first_input = $("form").find(".first-input");
-      let hidden_input = $("form").find(".input__block").find("#repeat__password");
+      let hidden_input = $("form").find(".input__block").find("#repeat__password,#inp_usr, #nickname");
       let signin_btn  = $("form").find(".signin__btn");
 
       if(page === "signin"){
@@ -153,12 +161,24 @@ function validation() {
   type = $(".h1man").text(); // signin, signup
   var email = $("#email").val();
   var password = $("#password").val();
+  var inp_usr = $("#inp_usr").val();
+  var nickname = $("#nickname").val();
   var repeatPassword = $("#repeat__password").val();
 
   if(type === "SIGN UP"){
     if(email === ''){
       alert("email 을 입력하세요.");
       $("#email").focus();
+      return;
+    }
+    if(inp_usr === ''){
+      alert("이름을 입력하세요.");
+      $("#inp_usr").focus();
+      return;
+    }
+    if(nickname === ''){
+      alert("닉네임을 입력하세요.");
+      $("#nickname").focus();
       return;
     }
     if(password !== '' && repeatPassword !== ''){
