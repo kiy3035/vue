@@ -4,4 +4,7 @@ module.exports = defineConfig({
   devServer: {
     port: 8001, // 변경하고자 하는 포트 번호
   },
+  configureWebpack: {
+    devtool: 'source-map'
+  }
 })
