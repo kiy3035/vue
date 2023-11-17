@@ -1,10 +1,10 @@
 <template>
   <div>
     <div style="margin-top:10%;" >
-      <input type="file" ref="videoInput" style="display: none" @change="handleFileChange" />
+      <input type="file" ref="videoInput" style="display: none" />
       <button class="dotted-border">
-        <font-awesome-icon :icon="['fas', 'plus-circle']"  @click="openFileInput" style="width:150px; height:150px;"/>
-        <AddVideoDetailComp v-if="showComp" ref="detailCompRef" @closeForm="handleCloseForm"/>
+        <font-awesome-icon :icon="['fas', 'plus-circle']" v-if="showPlusIcon" @click="addComp" style="width:150px; height:150px;"/>
+        <AddVideoDetailComp v-if="showComp" ref="detailCompRef" @closeForm="closeComp"/>
       </button>
       <div v-if="selectedFile">
         <p>Selected File: {{ selectedFile.name }}</p>
@@ -17,7 +17,7 @@
 
 <script>
 // import axios from 'axios';
-// import $ from 'jquery';
+import $ from 'jquery';
 import AddVideoDetailComp from "@/components/AddVideoDetailComp.vue";
 
 export default {
@@ -26,74 +26,27 @@ export default {
       selectedFile: null,
       fileTitle: "", // 파일 제목을 저장할 데이터
       showComp: false,
+      showPlusIcon: true,
     };
   },
   components: {
     AddVideoDetailComp
   },
   methods: {
-    openFileInput() {
+    addComp() {
       this.showComp = true;
-
-      // 파일 입력란 클릭 시 파일 다이얼로그 열기
-      // this.$refs.videoInput.click();
+      this.showPlusIcon = false;
+      $('.dotted-border'); // 없애야 함 점선녀석들
     },
-     handleCloseForm() {
+    closeComp() {
       this.showComp = false;
+      this.showPlusIcon = true;
     },
-    handleFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-        // 파일 선택 시 파일 제목을 입력할 수 있는 input 다이얼로그를 열기
-        const fileTitle = prompt("Enter file title:", "");
-        const fileType = file.type;
-        const fileTime = formatDate(file.lastModifiedDate);
-        const fileNo = event._vts;
-        if (fileTitle !== null) {
-          // 사용자가 취소하지 않았다면 파일 제목 데이터에 저장
-          this.fileTitle = fileTitle;
-          this.fileType = fileType;
-          this.fileTime = fileTime;
-          this.fileNo = fileNo; // 고유번호
-
-          // FormData 객체 생성
-          const formData = new FormData();
-          formData.append('videoFile', file);
-          formData.append('title', this.fileTitle);
-          formData.append('type', this.fileType);
-          formData.append('inp_dt', this.fileTime);
-          formData.append('video_no', this.fileNo);
-
-          // $.ajax({
-          //   type: "POST",
-          //   url: "http://localhost:7001/api/upload",
-          //   data: formData,
-          //   processData: false,
-          //   contentType: false,
-          //   success: function(response) {
-          //     alert(response);
-          //   },
-          //   error: function(xhr, status, error) {
-          //     // 서버와의 통신 중 에러가 발생했을 때의 처리
-          //     alert("에러 발생: " + error);
-          //   }
-          // });
-        }
-      }
-    },
-
 
   },
 
 };
 
-function formatDate(date) {
-  const year = String(date.getFullYear()).slice(-2);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-
-  return `${year}${month}${day}`;
-}
 
 </script>
 

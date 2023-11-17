@@ -1,55 +1,216 @@
 <template>
-  <div>
-    <div class="form-container">
+  <div class="materialContainer">
+
+    <div class="box">
+
+      <!-- 닫기 아이콘 -->
       <button class="close-button" @click="closeForm">
         <font-awesome-icon :icon="['fas', 'times']" />
       </button>
-      <form @submit.prevent="createPost" style="margin-top:50px;">
-        <label for="title">제목</label>
-        <input v-model="post.title" type="text" id="title" required />
 
-        <label for="content">내용</label>
-        <textarea v-model="post.content" id="content" rows="4" required></textarea>
+      <div class="title">UPLOAD</div>
 
-         <br>
-        <button type="submit">등록</button>
-      </form>
-    </div>
-  </div>
+      <!-- 비디오 아이콘 -->
+      <input type="file" ref="videoInput" style="display: none" @change="fileChange($event)"/>
+      <button class="add-video-button">
+      <font-awesome-icon :icon="['fas', 'video']" @click="openFileInput" style="width:50px; height:50px;"/>
+      <!-- 체크 아이콘 -->
+      <font-awesome-icon :icon="['fas', 'check']" v-if="showCheckIcon" style="color: #28e24d; margin-left: 8px; width:30px; height:30px; display:block;" />
+      </button>
+
+    <!-- Form -->
+    <form method="post" id="videoForm" @submit.prevent="submitForm" enctype="multipart/form-data">
+      <div class="input" :class="{ 'focused': inputFocused === 'videoTitle', 'blured' : inputBlured === 'videoTitle' }">
+         <label for="videoTitle">Title</label>
+         <input type="text" name="videoTitle" id="videoTitle" v-model="input.title"
+                @focus="handleInputFocus('videoTitle')"
+                @blur="handleInputBlur('videoTitle')">
+         <span class="spin"></span>
+      </div>
+
+      <div class="input" :class="{ 'focused': inputFocused === 'videoContent', 'blured' : inputBlured === 'videoContent' }">
+         <label for="videoContent">Content</label>
+         <input type="text" name="videoContent" id="videoContent" v-model="input.content"
+                @focus="handleInputFocus('videoContent')"
+                @blur="handleInputBlur('videoContent')">
+         <span class="spin"></span>
+      </div>
+
+      <div class="button submit">
+         <button type="submit">
+            <span>GO</span> 
+            <i class="fa fa-check"></i>
+         </button>
+      </div>
+
+      <!-- <a href="" class="pass-forgot">Forgot your password?</a> -->
+    </form>
+   </div>
+
+  <!-- 오른쪽 + 버튼인데 안 씀 -->
+   <!-- <div class="overbox">
+      <div class="material-button alt-2"><span class="shape"></span></div>
+
+      <div class="title">REGISTER</div>
+
+      <div class="input">
+         <label for="regname">Username</label>
+         <input type="text" name="regname" id="regname"> 
+         <span class="spin"></span>
+      </div>
+
+      <div class="input">
+         <label for="regpass">Password</label>
+         <input type="password" name="regpass" id="regpass">
+         <span class="spin"></span>
+      </div>
+
+      <div class="input">
+         <label for="reregpass">Repeat Password</label>
+         <input type="password" name="reregpass" id="reregpass">
+         <span class="spin"></span>
+      </div>
+
+      <div class="button">
+         <button><span>NEXT</span></button>
+      </div>
+    </div> -->
+
+</div>
 </template>
 
 
 <script>
+import $ from 'jquery';
 
 export default {
   data() {
     return {
-      post: {
+      inputFocused: null,
+      inputBlured: null,
+      showCheckIcon: false,
+      selectedFile: null,
+      input: {
         title: '',
         content: '',
       },
     };
   },
   components: {
-    // FontAwesomeIcon,
+
   },
-  
+  mounted() {
+
+  },
   methods: {
     createPost() {
       console.log('Creating post:', this.post);
-      // Your logic for creating a post goes here
     },
     closeForm() {
       this.$emit("closeForm");
     },
+    openFileInput(){
+      // 파일 입력란 클릭 시 파일 다이얼로그 열기
+      return this.$refs.videoInput.click();
+    },
+    handleInputFocus(val) {
+      this.inputFocused = val;
+      this.inputBlured = null;
+    },
+    handleInputBlur(val) {
+      this.inputFocused = null;
+      this.inputBlured = val;
+    },
+    fileChange(event){
+      debugger;
+      if (event.target.files.length > 0) {
+        this.selectedFile = event.target.files[0];
+        this.showCheckIcon = true;
+        
+console.log(event.target.files)
+      }
+      
+    },
+    submitForm(event) {
+      const file = this.selectedFile;
+
+      if (file) {
+
+        var formData = new FormData(document.getElementById("videoForm"));
+
+        formData.append('videoFile', file);
+        formData.append('type', file.type);
+        formData.append('inp_dt', formatDate(file.lastModifiedDate ));
+        formData.append('video_no', event._vts);
+
+        // formData 출력
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+        }
+
+          $.ajax({
+          type: "POST",
+          url: "http://localhost:7001/api/upload",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function() {
+            alert("업로드맨");
+            window.href.location = '/';
+          }.bind(this),
+          error: function(xhr, status, error) {
+            // 서버와의 통신 중 에러가 발생했을 때의 처리
+            alert("에러 발생: " + error);
+          }
+        });
+        
+      }
+    },
+
+
   },
 };
+
+
+function formatDate(date) {
+  const year = String(date.getFullYear()).slice(-2);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}${month}${day}`;
+}
+
+
 </script>
 
 
 <style scoped>
 
-h1 {
+@import '@/css/addVideoForm.css';
+
+.focused label {
+  line-height: 18px;
+  font-size: 18px;
+  font-weight: 100;
+  top: 0px;
+}
+
+.focused .spin {
+  width: 100%;
+}
+
+.blured label {
+  line-height: 60px;
+  font-size: 24px;
+  font-weight: 300;
+  top: 10px;
+}
+
+.blured .spin {
+  width: 0%;
+}
+
+/* h1 {
   color: #333;
   font-size: 24px;
   margin-bottom: 20px;
@@ -73,28 +234,14 @@ textarea {
   box-sizing: border-box;
 }
 
-button {
-  background-color: #4caf50;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-}
+
 
 .form-container {
   position: relative;
   max-width: 400px;
   height: 380px;
   margin: 0 auto;
-}
+} */
 
-.close-button {
-  position: absolute;
-  top: -200px;
-  right: -5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: green;
-}
+
 </style>
