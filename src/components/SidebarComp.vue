@@ -16,10 +16,10 @@
                         <span class="nav_logo-name">Home</span> 
                     </a>
                     <div class="nav_list"> 
-                        <a href="#" class="nav_link active"> 
+                        <router-link to="/community" class="nav_link" exact>
                             <i class='bx bx-grid-alt nav_icon'></i> 
-                            <span class="nav_name">Dashboard</span> 
-                        </a> 
+                            <span class="nav_name">Community</span> 
+                        </router-link>
                         <a href="#" class="nav_link"> 
                             <i class='bx bx-user nav_icon'></i> 
                             <span class="nav_name">Users</span> 
