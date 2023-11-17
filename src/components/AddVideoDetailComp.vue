@@ -22,7 +22,7 @@
     <form method="post" id="videoForm" @submit.prevent="submitForm" enctype="multipart/form-data">
       <!-- 제목 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoTitle', 'blured' : inputBlured === 'videoTitle' }">
-         <label for="videoTitle">Title</label>
+         <label for="videoTitle" :style="input.titleStyle">Title</label>
          <input type="text" name="videoTitle" id="videoTitle" v-model="input.title"
                 @focus="handleInputFocus('videoTitle')"
                 @blur="handleInputBlur('videoTitle')">
@@ -31,7 +31,7 @@
 
       <!-- 내용 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoContent', 'blured' : inputBlured === 'videoContent' }">
-         <label for="videoContent">Content</label>
+         <label for="videoContent" :style="input.contentStyle">Content</label>
          <input type="text" name="videoContent" id="videoContent" v-model="input.content"
                 @focus="handleInputFocus('videoContent')"
                 @blur="handleInputBlur('videoContent')">
@@ -40,7 +40,7 @@
 
       <!-- GO 버튼 -->
       <div class="button submit">
-         <button type="submit">
+         <button type="submit" style="border-radius: 15px; ">
             <span>GO</span> 
             <i class="fa fa-check"></i>
          </button>
@@ -96,6 +96,8 @@ export default {
       input: {
         title: '',
         content: '',
+        titleStyle: {},
+        contentStyle: {},
       },
     };
   },
@@ -106,9 +108,6 @@ export default {
 
   },
   methods: {
-    createPost() {
-      console.log('Creating post:', this.post);
-    },
     closeForm() {
       this.$emit("closeForm");
     },
@@ -123,6 +122,26 @@ export default {
     handleInputBlur(val) {
       this.inputFocused = null;
       this.inputBlured = val;
+
+      // title 값 있을 때
+      if(this.input.title !== ''){
+        this.input.titleStyle  = {
+          'line-height': '18px',
+          'font-size': '18px',
+        };
+      }else{
+        this.input.titleStyle = {};
+      }
+
+      // content 값 있을 때
+      if(this.input.content !== ''){
+        this.input.contentStyle = {
+          'line-height': '18px',
+          'font-size': '18px',
+        };
+      }else{
+        this.input.contentStyle = {};
+      }
     },
     fileChange(event){
       
@@ -193,8 +212,8 @@ function formatDate(date) {
 .focused label {
   line-height: 18px;
   font-size: 18px;
-  font-weight: 100;
-  top: 0px;
+  /* font-weight: 100; */
+  /* top: 0px; */
 }
 
 .focused .spin {
