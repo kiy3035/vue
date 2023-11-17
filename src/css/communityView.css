@@ -145,3 +145,28 @@ body {
   height:153px;
   
 }
+.btn_write.txt::before {
+  content: '';
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 3px;
+  margin-top: -4px;
+  background: url(https://nstatic.dcinside.com/dc/w/images/sp/sp_img.png)no-repeat -133px -1023px;
+  vertical-align: top;
+}
+.btn_write.txt {
+  width: 66px;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 3px solid #29367c;
+  background: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  color: #29367c;
+  line-height: 6px;
+  margin-left:10px;
+  vertical-align: top;
+  letter-spacing: -0.025em;
+  text-align: center;
+}
