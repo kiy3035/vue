@@ -122,7 +122,7 @@ export default {
       this.inputBlured = val;
     },
     fileChange(event){
-      debugger;
+      
       if (event.target.files.length > 0) {
         this.selectedFile = event.target.files[0];
         this.showCheckIcon = true;

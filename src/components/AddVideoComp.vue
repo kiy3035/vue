@@ -51,7 +51,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 .dotted-border {
   border: 2px dotted #333;
   padding: 5px;
