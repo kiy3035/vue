@@ -55,12 +55,21 @@
         &nbsp;공지&nbsp;
         </button>
       </li>
+      <li data-v-73310296="" role="presentation" style="margin-top: 36px;">
+          <div class="switch_btnbox">
+                <!-- &nbsp;<a class="btn_write txt" href="">글쓰기</a> -->
+                &nbsp;<a class="btn_write txt" @click="showWritePage = true">글쓰기</a>
+                <!-- 글쓰기 화면 표시 -->
+                <community-write v-if="showWritePage" />
+          </div>
+
+      </li>
     </ul>
     </div>
     <ul id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c="">
         <li data-v-676cec7c="">
-            <div data-v-676cec7c="" class="item_card" style="background-color:aqua">
-                <span class="wrap_cont"><span role="text" class="info_cate">
+            <div data-v-676cec7c="" class="item_card" style="background-color:white">
+                <span class="wrap_cont"><span role="text" class="info_cate"  style="margin-left: 5px;">
                     <img data-v-a968263a="" src="https://t1.kakaocdn.net/kakaocorp/kakaocorp/admin/6562f7bc017800001.png?type=thumb&amp;opt=C72x72.fwebp" width="36" height="36" alt="" class="ico_cate">
                     <span class="txt_date">
                         <span class="screen_out" style="font-weight: bold;">
@@ -84,20 +93,29 @@
   </template>
   
   <script>
+import CommunityWrite from '@/components/CommunityWrite.vue';
 export default {
-  mounted() {
-    // 컴포넌트가 마운트될 때 실행되는 로직
-    this.removeNavbarElement();
+    components: {
+      CommunityWrite,
+    },
+    data() {
+    return {
+      showWritePage: false,
+    };
   },
-  methods: {
-    removeNavbarElement() {
-      // 클래스가 navbar인 엘리먼트를 찾아 제거
-      const navbarElement = document.querySelector('.navbar');
-      if (navbarElement) {
-        navbarElement.remove();
-      }
+    mounted() {
+        // 컴포넌트가 마운트될 때 실행되는 로직
+        this.removeNavbarElement();
+    },
+    methods: {
+        removeNavbarElement() {
+            // 클래스가 navbar인 엘리먼트를 찾아 제거
+            const navbarElement = document.querySelector('.navbar');
+            if (navbarElement) {
+                navbarElement.remove();
+            }
+        }
     }
-  }
 };
   </script>
   
