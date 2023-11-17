@@ -20,6 +20,7 @@
 
     <!-- Form -->
     <form method="post" id="videoForm" @submit.prevent="submitForm" enctype="multipart/form-data">
+      <!-- 제목 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoTitle', 'blured' : inputBlured === 'videoTitle' }">
          <label for="videoTitle">Title</label>
          <input type="text" name="videoTitle" id="videoTitle" v-model="input.title"
@@ -28,6 +29,7 @@
          <span class="spin"></span>
       </div>
 
+      <!-- 내용 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoContent', 'blured' : inputBlured === 'videoContent' }">
          <label for="videoContent">Content</label>
          <input type="text" name="videoContent" id="videoContent" v-model="input.content"
@@ -36,6 +38,7 @@
          <span class="spin"></span>
       </div>
 
+      <!-- GO 버튼 -->
       <div class="button submit">
          <button type="submit">
             <span>GO</span> 
@@ -210,38 +213,6 @@ function formatDate(date) {
   width: 0%;
 }
 
-/* h1 {
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-form {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-}
-
-input,
-textarea {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 16px;
-  box-sizing: border-box;
-}
-
-
-
-.form-container {
-  position: relative;
-  max-width: 400px;
-  height: 380px;
-  margin: 0 auto;
-} */
 
 
 </style>

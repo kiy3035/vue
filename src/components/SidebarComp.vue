@@ -5,7 +5,7 @@
                 <i class='bx bx-menu' id="header-toggle"></i> 
             </div>
             <div class="header_img"> 
-                <img src="https://i.imgur.com/hczKIze.jpg" alt=""> 
+                <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTA4MDdfMSAg/MDAxNTY1MTQyNzkzNDYy.zod5wXpr-P3Hv2T1R0tlZNzYuaLG-KS4bh_pbr_rmDog.H653hrO-lfdGV86Aij_KDbdLxo8FE02lTBCEkj4vzI8g.PNG.ilt9525/%EC%B0%B0%EB%A6%AC_%EC%95%84%EB%8B%B4_%EB%A6%AC%EB%B2%84%ED%92%80.png?type=w800" alt=""> 
             </div>
         </header>
         <div class="l-navbar" id="nav-bar">
