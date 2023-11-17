@@ -103,7 +103,7 @@ export default {
   .video-list {
     display: flex;
     flex-direction: column;
-    margin-top: 900px;
+    margin-top: 600px;
   }
 
   .video-item {

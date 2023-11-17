@@ -159,10 +159,9 @@ console.log(event.target.files)
           contentType: false,
           success: function() {
             alert("업로드맨");
-            window.href.location = '/';
+            this.$router.go(0); // 현재 페이지 리랜더링
           }.bind(this),
           error: function(xhr, status, error) {
-            // 서버와의 통신 중 에러가 발생했을 때의 처리
             alert("에러 발생: " + error);
           }
         });

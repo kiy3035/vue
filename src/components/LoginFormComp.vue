@@ -9,40 +9,45 @@
     <!-- Links -->
     <ul class="links">
       <li>
-        <a href="#" @click="changePage($event, 'signin')">SIGN IN</a>
+        <a href="#" @click="changePage($event, 'signin')" style="margin-left:50px;">SIGN IN</a>
       </li>
       <li>
-        <a href="#" @click="changePage($event, 'signup')">SIGN UP</a>
+        <a href="#" @click="changePage($event, 'signup')" style="margin-left:10px;">SIGN UP</a>
       </li>
       <li>
-        <a href="#" @click="changePage($event, 'reset')" style="float:right;">RESET</a>
+        <a href="#" @click="changePage($event, 'reset')" style="float:right; margin-right:60px;">RESET</a>
       </li>
     </ul>
     
     <!-- Form -->
     <form action="http://localhost:7001/login" method="post" id="loginForm" >
-      <!-- email input -->
-      <div class="first-input input__block first-input__block">
-        <input type="email" class="input" id="email" name="email" placeholder="Email" />
+      <div style="margin-left:50px;">
+        <!-- 이메일 -->
+          <div class="first-input input__block first-input__block">
+            <input type="email" class="input" id="email" name="email" placeholder="Email" />
+          </div>
+          <br><br>
+
+          <!-- 패스워드 -->
+          <div class="input__block">
+            <input type="password" class="input" id="password" name="password" placeholder="Password" />
+          </div>
+          <br><br>
+
+          <!-- 패스워드 확인 -->
+          <div class="input__block" v-show="currentPage === 'signup'">
+            <input type="password" class="input repeat__password" id="repeat__password" placeholder="Repeat password" />
+          </div>
+          <br><br>
+
+          <!-- 닉네임 -->
+          <div class="input__block" style="margin-bottom:120px;" v-show="currentPage === 'signup'">
+            <input type="text" class="input repeat__password" id="nickname" name="nickname" placeholder="Nickname" />
+          </div>
       </div>
-      <!-- name input -->
-      <div class="input__block">
-        <input type="inp_usr" class="input repeat__password" id="inp_usr" name="inp_usr" placeholder="Name" />
-      </div>
-      <!-- nickname input -->
-      <div class="input__block">
-        <input type="nickname" class="input repeat__password" id="nickname" name="nickname" placeholder="Nickname" />
-      </div>
-      <!-- password input -->
-      <div class="input__block">
-        <input type="password" class="input" id="password" name="password"  placeholder="Password" />
-      </div>
-      <!-- repeat password input -->
-      <div class="input__block">
-        <input type="password" class="input repeat__password" id="repeat__password" placeholder="Repeat password" />
-      </div>
+
       <!-- sign in button -->
-      <button type="button" class="signin__btn" id="btnSubmit">
+      <button type="button" class="signin__btn" id="btnSubmit" style="width:90%; margin-right:5%;">
         Sign in
       </button>
     </form>
@@ -103,7 +108,7 @@ import $ from 'jquery';
 export default {
   data() {
     return {
-      currentPage: 'signin', // Default page
+      currentPage: 'signin',
     };
   },
   computed: {
@@ -116,7 +121,7 @@ export default {
   methods: {
     changePage($event, page) {
       let first_input = $("form").find(".first-input");
-      let hidden_input = $("form").find(".input__block").find("#repeat__password,#inp_usr, #nickname");
+      let hidden_input = $("form").find(".input__block").find("#repeat__password, #nickname");
       let signin_btn  = $("form").find(".signin__btn");
 
       if(page === "signin"){
@@ -143,6 +148,7 @@ export default {
         signin_btn.text("Sign up");
         this.currentPage = page;
       }
+
       else if(page === "reset"){
         $('input').each(function() {
           $(this).val('');
@@ -160,25 +166,14 @@ function validation() {
 
   type = $(".h1man").text(); // signin, signup
   var email = $("#email").val();
+  // var nickname = $("#email").val();
   var password = $("#password").val();
-  var inp_usr = $("#inp_usr").val();
-  var nickname = $("#nickname").val();
   var repeatPassword = $("#repeat__password").val();
 
   if(type === "SIGN UP"){
     if(email === ''){
       alert("email 을 입력하세요.");
       $("#email").focus();
-      return;
-    }
-    if(inp_usr === ''){
-      alert("이름을 입력하세요.");
-      $("#inp_usr").focus();
-      return;
-    }
-    if(nickname === ''){
-      alert("닉네임을 입력하세요.");
-      $("#nickname").focus();
       return;
     }
     if(password !== '' && repeatPassword !== ''){
@@ -273,4 +268,11 @@ function submitForm(event) {
 
 <style scoped>
   @import '@/css/loginPage.css';
+
+  #nickname,
+  #repeat__password {
+    opacity: 0;
+    display: none;
+  }
+
 </style>

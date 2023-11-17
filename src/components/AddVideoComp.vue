@@ -85,7 +85,7 @@ export default {
 }
 
 .hovered {
-  color: #d3aad4; /* hover 시 글자색 변경 */
+  color: #ffa07a;
 }
 
 
