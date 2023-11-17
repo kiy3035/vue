@@ -49,6 +49,7 @@ export default {
       }
     },
     handleIntersection(entries) {
+      console.log(entries)
       entries.forEach(entry => {
         const videoElement = entry.target.querySelector('video');
 
@@ -66,7 +67,7 @@ export default {
           this.videoListAlignItems = 'flex-start';
 
           // 전체 바디에 배경색 적용
-          document.body.style.background = 'black';
+          document.body.style.background = '#D3D3D3 '; // 좀 더 연한색 :#F0F0F0
 
           // 중앙으로 스크롤 조절
           const rect = entry.target.getBoundingClientRect();
