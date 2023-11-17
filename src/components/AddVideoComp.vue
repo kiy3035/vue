@@ -1,14 +1,23 @@
 <template>
   <div>
-    <div style="margin-top:10%;" >
-      <input type="file" ref="videoInput" style="display: none" />
-      <button class="dotted-border">
-        <font-awesome-icon :icon="['fas', 'plus-circle']" v-if="showPlusIcon" @click="addComp" style="width:150px; height:150px;"/>
-        <AddVideoDetailComp v-if="showComp" ref="detailCompRef" @closeForm="closeComp"/>
-      </button>
-      <div v-if="selectedFile">
-        <p>Selected File: {{ selectedFile.name }}</p>
-        <input v-model="fileTitle" placeholder="Enter file title" />
+    <div :class="{ 'dark-background': showComp }">
+      <div style="margin-top:10%;" >
+        <input type="file" ref="videoInput" style="display: none" />
+        <button class="btnAdd">
+          <font-awesome-icon 
+            :icon="['fas', 'plus']" 
+            v-if="showPlusIcon" 
+            @click="addComp" 
+            :class="{ 'hovered': isHovered }"
+            @mouseover="isHovered = true"
+            @mouseout="isHovered = false"
+            style="width:150px; height:150px;" />
+          <AddVideoDetailComp v-if="showComp" ref="detailCompRef" @closeForm="closeComp"/>
+        </button>
+        <div v-if="selectedFile">
+          <p>Selected File: {{ selectedFile.name }}</p>
+          <input v-model="fileTitle" placeholder="Enter file title" />
+        </div>
       </div>
     </div>
   </div>
@@ -27,6 +36,7 @@ export default {
       fileTitle: "", // 파일 제목을 저장할 데이터
       showComp: false,
       showPlusIcon: true,
+      isHovered: false,
     };
   },
   components: {
@@ -52,20 +62,31 @@ export default {
 
 
 <style scoped>
-.dotted-border {
-  border: 2px dotted #333;
+
+.dark-background {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* 다른 요소들보다 위에 나타나도록 설정 */
+}
+
+.btnAdd {
+  border: 1px solid transparent;
   padding: 5px;
   background-color: #fff;
   cursor: pointer;
   display: inline-block;
   border-radius: 8px;
-  width: 450px;
-  transition: background-color 0.3s ease; /* 트랜지션 효과 추가 */
+  width: 150px;
+  transition: color 0.3s ease; /* 트랜지션 효과 추가 */
 }
 
-/* 마우스를 올렸을 때의 스타일 */
-.dotted-border:hover {
-  background-color: #ddd;
+.hovered {
+  color: #d3aad4; /* hover 시 글자색 변경 */
 }
+
 
 </style>
