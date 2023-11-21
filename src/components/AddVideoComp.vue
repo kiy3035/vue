@@ -105,7 +105,7 @@ export default {
 }
 
 .hovered {
-  color: #ffa07a;
+  color: #966fbf;
 }
 
 
