@@ -151,9 +151,9 @@ body {
   width: 15px;
   height: 15px;
   margin-right: 3px;
-  margin-top: -4px;
+  margin-top: 0px;
   background: url(https://nstatic.dcinside.com/dc/w/images/sp/sp_img.png)no-repeat -133px -1023px;
-  vertical-align: top;
+  /* vertical-align: top; */
 }
 .btn_write.txt {
   width: 66px;
