@@ -74,19 +74,19 @@
       </p>
       <p>
         Chouaib Blgn :
-        <a href="https://www.facebook.com/chouaib45" >
+        <a href="https://www.facebook.com/" >
           <i class="fab fa fa-facebook"></i>
         </a>
-        <a href="http://twitter.com/chouaibblgn45">
+        <a href="http://twitter.com/">
           <i class="fab fa fa-twitter"></i> 
         </a>
-        <a href="http://instagram.com/chouaib_blgn">
+        <a href="http://instagram.com/">
           <i class="fab fa fa-instagram"></i> 
         </a>
-        <a href="http://linkedin.com/in/chouaibblgn/">
+        <a href="http://linkedin.com/in//">
           <i class="fab fa fa-linkedin"></i>
         </a>
-        <a href="https://www.behance.net/geek30">
+        <a href="https://www.behance.net/">
           <i class="fab fa fa-behance"></i>
         </a>
       </p>

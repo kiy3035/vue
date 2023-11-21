@@ -23,6 +23,7 @@ library.add(faPlus, faTimes, faVideo, faCheck, faPlay, faComment, faThumbsUp, fa
 const app = createApp(App);
 
 app.use(router);
+
 app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.config.globalProperties.axios = axios;

@@ -34,11 +34,12 @@
                         </div>
 
                         <div id="form-controls">
-                          <button type="button">
-                              <font-awesome-icon icon="thumbs-up" class="iconCSS" id="like" name="bottomIcon"/>
+                          <button type="button" class="like-comment">
+                              <font-awesome-icon icon="thumbs-up" class="iconCSS" id="like" name="bottomIcon" @click="clickLike" :style="{ color: likeIconColor }"/>
+                              <!-- {{ likeCount }} -->
                           </button>
-                          <button type="button" >
-                              <font-awesome-icon icon="comment" class="iconCSS" id="comment" name="bottomIcon"/>
+                          <button type="button" class="like-comment">
+                              <font-awesome-icon icon="comment" class="iconCSS" id="comment" name="bottomIcon" @click="clickComment"/>
                           </button>
                         </div>
                       </form>
@@ -53,6 +54,9 @@
 
 <script>
 
+import axios from 'axios';
+// import $ from 'jquery';
+
 export default {
   data() {
     return {
@@ -62,13 +66,40 @@ export default {
       videoListAlignItems: 'center', // 초기값 설정
       divVideoList: false,
       isHovered: false,
+      likeIconColor: '#ff6678', // 초기 색상 설정
+      postId: 'abc',
+            userId: 'userman',
+            liked: '123',
     };
   },
   methods: {
-    formatVideoDate(date) {
+    clickLike(){
+      this.likeIconColor = this.likeIconColor === '#ff6678' ? 'red' : '#ff6678';
+
+        // 서버로 전송할 데이터
+        const dataToSend = {
+            postId: 'abc',
+            userId: 'userman',
+            liked: '123'
+        };
+        console.log(dataToSend);
+        var url = 'http://localhost:7001/api/liked'
+
+        axios.post(url, dataToSend)
+        .then(function(response){
+          console.log(response);
+        })
+        .catch(function(error){
+          console.error(error);
+        });
+
+
+    },
+
+    formatVideoDate(date) { // 한국날짜로 보이게
       const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const formattedDate = new Date(date).toLocaleDateString('ko-KR', options);
-    return formattedDate;
+      const formattedDate = new Date(date).toLocaleDateString('ko-KR', options);
+      return formattedDate;
     },
     toggleVideoList() {
       this.divVideoList = !this.divVideoList;
@@ -219,6 +250,12 @@ export default {
 
   .content-textarea {
     height: 200px;
+    resize: none;
+  }
+
+  #playIcon :hover{
+    color: #966fbf;
+    cursor: pointer;
   }
 
 </style>
