@@ -35,11 +35,14 @@
 
                         <div id="form-controls">
                           <button type="button" class="like-comment">
-                              <font-awesome-icon icon="thumbs-up" class="iconCSS" id="like" name="bottomIcon" @click="clickLike" :style="{ color: likeIconColor }"/>
-                              <!-- {{ likeCount }} -->
+                              <input v-model="video.id" style="display:none;">
+                              <input v-model="video.title" style="display:none;">
+                              <font-awesome-icon icon="thumbs-up" class="iconCSS" id="like" name="bottomIcon" @click="clickLike(video)" :style="{ color: likeIconColor }"/>
+                              <div style="margin-right: 15px;">{{ video.likeCount }}</div>
                           </button>
                           <button type="button" class="like-comment">
                               <font-awesome-icon icon="comment" class="iconCSS" id="comment" name="bottomIcon" @click="clickComment"/>
+                              <div style="margin-right: 15px;">{{ video.commentCount }}</div>
                           </button>
                         </div>
                       </form>
@@ -56,8 +59,10 @@
 
 import axios from 'axios';
 // import $ from 'jquery';
+// import { ref } from 'vue';
 
 export default {
+  
   data() {
     return {
       videos: [],
@@ -67,35 +72,57 @@ export default {
       divVideoList: false,
       isHovered: false,
       likeIconColor: '#ff6678', // 초기 색상 설정
-      postId: 'abc',
-            userId: 'userman',
-            liked: '123',
+        // video: {
+        //   id: '',
+        //   title: '',
+        //   userEmail: '',
+        // },
+      likedList: [],
     };
   },
+  mounted() {
+    const userEmail = sessionStorage.getItem('userEmail');
+    
+    const dataToSend = {
+      userEmail: userEmail
+    };
+
+    var url = 'http://localhost:7001/getLikedVideoList'
+
+    axios.post(url, dataToSend)
+      .then(response => {
+        this.likedList = response.data; // 여기서부터할것
+    })
+    .catch(error => {
+      console.log('Error:', error);
+    });
+  },
   methods: {
-    clickLike(){
-      this.likeIconColor = this.likeIconColor === '#ff6678' ? 'red' : '#ff6678';
+    clickLike: async function(video) {
+
+        this.likeIconColor = this.likeIconColor === '#ff6678' ? 'red' : '#ff6678';
+        const userEmail = sessionStorage.getItem("userEmail");
 
         // 서버로 전송할 데이터
         const dataToSend = {
-            postId: 'abc',
-            userId: 'userman',
-            liked: '123'
+          videoId: video.id,
+          videoTitle: video.title,
+          userEmail: userEmail
         };
-        console.log(dataToSend);
-        var url = 'http://localhost:7001/liked'
+  
+        var url = 'http://localhost:7001/like'
 
-        axios.post(url, dataToSend)
-        .then(function(response){
-          console.log(response);
-        })
-        .catch(function(error){
-          console.error(error);
-        });
+        try {
+          const response = await axios.post(url, dataToSend);
 
-
+          if (response.data !== undefined) {
+            video.likeCount = response.data;
+          }
+        }
+        catch(error){
+          console.log(error);
+        }
     },
-
     formatVideoDate(date) { // 한국날짜로 보이게
       const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
       const formattedDate = new Date(date).toLocaleDateString('ko-KR', options);
@@ -113,18 +140,21 @@ export default {
       try {
         const response = await fetch('http://localhost:7001/api/videos');
         const data = await response.json();
+
         this.videos = data.map(video => ({
-          id: video.video_no,
+          id: video.video_id,
           title: video.title,
           content: video.content,
           nickname: video.user_nickname,
           inpDT: video.inp_dt,
-          path: video.video_no,
+          path: video.video_id,
+          likeCount: video.like_count,
+          commentCount: video.comment_count,
         }));
-
+        
         this.$nextTick(() => this.initIntersectionObserver());
       } catch (error) {
-          console.error('Error fetching videos:', error);
+        console.error('Error fetching videos:', error);
       }
     },
     initIntersectionObserver() {
@@ -139,7 +169,6 @@ export default {
       }
     },
     handleIntersection(entries) {
-      console.log(entries);
 
       entries.forEach(entry => {
         const videoElement = entry.target.querySelector('video');
