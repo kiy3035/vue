@@ -163,7 +163,7 @@ console.log(event.target.files)
         formData.append('videoFile', file);
         formData.append('type', file.type);
         formData.append('inp_dt', formatDate(file.lastModifiedDate ));
-        formData.append('video_no', event._vts);
+        formData.append('video_id', event._vts);
 
         // formData 출력
         for (const [key, value] of formData.entries()) {
