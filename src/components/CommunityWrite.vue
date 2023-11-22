@@ -7,13 +7,13 @@
         <button class="close-button" @click="closeForm">
           <font-awesome-icon :icon="['fas', 'times']" />
         </button>
-        <div class="title">글쓰기</div>
+        <div class="title">Write</div>
   
       <!-- Form -->
       <form method="post" id="videoForm" @submit.prevent="submitForm" enctype="multipart/form-data">
         <!-- 닉네임 -->
         <div class="input" :class="{ 'focused': inputFocused === 'nickname', 'blured' : inputBlured === 'nickname' }">
-           <label for="nickname">닉네임</label>
+           <label for="nickname" :style="input.nicknameStyle">닉네임</label>
            <input type="text" name="nickname" id="nickname" v-model="input.nickname"
                   @focus="handleInputFocus('nickname')"
                   @blur="handleInputBlur('nickname')">
@@ -21,30 +21,53 @@
         </div>
         <!-- 태그 -->
         <div class="input" :class="{ 'focused': inputFocused === 'tag', 'blured' : inputBlured === 'tag' }">
-           <label for="nickname">태그</label>
-           <input type="text" name="tag" id="tag" v-model="input.tag"
-                  @focus="handleInputFocus('tag')"
-                  @blur="handleInputBlur('tag')">
-           <span class="spin"></span>
+            <label for="tag" :style="input.tagStyle">태그</label>
+            <input
+            type="text"
+            name="tag"
+            id="tag"
+            v-model="input.tag"
+            @focus="handleInputFocus('tag')"
+            @blur="handleTagInputBlur"
+            >
+            <span class="spin"></span>
         </div>
-
         <!-- 제목 -->
-        <div class="input" :class="{ 'focused': inputFocused === 'videoTitle', 'blured' : inputBlured === 'videoTitle' }">
-           <label for="videoTitle">Title</label>
-           <input type="text" name="videoTitle" id="videoTitle" v-model="input.title"
-                  @focus="handleInputFocus('videoTitle')"
-                  @blur="handleInputBlur('videoTitle')">
+        <div class="input" :class="{ 'focused': inputFocused === 'title', 'blured' : inputBlured === 'title' }">
+           <label for="title" :style="input.titleStyle">제목</label>
+           <input type="text" name="title" id="title" v-model="input.title"
+                  @focus="handleInputFocus('title')"
+                  @blur="handleInputBlur('title')">
            <span class="spin"></span>
         </div>
-  
         <!-- 내용 -->
-        <div class="input" :class="{ 'focused': inputFocused === 'videoContent', 'blured' : inputBlured === 'videoContent' }">
-          <label for="videoContent">Content</label>
-          <!-- 클릭 시에 textarea가 나타나도록 v-show 디렉티브 사용 -->
-          <textarea v-show="inputFocused === 'videoContent'" v-autosize type="text" name="videoContent" id="videoContent" v-model="input.content"
-                    @blur="handleInputBlur('videoContent')"></textarea>
-          <span class="spin"></span>
-        </div>
+        <div class="input" :class="{ 'focused': inputFocused === 'cont', 'blured' : inputBlured === 'cont' }">
+    <label @click="toggleTextarea" :for="'cont'" :style="input.contStyle">내용</label>
+    <textarea
+      v-show="inputFocused === 'cont'"
+      ref="contTextarea"
+      name="cont"
+      id="cont"
+      v-model="input.cont"
+      @blur="handleInputBlur('cont')"
+      :style="{ 'z-index': inputFocused === 'cont' ? '1' : 'auto' }"
+      @focus="handleTextareaFocus"
+    ></textarea>
+    <input
+      v-show="inputFocused !== 'cont'"
+      type="text"
+      name="cont"
+      id="cont"
+      v-model="input.cont"
+      @focus="handleInputFocus('cont')"
+      @blur="handleInputBlur('cont')"
+    >
+    <span class="spin" :style="{ 'display': inputFocused === 'cont' ? 'none' : 'block' }"></span>
+  </div>
+
+        
+  
+        
   
         <!-- GO 버튼 -->
         <div class="button submit">
@@ -64,24 +87,9 @@
   
   
   <script>
-  // v-autosize 디렉티브를 정의합니다.
-const autosize = {
-  bind(el) {
-    el.style.overflow = 'hidden';
-    el.style.resize = 'none';
-    const setStyle = () => {
-      el.style.height = 'auto';
-      el.style.height = `${el.scrollHeight}px`;
-    };
-    el.addEventListener('input', setStyle);
-    setStyle();
-  },
-};
-
   export default {
     name: 'CommunityWrite',
     directives: {
-    autosize,
   },
     data() {
       return {
@@ -93,6 +101,11 @@ const autosize = {
           nickname: '',  
           tag: '',
           title: '',
+          cont:'',
+          nicknameStyle:{},
+          tagStyle:{},
+          titleStyle:{},
+          contStyle:{},
         },
       };
     },
@@ -109,36 +122,69 @@ const autosize = {
       closeForm() {
         this.$emit("closeForm");
       },
+      toggleTextarea() {
+        if (this.inputFocused !== 'cont') {
+            this.handleInputFocus('cont');
+        }
+      },
+      handleTextareaFocus() {
+        // textarea가 포커스를 받을 때 .spin을 숨김
+        this.$refs.contTextarea.nextSibling.style.display = 'none';
+      },
+      
       handleInputFocus(val) {
         this.inputFocused = val;
         this.inputBlured = null;
       },
       handleInputBlur(val) {
-      this.inputFocused = null;
-      this.inputBlured = val;
+        this.inputFocused = null;
+        this.inputBlured = val;
 
-      // title 값 있을 때
-      if(this.input.nickname !== ''){
-        this.input.nicknameStyle  = {
-          'line-height': '18px',
-          'font-size': '1px',
-        };
-      }else{
-        this.input.nicknameStyle = {};
-      }
+        // 닉네임 값이 있을 때
+        if (this.input.nickname !== '') {
+            this.input.nicknameStyle = {
+            'line-height': '18px',
+            'font-size': '18px',
+            };
+        } else {
+            this.input.nicknameStyle = {};
+        }
 
-      // content 값 있을 때
-      if(this.input.content !== ''){
-        this.input.contentStyle = {
-          'line-height': '18px',
-          'font-size': '10px',
-        };
-      }else{
-        this.input.contentStyle = {};
-      }
-    },
-  
-  
+        // 태그 값이 있을 때
+        if (this.input.tag !== '') {
+            
+            this.input.tagStyle = {
+                'line-height': '18px',
+                'font-size': '18px',
+            };
+            // 태그 값이 '#'으로 시작하지 않으면 '#'을 추가
+            if (!this.input.tag.startsWith('#')) {
+                this.input.tag = '#' + this.input.tag;
+            }
+        } else {
+            this.input.tagStyle = {};
+        }
+
+        // 제목 값이 있을 때
+        if (this.input.title !== '') {
+            this.input.titleStyle = {
+            'line-height': '18px',
+            'font-size': '18px',
+            };
+        } else {
+            this.input.titleStyle = {};
+        }
+
+        // 내용 값이 있을 때
+        if (this.input.cont !== '') {
+            this.input.contStyle = {
+            'line-height': '18px',
+            'font-size': '18px',
+            };
+        } else {
+            this.input.contStyle = {};
+        }
+      },
     },
   };
   
@@ -150,27 +196,28 @@ const autosize = {
   
   /* @import '@/css/addVideoForm.css'; */
   
-  .focused label {
-    line-height: 5px;
-    font-size: 15px;
-    font-weight: 100;
-    top: 0px;
-  }
   
-  .focused .spin {
-    width: 80%;
-  }
-  
-  .blured label {
-    line-height: 50px;
-    font-size: 20px;
-    font-weight: 300;
-    top: 0px;
-  }
-  
-  .blured .spin {
-    width: 0%;
-  }
+.focused label {
+  line-height: 18px;
+  font-size: 18px;
+  /* font-weight: 100; */
+  /* top: 0px; */
+}
+
+.focused .spin {
+  width: 100%;
+}
+
+.blured label {
+  line-height: 60px;
+  font-size: 18px;
+  font-weight: 300;
+  top: 10px;
+}
+
+.blured .spin {
+  width: 0%;
+}
   
   .materialContainer {
     width: 100%;
@@ -187,15 +234,6 @@ const autosize = {
     z-index: 1; /* 화면위에 나타남 */
   }
   
-  .put_inquiry {
-      width: 204px;
-      height: 33px;
-      padding: 0 12px;
-      line-height: 35px;
-      border: 1px solid #cecdce;
-      color: #333;
-  }
-
   .title{
     text-align: center;
   }
