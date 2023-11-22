@@ -83,7 +83,7 @@ export default {
             liked: '123'
         };
         console.log(dataToSend);
-        var url = 'http://localhost:7001/api/liked'
+        var url = 'http://localhost:7001/liked'
 
         axios.post(url, dataToSend)
         .then(function(response){
