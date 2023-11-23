@@ -12,13 +12,15 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from 'axios';
 
 
-library.add(faPlus, faTimes, faVideo, faCheck, faPlay, faComment, faThumbsUp, faCalendar, faUser, faFileLines);
+library.add(faPlus, faTimes, faVideo, faCheck, faPlay, faComment, faThumbsUp, faCalendar, faUser, faFileLines, faPen, faXmark);
 
 const app = createApp(App);
 

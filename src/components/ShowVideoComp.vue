@@ -16,8 +16,8 @@
                   <div id="form-inner-container">
                     <div id="videoInfo-container">
                       <h2>{{ video.title }}</h2>
+                      
                       <form>
-
                         <div class="icon-container">
                           <font-awesome-icon icon="calendar" class="iconCSS"/>
                           <input type="text" name="inpDT" id="inpDT" :value="formatVideoDate(video.inpDT)" readonly>
@@ -37,15 +37,17 @@
                           <button type="button" class="like-comment">
                               <input v-model="video.id" style="display:none;">
                               <input v-model="video.title" style="display:none;">
-                              <font-awesome-icon icon="thumbs-up" class="iconCSS" id="like" name="bottomIcon" @click="clickLike(video)" :style="{ color: likeIconColor }"/>
+                              <font-awesome-icon icon="thumbs-up" class="iconCSS" id="like" name="bottomIcon" @click="clickLike(video)" :style="{ color: video.likeIconColor }"/>
                               <div style="margin-right: 15px;">{{ video.likeCount }}</div>
                           </button>
                           <button type="button" class="like-comment">
-                              <font-awesome-icon icon="comment" class="iconCSS" id="comment" name="bottomIcon" @click="clickComment"/>
+                              <font-awesome-icon icon="comment" class="iconCSS" id="comment" name="bottomIcon" @click="clickComment(video)"/>
                               <div style="margin-right: 15px;">{{ video.commentCount }}</div>
+                              <CommentComp v-if="showComp" :videoData="clickedVideo" @close="showComp = false" />
                           </button>
                         </div>
                       </form>
+
                     </div>
                   </div>
                 </div>
@@ -58,8 +60,7 @@
 <script>
 
 import axios from 'axios';
-// import $ from 'jquery';
-// import { ref } from 'vue';
+import CommentComp from '@/components/CommentComp.vue';
 
 export default {
   
@@ -71,14 +72,19 @@ export default {
       videoListAlignItems: 'center', // 초기값 설정
       divVideoList: false,
       isHovered: false,
-      likeIconColor: '#ff6678', // 초기 색상 설정
+      likedList: [], // 최초로 받아오는 값
+      noDupLikedList: [], // 위에 배열에서 중복 제거한 값
+      showComp: false,
+      clickedVideo: null,
         // video: {
         //   id: '',
         //   title: '',
         //   userEmail: '',
         // },
-      likedList: [],
     };
+  },
+  components: {
+    CommentComp
   },
   mounted() {
     const userEmail = sessionStorage.getItem('userEmail');
@@ -91,16 +97,23 @@ export default {
 
     axios.post(url, dataToSend)
       .then(response => {
-        this.likedList = response.data; // 여기서부터할것
+        this.likedList = response.data;
+
+        // 중복 제거
+        for (let i = 0; i < this.likedList.length; i++) {
+        if (this.noDupLikedList.indexOf(this.likedList[i].VIDEO_ID) === -1) {
+          this.noDupLikedList.push(this.likedList[i].VIDEO_ID);
+        }
+      }
     })
     .catch(error => {
       console.log('Error:', error);
     });
+
   },
   methods: {
     clickLike: async function(video) {
 
-        this.likeIconColor = this.likeIconColor === '#ff6678' ? 'red' : '#ff6678';
         const userEmail = sessionStorage.getItem("userEmail");
 
         // 서버로 전송할 데이터
@@ -114,16 +127,21 @@ export default {
 
         try {
           const response = await axios.post(url, dataToSend);
-
           if (response.data !== undefined) {
             video.likeCount = response.data;
+            video.likeIconColor = video.likeIconColor === 'red' ? '#ff8899' : 'red';
           }
         }
         catch(error){
           console.log(error);
         }
     },
-    formatVideoDate(date) { // 한국날짜로 보이게
+    clickComment(video){
+      console.log("댓글창:::" + JSON.stringify(video));
+      this.clickedVideo = video;
+      this.showComp = true;
+    },
+    formatVideoDate(date) { // 한국날짜 포맷
       const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
       const formattedDate = new Date(date).toLocaleDateString('ko-KR', options);
       return formattedDate;
@@ -151,6 +169,13 @@ export default {
           likeCount: video.like_count,
           commentCount: video.comment_count,
         }));
+
+        // 일치하면 좋아요 누른 상태로 보이게
+        for (var i = 0; i < this.videos.length; i++) {
+          if (this.noDupLikedList.includes(this.videos[i].id)) {
+            this.videos[i].likeIconColor = 'red';
+          }
+        }
         
         this.$nextTick(() => this.initIntersectionObserver());
       } catch (error) {
@@ -195,7 +220,6 @@ export default {
           const scrollTop = window.scrollY || document.documentElement.scrollTop;
           const centerY = rect.top + scrollTop - window.innerHeight / 2 + rect.height / 2;
           window.scrollTo({ top: centerY, behavior: 'smooth' });
-
 
         } else {
           videoElement.pause();

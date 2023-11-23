@@ -38,8 +38,8 @@ form input, textarea {
     margin-bottom: 20px;
 }
 
-h2 {
-    color: #ff6678;
+h2 {    
+    color: #ff8899;
     font-size: 150%;
     font-weight: bold;
 }
@@ -77,7 +77,7 @@ button[type="submit"]:hover {
 .like-comment {
     padding: 16px 0 16px 35px;
     background-color: transparent;
-    color: #ff6678;
+    color: #ff8899;
 }
 
 label[for="terms"] {
