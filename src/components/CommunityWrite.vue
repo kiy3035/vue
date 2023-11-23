@@ -33,6 +33,7 @@
                   type="text"
                   name="nickname"
                   id="nickname"
+                  v-model="input.nickname"
                   />
                 
                 <span class="spin"></span>
@@ -106,14 +107,14 @@
           <div class="right-box">
             <!-- 내용 -->
             <div>
-              <textarea name="cont" id="cont" style="height:293px; background-color: lightgoldenrodyelloway" placeholder="Bitte geben Sie Ihren Inhalt ein."></textarea>
+              <textarea name="cont" id="cont" v-model="input.cont" style="height:293px; background-color: lightgoldenrodyelloway" placeholder="Bitte geben Sie Ihren Inhalt ein."></textarea>
             </div>
           </div>
         </div>
 
         <!-- GO 버튼 -->
         <div class="button submit">
-          <button type="submit">
+          <button type="submit" @click="register">
             <span>Regist</span>
             <i class="fa fa-check"></i>
           </button>
@@ -124,6 +125,8 @@
 </template>
 
 <script>
+import $ from 'jquery';
+
   export default {
     name: 'CommunityWrite',
     directives: {
@@ -214,6 +217,46 @@
         } else {
             this.input.contStyle = {};
         }
+      },
+      register() {
+        // 폼이 제출되었을 때 실행되는 메소드
+
+        event.preventDefault();
+
+        const postData = {
+          nickname: this.input.nickname,
+          tag1: this.input.tag1,
+          tag2: this.input.tag2,
+          tag3: this.input.tag3,
+          title: this.input.title,
+          cont: this.input.cont,
+        };
+
+        console.log('Registering post:', postData);
+
+        if(postData.title === ''){
+          alert("제목을 입력하세요.");
+          $("#title").focus();
+          return;
+        }
+        if(postData.cont === ''){
+          alert("내용을 입력하세요.");
+          $("#cont").focus();
+          return;
+        }
+
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:7001/write",
+          data: JSON.stringify(postData),
+          contentType: 'application/json',
+          success: function() {
+            alert("게시글이 등록 되었습니다.");
+          },
+          error: function(xhr, status, error) {
+            alert("에러발생! 관리자에게 문의하세용! " + error);
+          }
+        });
       },
     },
   };
