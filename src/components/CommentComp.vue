@@ -8,13 +8,17 @@
                 icon="xmark" 
                 @click="closeCommentComp"
                 class="close-button"/>
+          <ul>
+            <li v-for="(comment, index) in comments" :key="index">
+              {{ comment.INP_USER }} - {{ comment.VIDEO_COMMENT }}
+            </li>
+          </ul>
           <form>
             <div class="icon-container2" >
               <input type="text" v-model="commentText" placeholder="댓글을 입력하세요.">
             </div>
-
             <div id="form-controls">
-                <font-awesome-icon icon="pen" @click="inputComment(this.videoData)" />
+                <font-awesome-icon icon="pen" @click="inputComment(this.videoData)" class="pen-css"/>
             </div>
           </form>
 
@@ -31,6 +35,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      comments: [],
       commentText: '',
     };
   },
@@ -48,7 +53,6 @@ export default {
       this.$emit("close"); // 부모 컴포넌트로 이벤트 전달
     },
     inputComment(data){
-
       const userEmail = sessionStorage.getItem('userEmail');
       const datas = {
         videoId : data.id,
@@ -60,23 +64,20 @@ export default {
       const url = 'http://localhost:7001/inputComment'
 
       axios.post(url, datas)
-        .then(response => {
-          console.log(response);
+        .then(() => {
+          this.getComments();
           this.commentText = null;
-          // this.getComments();
         })
         .catch(error => {
           console.log('Error:', error);
         });
     },
     getComments(){
-      console.log("댓글가져오는중");
-
-      const url = 'http://localhost:7001/getAllComments'
+      const url = 'http://localhost:7001/getAllComments';
 
       axios.get(url)
         .then(response => {
-          console.log(response);
+          this.comments = response.data;
         })
         .catch(error => {
           console.log('Error:', error);
@@ -128,5 +129,15 @@ export default {
         /* position: absolute; */
         margin-top: 70%;
         width: 100%;
+    }
+
+    .pen-css {
+      position: absolute;
+      color: #ff8899;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      right: 130px;
+      top: 740px;
     }
 </style>

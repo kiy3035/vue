@@ -1,5 +1,6 @@
 <template>
   <div>
+      <CommentComp v-if="showComp" :videoData="clickedVideo" @close="showComp = false" />
       <font-awesome-icon
         :icon="['fas', 'play']"
         id="playIcon"
@@ -43,7 +44,6 @@
                           <button type="button" class="like-comment">
                               <font-awesome-icon icon="comment" class="iconCSS" id="comment" name="bottomIcon" @click="clickComment(video)"/>
                               <div style="margin-right: 15px;">{{ video.commentCount }}</div>
-                              <CommentComp v-if="showComp" :videoData="clickedVideo" @close="showComp = false" />
                           </button>
                         </div>
                       </form>
