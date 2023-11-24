@@ -112,7 +112,7 @@
 import $ from 'jquery';
 
   export default {
-    name: 'CommunityWrite',
+    name: 'CommunityDetail',
     directives: {
   },
     data() {
@@ -237,7 +237,7 @@ import $ from 'jquery';
           success: function() {
             alert("게시글이 등록 되었습니다.");
             // 부모 컴포넌트에 이벤트를 전달하여 창을 닫습니다.
-            // this.$emit("closeForm");
+            // this.$emit("closeForm"); 안돼서 강제로 클릭
             const closeButton = document.querySelector('.close-button');
             const clickEvent = new Event('click');
             closeButton.dispatchEvent(clickEvent);
