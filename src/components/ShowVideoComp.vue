@@ -1,6 +1,6 @@
 <template>
   <div>
-      <CommentComp v-if="showComp" :videoData="clickedVideo" @close="showComp = false" />
+      <CommentComp v-if="showComp" :videoData="clickedVideo" @close="showComp = false" @countPlus1="handleCommentCount"/>
       <font-awesome-icon
         :icon="['fas', 'play']"
         id="playIcon"
@@ -112,6 +112,24 @@ export default {
 
   },
   methods: {
+    handleCommentCount(videoId){
+      const url = 'http://localhost:7001/getCommentCount';
+
+      const data = {
+        videoId: videoId,
+      };
+
+      axios.get(url, { params: data })
+        .then(response => {
+          const videoToUpdate = this.videos.find(video => video.id === videoId);
+          if (videoToUpdate) {
+            videoToUpdate.commentCount = response.data;
+          }
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
+    },
     clickLike: async function(video) {
 
         const userEmail = sessionStorage.getItem("userEmail");

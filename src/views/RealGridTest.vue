@@ -117,5 +117,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  width: 100%;
+  margin-bottom: 15px;
+  border-top: 2px solid #9ba6b5;
+  border-left: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
 }
 </style>
