@@ -36,10 +36,10 @@
                             <i class='bx bx-folder nav_icon'></i> 
                             <span class="nav_name">Files</span>
                         </a> 
-                        <a href="#" class="nav_link"> 
-                            <i class='bx bx-bar-chart-alt-2 nav_icon'></i>
-                            <span class="nav_name">Stats</span> 
-                        </a> 
+                        <router-link to="/realgrid" class="nav_link" exact>
+                            <i class='bx bx-bar-chart-alt-2 nav_icon'></i> 
+                            <span class="nav_name">Community</span> 
+                        </router-link> 
                     </div>
                 </div> 
                     <a href="#" class="nav_link"> 

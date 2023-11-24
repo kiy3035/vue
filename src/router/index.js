@@ -3,6 +3,7 @@ import LoginView from '../views/LoginView.vue';
 import HomeView from '../views/HomeView.vue';
 import MypageView from '../views/MypageView.vue';
 import CommunityView from '../views/CommunityView.vue';
+import RealGrid from '../views/RealGridTest.vue';
 
 
 const routes = [
@@ -21,6 +22,10 @@ const routes = [
   {
     path: '/community',
     component: CommunityView,
+  },
+  {
+    path: '/realgrid',
+    component: RealGrid,
   },
 ]
 
