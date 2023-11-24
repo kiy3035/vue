@@ -67,19 +67,16 @@
       </li>
       <li data-v-73310296="" role="presentation" style="margin-top: 36px;">
         <div class="switch_btnbox">
-          <!-- &nbsp;<a class="btn_write txt" href="">글쓰기</a> -->
-          <!-- &nbsp;<a class="btn_write txt" @click="showWritePage = true" style="width:85px; height:36px; margin-top:-15px; ">글쓰기</a> -->
           <a class="btn_write txt" @click="openWriteForm" style="width:85px; height:36px; margin-top:-15px; ">글쓰기</a>
-          <!-- 글쓰기 화면 표시 -->
-          <!-- <community-write v-if="showWritePage" /> -->
           <!-- 모달을 열 때 CommunityWrite 컴포넌트 사용 -->
           <CommunityWrite v-if="showWritePage" @closeForm="closeWriteForm" />
         </div>
       </li>
     </ul>
   </div>
-  <ul id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c="">
-    <li data-v-676cec7c="">
+  <!-- <ul id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c=""> -->
+    <ul v-if="communityData.length > 0" id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c="">
+    <li data-v-676cec7c="" v-for="item in communityData" :key="item.id">
       <div data-v-676cec7c="" class="item_card" style="background-color: white">
         <span class="wrap_cont">
           <span role="text" class="info_cate" style="margin-left: 5px;">
@@ -92,10 +89,8 @@
               class="ico_cate"
             />
             <span class="txt_date">
-              <span class="screen_out" style="font-weight: bold;">
-                찰장군b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-              2023.11.17 17:50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="screen_out" style="font-weight: bold;">{{ item.nickname }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              {{ item.inp_dt }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <img
                 data-v-a968263a=""
                 src="https://img.freepik.com/free-photo/3d-render-thumb-up-sign-isolated-hand-gesture_107791-15906.jpg?size=626&amp;ext=jpg&amp;ga=GA1.1.43073888.1700201348&amp;semt=sph"
@@ -104,40 +99,57 @@
                 alt=""
                 class="ico_cate"
               />
-              10
+              {{ item.like_count }}
             </span>
           </span>
-          <a href="/page/detail/10712" class="link_item" id="card10712" data-tiara-layer="click_all_1" data-tiara-action-name="click_all_1">
-            <strong class="tit_card">웹투게더 어린이집 근로복지공단 보육공모전 최우수나이스데</strong>
-            <span class="wrap_thumb"></span>
-          </a>
+          <!-- <a href="/page/detail/10712" class="link_item" id="card10712" data-tiara-layer="click_all_1" data-tiara-action-name="click_all_1"> -->
+          <!-- <a class="link_item" :id="'card' + item.id" :data-tiara-layer="'click_all_' + item.id" :data-tiara-action-name="'click_all_' + item.id" @click="openDetailForm"> -->
+            <a class="link_item" :id="'card' + item.id" :data-tiara-layer="'click_all_' + item.id" :data-tiara-action-name="'click_all_' + item.id" @click="openDetailForm(item.id)">
+              <strong class="tit_card">{{ item.title }}</strong>
+              <span class="wrap_thumb"></span>
+            </a>
+            <CommunityDetail v-if="item.showDetailPage" @closeForm="closeDetailForm(item.id)" />
+      
+
           <span role="text" class="info_card">
-            <span class="txt_keyword">#남구로</span>
-            <span class="txt_keyword">#구로디지털단지</span>
-            <span class="txt_keyword">#맛집없음</span>
+            <span class="txt_keyword">{{ item.tag1 }}</span>
+            <span class="txt_keyword">{{ item.tag2 }}</span>
+            <span class="txt_keyword">{{ item.tag3 }}</span>
           </span>
         </span>
       </div>
     </li>
   </ul>
+  <div v-else>
+    <!-- 데이터가 없는 경우에 대한 UI -->
+    <p>No data available.</p>
+  </div>
   
 </template>
 
 <script>
 import CommunityWrite from '@/components/CommunityWrite.vue';
+import CommunityDetail from '@/components/CommunityDetail.vue';
+import $ from 'jquery';
 
 export default {
   components: {
     CommunityWrite,
+    CommunityDetail,
   },
   data() {
     return {
       showWritePage: false,
+      showDetailPage: false,
+      communityData: [], // 데이터를 담을 배열
     };
   },
   mounted() {
     // 컴포넌트가 마운트될 때 실행되는 로직
     this.toggleNavbarElement(false); // .navbar 엘리먼트를 숨김
+
+    // 데이터 조회 로직 추가
+    this.fetchData();
   },
   beforeUnmount() {
     // 컴포넌트가 언마운트되기 전에 실행되는 로직
@@ -151,6 +163,19 @@ export default {
         navbarElement.style.display = show ? 'block' : 'none';
       }
     },
+    openDetailForm(itemId) {
+      // 선택된 아이템만 열도록 수정
+      this.communityData.forEach(item => {
+        item.showDetailPage = item.id === itemId;
+      });
+    },
+
+    closeDetailForm(itemId) {
+      const closedItem = this.communityData.find(item => item.id === itemId);
+      if (closedItem) {
+        this.$set(closedItem, 'showDetailPage', false);
+      }
+    },
     openWriteForm() {
       // 모달을 열 때 필요한 로직 작성...
       this.showWritePage = true;
@@ -158,6 +183,33 @@ export default {
     closeWriteForm() {
       // 모달을 닫을 때 필요한 로직 작성...
       this.showWritePage = false;
+      // 게시글 목록을 다시 불러오는 메서드를 호출
+      this.fetchData();
+    },
+    fetchData() {
+      const self = this;
+
+      // jQuery를 사용하여 Ajax로 데이터 가져오기
+      $.ajax({
+        url: 'http://localhost:7001/communitySearch', // 수정이 필요한 URL로 변경
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          self.communityData = data.map(community => ({
+            nickname: community.nickname,
+            inp_dt: community.inp_dt,
+            like_count: community.like_count,
+            title: community.title,
+            cont: community.cont,
+            tag1: community.tag1,
+            tag2: community.tag2,
+            tag3: community.tag3,
+          }));
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        },
+      });
     },
   },
 };
