@@ -1,6 +1,6 @@
 <template>
   <div>
-      <CommentComp v-if="showComp" :videoData="clickedVideo" @close="showComp = false" @countPlus1="handleCommentCount"/>
+      <CommentComp v-if="showComp" :videoData="clickedVideo" @close="showComp = false" @commentCount="handleCommentCount"/>
       <font-awesome-icon
         :icon="['fas', 'play']"
         id="playIcon"
@@ -8,7 +8,7 @@
         v-show="showIcon"
         style="width:150px; height:150px; margin-top:150px; color: #000000;" />
       <div v-if="divVideoList" class="video-list" :style="{ alignItems: videoListAlignItems }" style="margin-top:-100px;">
-          <div v-for="video in videos" :key="video.id" class="video-item" :data-video-path="video.path" ref="videoItem">
+          <div v-for="video in videos" :key="video.id" class="video-item" ref="videoItem">
               <div class="video-frame">
                   <video :src="video.path" controls muted ref="videoElement" @play="handleVideoPlay"></video>
               </div>    
@@ -183,17 +183,18 @@ export default {
           content: video.content,
           nickname: video.user_nickname,
           inpDT: video.inp_dt,
-          path: video.video_id,
+          path: video.video_url,
+          // url: video.video_url,
           likeCount: video.like_count,
           commentCount: video.comment_count,
         }));
 
         // 일치하면 좋아요 누른 상태로 보이게
-        for (var i = 0; i < this.videos.length; i++) {
-          if (this.noDupLikedList.includes(this.videos[i].id)) {
-            this.videos[i].likeIconColor = 'red';
-          }
-        }
+        // for (var i = 0; i < this.videos.length; i++) {
+        //   if (this.noDupLikedList.includes(this.videos[i].id)) {
+        //     this.videos[i].likeIconColor = 'red';
+        //   }
+        // }
         
         this.$nextTick(() => this.initIntersectionObserver());
       } catch (error) {
@@ -217,6 +218,8 @@ export default {
         const videoElement = entry.target.querySelector('video');
 
         if (entry.isIntersecting) {
+                console.log('Video Source:', videoElement.src);
+
           videoElement.play();
           this.$emit('valueFromShow', 'D3D3D3');
 

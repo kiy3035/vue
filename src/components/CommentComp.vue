@@ -18,7 +18,7 @@
                   <button v-if="comment.VIDEO_COMMENT.length > maxCommentLength" @click="toggleComment(index)" class="more-button">
                       {{ comment.isExpanded ? '접기' : '더보기' }}
                   </button>
-                  <font-awesome-icon icon="trash-can" class="trash-can-icon" @click="deleteComment(comment)"/>
+                  <font-awesome-icon icon="trash-can" class="trash-can-icon" @click="deleteComment(comment)" v-if="comment.INP_USER === userEmail"/>
                   <span class="date" >{{ formatVideoDate(comment.INP_DATE) }}</span >
                 </li>
               </ul>
@@ -48,6 +48,7 @@ export default {
       comments: ref([]),
       commentText: '',
       maxCommentLength: 5,
+      userEmail: null,
     };
   },
   props: {
@@ -58,6 +59,7 @@ export default {
   },
   mounted(){
     this.getComments();
+    this.userEmail = sessionStorage.getItem('userEmail');
   },
   methods: {
     deleteComment(data){
@@ -69,11 +71,11 @@ export default {
         videoComment : data.VIDEO_COMMENT,
         userEmail : data.INP_USER
       }
-
+ 
       axios.post(url, datas)
         .then(() => {
-          console.log("삭제됨")
           this.getComments(); // 댓글목록 갱신
+          this.$emit("commentCount", this.videoData.id); // 부모 컴포넌트로 인자 전달
         })
         .catch(error => {
           console.log('Error:', error);
@@ -100,12 +102,12 @@ export default {
         return;
       }
 
-      const userEmail = sessionStorage.getItem('userEmail');
+      // const userEmail = sessionStorage.getItem('userEmail');
       const datas = {
         videoId : data.id,
         videoTitle : data.title,
         videoComment : this.commentText,
-        userEmail : userEmail
+        userEmail : this.userEmail
       }
 
       const url = 'http://localhost:7001/inputComment'
@@ -114,7 +116,7 @@ export default {
         .then(() => {
           this.getComments(); // 댓글목록 갱신
           this.commentText = null; // 값 입력하면 리셋
-          this.$emit("countPlus1", this.videoData.id); // 부모 컴포넌트로 인자 전달
+          this.$emit("commentCount", this.videoData.id); // 부모 컴포넌트로 인자 전달
         })
         .catch(error => {
           console.log('Error:', error);
