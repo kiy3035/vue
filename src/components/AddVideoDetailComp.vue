@@ -23,7 +23,7 @@
       <!-- 제목 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoTitle', 'blured' : inputBlured === 'videoTitle' }">
          <label for="videoTitle" :style="input.titleStyle">Title</label>
-         <input type="text" name="videoTitle" id="videoTitle" v-model="input.title"
+         <input type="text" name="videoTitle" id="videoTitle" v-model="input.title" ref="videoTitle"
                 @focus="handleInputFocus('videoTitle')"
                 @blur="handleInputBlur('videoTitle')">
          <span class="spin"></span>
@@ -32,7 +32,7 @@
       <!-- 내용 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoContent', 'blured' : inputBlured === 'videoContent' }">
          <label for="videoContent" :style="input.contentStyle">Content</label>
-         <input type="text" name="videoContent" id="videoContent" v-model="input.content"
+         <input type="text" name="videoContent" id="videoContent" v-model="input.content" ref="videoContent"
                 @focus="handleInputFocus('videoContent')"
                 @blur="handleInputBlur('videoContent')">
          <span class="spin"></span>
@@ -168,6 +168,18 @@ export default {
           console.log(`${key}: ${value}`);
         }
 
+        if(this.input.title === ''){
+          alert("제목을 입력하세요.");
+          this.$refs.videoTitle.focus();
+          return;
+        }
+
+        if(this.input.content === ''){
+          alert("내용을 입력하세요.");
+          this.$refs.videoContent.focus();
+          return;
+        }
+
           $.ajax({
           type: "POST",
           url: "http://localhost:7001/api/upload",
@@ -183,6 +195,9 @@ export default {
           }
         });
         
+      }else{
+        alert("동영상을 추가하세요.");
+        return;
       }
     },
 
