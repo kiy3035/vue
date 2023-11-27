@@ -148,8 +148,6 @@ export default {
       if (event.target.files.length > 0) {
         this.selectedFile = event.target.files[0];
         this.showCheckIcon = true;
-        
-console.log(event.target.files)
       }
       
     },

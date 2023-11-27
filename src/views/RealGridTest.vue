@@ -1,8 +1,8 @@
 <template>
   <div>
     <button class="sukTest" @click="fetchData">회원 조회</button>
+    <div id="realgrid" style="height: 400px; margin-top:30px;"></div>
   </div>
-  <div id="realgrid" style="height: 400px; margin-top:30px;"></div>
 </template>
 
 <script>
