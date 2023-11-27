@@ -77,7 +77,7 @@
   <!-- <ul id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c=""> -->
     <ul v-if="communityData.length > 0" id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c="">
     <li data-v-676cec7c="" v-for="item in communityData" :key="item.id">
-       <div data-v-676cec7c="" class="item_card" :class="{ 'active': item.showDetailPage }" style="background-color: white">
+      <div data-v-676cec7c="" class="item_card" :class="{ 'active': item.showDetailPage }" style="background-color: white">
         <span class="wrap_cont">
           <span role="text" class="info_cate" style="margin-left: 5px;">
             <img
@@ -107,7 +107,8 @@
             <span class="wrap_thumb"></span>
           </a>
 
-            <CommunityDetail v-if="item.showDetailPage" @closeForm="closeDetailForm(item.id)" />
+          <!-- CommunityDetail.vue를 호출할 때 데이터를 전달하지 않도록 수정 -->
+          <CommunityDetail v-if="item.showDetailPage" />
       
 
           <span role="text" class="info_card">
@@ -142,6 +143,7 @@ export default {
       showDetailPage: false,
       communityData: [], // 데이터를 담을 배열
       selectedTab: 'all', // 'all'을 초기값으로 설정
+      selectedItem: null, // 선택된 아이템을 저장할 변수 추가
     };
   },
   mounted() {
@@ -164,23 +166,15 @@ export default {
       }
     },
     openDetailForm(item) {
-      // 선택된 아이템만 열도록 수정
       this.communityData.forEach(communityItem => {
         communityItem.showDetailPage = communityItem.id === item.id;
       });
-
-      // 나머지 아이템은 닫도록 설정
       this.showDetailPage = true;
-
-      console.log(item);
     },
-
-
     closeDetailForm(itemId) {
       const closedItem = this.communityData.find(item => item.id === itemId);
       if (closedItem) {
-        // this.$set(closedItem, 'showDetailPage', false);
-        this.showWritePage = false;
+        closedItem.showDetailPage = false; // 해당 아이템의 상태만 닫도록 수정
       }
     },
     openWriteForm() {
@@ -246,7 +240,7 @@ export default {
     top: 0;
     left: 0;
   }
-  
+
   .item_card.active {
     position: fixed;
     top: 50%;
