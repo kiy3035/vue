@@ -77,7 +77,7 @@
   <!-- <ul id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c=""> -->
     <ul v-if="communityData.length > 0" id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c="">
     <li data-v-676cec7c="" v-for="item in communityData" :key="item.id">
-      <div data-v-676cec7c="" class="item_card" style="background-color: white">
+       <div data-v-676cec7c="" class="item_card" :class="{ 'active': item.showDetailPage }" style="background-color: white">
         <span class="wrap_cont">
           <span role="text" class="info_cate" style="margin-left: 5px;">
             <img
@@ -102,12 +102,11 @@
               {{ item.like_count }}
             </span>
           </span>
-          <!-- <a href="/page/detail/10712" class="link_item" id="card10712" data-tiara-layer="click_all_1" data-tiara-action-name="click_all_1"> -->
-          <!-- <a class="link_item" :id="'card' + item.id" :data-tiara-layer="'click_all_' + item.id" :data-tiara-action-name="'click_all_' + item.id" @click="openDetailForm"> -->
-            <a class="link_item" :id="'card' + item.id" :data-tiara-layer="'click_all_' + item.id" :data-tiara-action-name="'click_all_' + item.id" @click="openDetailForm(item.id)">
-              <strong class="tit_card">{{ item.title }}</strong>
-              <span class="wrap_thumb"></span>
-            </a>
+          <a class="link_item" :id="'card' + item.id" :data-tiara-layer="'click_all_' + item.id" :data-tiara-action-name="'click_all_' + item.id" @click="openDetailForm(item)">
+            <strong class="tit_card">{{ item.title }}</strong>
+            <span class="wrap_thumb"></span>
+          </a>
+
             <CommunityDetail v-if="item.showDetailPage" @closeForm="closeDetailForm(item.id)" />
       
 
@@ -142,6 +141,7 @@ export default {
       showWritePage: false,
       showDetailPage: false,
       communityData: [], // 데이터를 담을 배열
+      selectedTab: 'all', // 'all'을 초기값으로 설정
     };
   },
   mounted() {
@@ -163,17 +163,24 @@ export default {
         navbarElement.style.display = show ? 'block' : 'none';
       }
     },
-    openDetailForm(itemId) {
+    openDetailForm(item) {
       // 선택된 아이템만 열도록 수정
-      this.communityData.forEach(item => {
-        item.showDetailPage = item.id === itemId;
+      this.communityData.forEach(communityItem => {
+        communityItem.showDetailPage = communityItem.id === item.id;
       });
+
+      // 나머지 아이템은 닫도록 설정
+      this.showDetailPage = true;
+
+      console.log(item);
     },
+
 
     closeDetailForm(itemId) {
       const closedItem = this.communityData.find(item => item.id === itemId);
       if (closedItem) {
-        this.$set(closedItem, 'showDetailPage', false);
+        // this.$set(closedItem, 'showDetailPage', false);
+        this.showWritePage = false;
       }
     },
     openWriteForm() {
@@ -229,5 +236,29 @@ export default {
   /* 3. '글쓰기' 버튼에 호버 효과 추가하기 */
   .btn_write:hover {
     cursor: pointer;
+  }
+  .item_card {
+  position: relative; /* 부모 요소에 대해 상대적으로 위치하도록 설정 */
+}
+
+  .item_card .wrap_cont {
+    position: absolute; /* 컴포넌트를 부모에 대해 절대적으로 위치하도록 설정 */
+    top: 0;
+    left: 0;
+  }
+  
+  .item_card.active {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 80%; /* 수정: 원하는 크기로 조정 */
+    height: 80%; /* 수정: 원하는 크기로 조정 */
+    box-sizing: border-box; /* 패딩을 고려하여 전체 크기 지정 */
   }
 </style>
