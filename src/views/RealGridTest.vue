@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
     <button class="sukTest" @click="fetchData">회원 조회</button>
-    <div id="realgrid" style="height: 400px; margin-top:30px;"></div>
+    <div id="realgrid" style="width:46%;height: 400px; margin-top:30px;"></div>
   </div>
 </template>
 
@@ -74,6 +74,8 @@ export default {
     // columns를 그리드에 설정
     this.gridView.setColumns(columns);
 
+    // 화면진입시 버튼클릭
+    this.fetchData();
   },
   beforeUnmount() {
     // 컴포넌트가 언마운트되기 전에 실행되는 로직
@@ -94,10 +96,6 @@ export default {
   margin-top: 60px;
   width: 100%;
   margin-bottom: 15px;
-  border-top: 2px solid #9ba6b5;
-  border-left: 1px solid #d8d8d8;
-  border-right: 1px solid #d8d8d8;
-  border-bottom: 1px solid #d8d8d8;
 }
 
 .sukTest {
@@ -115,4 +113,5 @@ export default {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+
 </style>
