@@ -73,11 +73,11 @@
         </div>
       </li>
     </ul>
-  </div>
+  
   <!-- <ul id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c=""> -->
     <ul v-if="communityData.length > 0" id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c="">
       <li data-v-676cec7c="" v-for="item in communityData" :key="item.id">
-        <div data-v-676cec7c="" class="item_card" :class="{ 'active': item.showDetailPage }" style="background-color: white">
+        <div data-v-676cec7c="" class="item_card" style="background-color: white">
          <span class="wrap_cont">
           <span role="text" class="info_cate" style="margin-left: 5px;">
             <img
@@ -122,7 +122,7 @@
     <!-- 데이터가 없는 경우에 대한 UI -->
     <p>No data available.</p>
   </div>
-  
+</div>
 </template>
 
 <script>
@@ -240,18 +240,5 @@ export default {
     left: 0;
   }
 
-  .item_card.active {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 80%; /* 수정: 원하는 크기로 조정 */
-    height: 80%; /* 수정: 원하는 크기로 조정 */
-    box-sizing: border-box; /* 패딩을 고려하여 전체 크기 지정 */
-  }
+
 </style>
