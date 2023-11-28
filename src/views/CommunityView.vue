@@ -76,9 +76,9 @@
   </div>
   <!-- <ul id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c=""> -->
     <ul v-if="communityData.length > 0" id="tabNewsContent1" role="tabpanel" aria-labelledby="tabNews1" class="list_card list_card_type2" data-v-676cec7c="">
-    <li data-v-676cec7c="" v-for="item in communityData" :key="item.id">
-      <div data-v-676cec7c="" class="item_card" :class="{ 'active': item.showDetailPage }" style="background-color: white">
-        <span class="wrap_cont">
+      <li data-v-676cec7c="" v-for="item in communityData" :key="item.id">
+        <div data-v-676cec7c="" class="item_card" :class="{ 'active': item.showDetailPage }" style="background-color: white">
+         <span class="wrap_cont">
           <span role="text" class="info_cate" style="margin-left: 5px;">
             <img
               data-v-a968263a=""
@@ -103,12 +103,10 @@
             </span>
           </span>
           <a class="link_item" :id="'card' + item.id" :data-tiara-layer="'click_all_' + item.id" :data-tiara-action-name="'click_all_' + item.id" @click="openDetailForm(item)">
-            <strong class="tit_card">{{ item.title }}</strong>
-            <span class="wrap_thumb"></span>
+              <strong class="tit_card">{{ item.title }}</strong>
+              <span class="wrap_thumb"></span>
           </a>
-
-          <!-- CommunityDetail.vue를 호출할 때 데이터를 전달하지 않도록 수정 -->
-          <CommunityDetail v-if="item.showDetailPage" />
+            <CommunityDetail v-if="item.showDetailPage" :key="item.id"  @closeForm="closeDetailForm(item.id)" />
       
 
           <span role="text" class="info_card">
@@ -205,6 +203,7 @@ export default {
             tag1: community.tag1,
             tag2: community.tag2,
             tag3: community.tag3,
+            id: community.id
           }));
         },
         error: (error) => {
