@@ -110,6 +110,7 @@
 
 <script>
 import $ from 'jquery';
+import { v4 as uuidv4 } from 'uuid';
 
   export default {
     name: 'CommunityWrite',
@@ -214,7 +215,11 @@ import $ from 'jquery';
           tag3: this.input.tag3,
           title: this.input.title,
           cont: this.input.cont,
+          id:""
         };
+        // UUID 생성 (고유 ID)
+        const uniqueId = uuidv4();
+        postData.id = uniqueId;  // 생성한 UUID를 postData에 추가
 
         console.log('Registering post:', postData);
 
@@ -226,6 +231,10 @@ import $ from 'jquery';
         if(postData.cont === ''){
           alert("내용을 입력하세요.");
           $("#cont").focus();
+          return;
+        }
+        if(postData.id === ''){
+          alert("에러발생! 관리자에게 문의하세영!");
           return;
         }
 
