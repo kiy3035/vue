@@ -26,7 +26,7 @@
 
                         <div class="icon-container">
                           <font-awesome-icon icon="user" class="iconCSS"/>
-                          <input type="text" name="nickname" id="nickname" v-model="video.nickname" readonly>
+                          <input type="text" name="email" id="email" v-model="video.email" readonly>
                         </div>
                         
                         <div class="icon-container">
@@ -181,7 +181,7 @@ export default {
           id: video.video_id,
           title: video.title,
           content: video.content,
-          nickname: video.user_nickname,
+          email: video.user_email,
           inpDT: video.inp_dt,
           path: video.video_url,
           // url: video.video_url,
