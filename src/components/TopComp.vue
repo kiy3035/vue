@@ -4,6 +4,9 @@
     <router-link to="/login" @click="logout" class="btn" style="top: 30px; right: 10px;"    
                  :data-text="loginInOut === 'Log In' ? 'Login' : 'Logout'"></router-link>
     <router-link to="/myPage" v-if="hideMyPage" class="btn" style="top: 30px; right: 10px;" data-text="My Page"></router-link>
+    <router-link to="/fesco_login" class="btn" style="top: 30px; right: 10px; width: 150px;" data-text="FESCO Login"></router-link>
+    <router-link to="/fesco_booking_entry" class="btn" style="top: 30px; right: 10px; width: 300px;" data-text="FESCO Booking Entry"></router-link>
+
   </div>
 </template>
 
