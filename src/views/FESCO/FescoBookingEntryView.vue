@@ -132,8 +132,8 @@
 							<td>
 								<div class="top2_sch" style="display:flex;">
 									<select id="SERVICE" name="SERVICE" class="combo w100" queryKey="Combo.compCd" isAll='Y' style="width:90%; margin-left:2%"></select>
-									<input type="checkbox" style="margin-left: -30px; margin-right:-35px;" id="SERVICE1" disabled>ES
-									<input type="checkbox" style="margin-left: -30px; margin-right:-35px;" id="SERVICE2" disabled>W
+									<input type="checkbox" style="margin-left: -30px; margin-right:-35px;" id="SERVICE1">ES
+									<input type="checkbox" style="margin-left: -30px; margin-right:-35px;" id="SERVICE2">W
 								</div>
 							</td>
 							<th class="tT bl_ns">VSL / VOY name</th>
@@ -510,8 +510,8 @@
 							<td>
 								<table class="code_tb" style="width:100%">
 									<colgroup>
-										<col style="width:50%;">
-										<col style="width:50%">
+										<col style="width:60%;">
+										<col style="width:40%">
 									</colgroup>
 									<tr>
 										<td style="border-bottom:0px;">
@@ -602,152 +602,139 @@
 								<input type="text" id="FULL2" name="FULL2" class="w100" disabled style="width:99.5%">
 							</td>
 						</tr>
-						<tr>
-							<th colspan="8" style="font-weight: bold; font-size: 18px;">Container Information</th>
-						</tr>
 					</table>
 				</div>
 				
-				
-				<div id="MasterGrid" class="grid_wrap" style="width: 100%;"> 
-					<grid :data="gridProps.data" :columns="gridProps.columns" />
+				<div class = "celltop_box">
+					<div class = "flex alignC justiE">
+							<div class="btn-adBox">
+							<!-- <div v-if="AUT_DEL_TAG==='Y'" class="fontN"> -->
+								<span><img src="/images/button/btn_sq_del.png" id="btn_del"/></span>
+							<!-- </div>	 -->
+						</div>
+					</div>
 				</div>
+				<div id="MasterGrid" class="grid_wrap" style="width: 100%;"> </div>
 			</div>
 		</div>
 </template>
 
 <script>
-import 'tui-grid/dist/tui-grid.css';
-import { Grid } from '@toast-ui/vue-grid';
-// import { Grid } from '../src/index.js';
-
 export default {
-  components: {
-    grid: Grid
+  mounted() {
+    // 컴포넌트가 마운트될 때 실행되는 로직
+    this.toggleNavbarElement(false); // .navbar 엘리먼트를 숨김
+
   },
-  created() {
-    this.gridProps = {
-      data: [
-        // for rowData prop
-        {
-          name: 'Beautiful Lies',
-          artist: 'Birdy'
-        },
-        {
-          name: 'X',
-          artist: 'Ed Sheeran'
-        }
-      ],
-      columns: [
-        // for columnData prop
-        {
-          header: 'Name',
-          name: 'name'
-        },
-        {
-          header: 'Artist',
-          name: 'artist'
-        }
-      ]
-    };
+  beforeUnmount() {
+    // 컴포넌트가 언마운트되기 전에 실행되는 로직
+    this.toggleNavbarElement(true); // .navbar 엘리먼트를 표시
   },
-  
+  methods: {
+    toggleNavbarElement(show) {
+      // .navbar 클래스를 가진 엘리먼트를 찾아서 표시 또는 숨김
+      const navbarElement = document.querySelector('.navbar');
+      if (navbarElement) {
+        navbarElement.style.display = show ? 'block' : 'none';
+      }
+    },
+  }
 }
 </script>
 <style scoped>
 #wrap {
-  min-width: 1024px;
+    min-width: 1024px;
 }
 #wrap .contents {
-  padding: 7px 22px 0 22px;
-  background: #ffffff;
+    padding: 7px 22px 0 22px;
+    background: #ffffff;
 }
 #wrap .contents .top {
-  position: relative;
-  padding-top: 10px;
+    position: relative;
+    padding-top: 10px;
 }
 
 body, div, p, h1, h2, h3, h4, h5, h6, ul, ol, dl, dt, dd, li, table, tr, th, td, caption, thead, tfoot, tbody, form, fieldset, legend, input, select, textarea, blockquote, address {
-  margin: 0;
-  padding: 0px;
+    margin: 0;
+    padding: 0px;
 }
 #wrap .contents .top .tr_btns {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding-top: 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-top: 8px;
 }
 .sukTest{
-  margin-top: 100px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid black;
-  border-radius: 5px;
-  background-color: black;
-  color: white;
-  margin-left: 10px;
-  margin-top: 20px;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+    margin-top: 100px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    margin-left: 10px;
+    margin-top: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 .top2_bd_box {
-  padding-bottom: 15px;
+    padding-bottom: 15px;
 }
 .celltop_box {
-  padding-bottom: 5px;
+    padding-bottom: 5px;
 }
 table.df_vertical_tb {
-  border-top: 1px solid #b0b0b0;
-  border-right: 1px solid #b0b0b0;
+    border-top: 1px solid #b0b0b0;
+    border-right: 1px solid #b0b0b0;
 }
 table.df_vertical_tb th.bl_ns {
-  background: #f8f8f8 no-repeat 8px center;
-  padding-left: 15px;
+    background: #f8f8f8 no-repeat 8px center;
+    padding-left: 15px;
 }
 table.df_vertical_tb th {
-  text-align: left;
-  font-size: 13px;
-  color: #333333;
-  background: #f8f8f8;
-  box-sizing: border-box;
-  height: 32px;
-border-bottom: 1px solid #b0b0b0;
-border-right: 1px solid #b0b0b0;
-border-left: 1px solid #b0b0b0;
-padding-left: 15px;
+    text-align: left;
+    font-size: 13px;
+    color: #333333;
+    background: #f8f8f8;
+    box-sizing: border-box;
+    height: 32px;
+	border-bottom: 1px solid #b0b0b0;
+	border-right: 1px solid #b0b0b0;
+	border-left: 1px solid #b0b0b0;
+	padding-left: 15px;
 }
 td {
-  display: table-cell;
-  vertical-align: inherit;
-border-bottom: 1px solid #b0b0b0;
+    display: table-cell;
+    vertical-align: inherit;
+	border-bottom: 1px solid #b0b0b0;
 }
 table.df_vertical_tb > tbody > tr > td {
-  border-left: 1px solid #d8d8d8;
-  border-right: 1px solid #d8d8d8;
-  padding: 4px 6px;
+    border-left: 1px solid #d8d8d8;
+    border-right: 1px solid #d8d8d8;
+    padding: 4px 6px;
 }
 input, select {
-  height: 23px;
-width:95%;
-  line-height: 1;
-  box-sizing: border-box;
-  color: #222;
-  letter-spacing: -0.1px;
-  padding: 0 3px;
-  font-size: 12px;
+    height: 23px;
+	width:95%;
+    line-height: 1;
+    box-sizing: border-box;
+    color: #222;
+    letter-spacing: -0.1px;
+    padding: 0 3px;
+    font-size: 12px;
 }
 input, textarea {
-  outline-style: none;
+    outline-style: none;
 }
 table {
-  display: table;
-  border-collapse: separate;
-  box-sizing: border-box;
-  text-indent: initial;
-  border-spacing: 2px;
-  border-color: gray;
-
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: gray;
+	
 }
 </style>
