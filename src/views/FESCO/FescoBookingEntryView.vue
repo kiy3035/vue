@@ -608,53 +608,106 @@
 					</table>
 				</div>
 				
-				
 				<div id="MasterGrid" class="grid_wrap" style="width: 100%;"> 
-					<grid :data="gridProps.data" :columns="gridProps.columns" />
+					<button @click="deselectRows">deselect rows</button>
+					<ag-grid-vue
+						class="ag-theme-alpine"
+						style="height: 500px"
+						:columnDefs="columnDefs.value"
+						:rowData="rowData.value"
+						:defaultColDef="defaultColDef"
+						rowSelection="multiple"
+						animateRows="true"
+						@cell-clicked="cellWasClicked"
+						@grid-ready="onGridReady">
+					</ag-grid-vue>
 				</div>
+
 			</div>
 		</div>
 </template>
 
 <script>
-import 'tui-grid/dist/tui-grid.css';
-import { Grid } from '@toast-ui/vue-grid';
-// import { Grid } from '../src/index.js';
+import { AgGridVue } from "ag-grid-vue3";  // the AG Grid Vue Component
+import { reactive, onMounted, ref } from "vue";
+
+import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
+import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
 
 export default {
+  name: "App",
   components: {
-    grid: Grid
+    AgGridVue,
   },
-  created() {
-    this.gridProps = {
-      data: [
-        // for rowData prop
-        {
-          name: 'Beautiful Lies',
-          artist: 'Birdy'
-        },
-        {
-          name: 'X',
-          artist: 'Ed Sheeran'
-        }
+  setup() {
+    const gridApi = ref(null); // Optional - for accessing Grid's API
+
+    // Obtain API from grid's onGridReady event
+    const onGridReady = (params) => {
+      gridApi.value = params.api;
+    };
+
+    const rowData = reactive({}); // Set rowData to Array of Objects, one Object per Row
+
+    // Each Column Definition results in one Column.
+    const columnDefs = reactive({
+      value: [
+           { field: "make" },
+           { field: "model" },
+           { field: "price" }
       ],
-      columns: [
-        // for columnData prop
-        {
-          header: 'Name',
-          name: 'name'
-        },
-        {
-          header: 'Artist',
-          name: 'artist'
-        }
-      ]
+    });
+
+    // DefaultColDef sets props common to all Columns
+    const defaultColDef = {
+      sortable: true,
+      filter: true,
+      flex: 1
+    };
+
+    // Example load data from server
+    onMounted(() => {
+      fetch("https://www.ag-grid.com/example-assets/row-data.json")
+        .then((result) => result.json())
+        .then((remoteRowData) => (rowData.value = remoteRowData));
+    });
+
+    return {
+      onGridReady,
+      columnDefs,
+      rowData,
+      defaultColDef,
+      cellWasClicked: (event) => { // Example of consuming Grid Event
+        console.log("cell was clicked", event);
+      },
+      deselectRows: () =>{
+        gridApi.value.deselectAll()
+      }
     };
   },
-  
-}
+  mounted() {
+    // 컴포넌트가 마운트될 때 실행되는 로직
+    this.toggleNavbarElement(false); // .navbar 엘리먼트를 숨김
+  },
+  beforeUnmount() {
+    // 컴포넌트가 언마운트되기 전에 실행되는 로직
+    this.toggleNavbarElement(true); // .navbar 엘리먼트를 표시
+  },
+  methods: {
+    toggleNavbarElement(show) {
+      // .navbar 클래스를 가진 엘리먼트를 찾아서 표시 또는 숨김
+      const navbarElement = document.querySelector('.navbar');
+      if (navbarElement) {
+        navbarElement.style.display = show ? 'block' : 'none';
+      }
+    },
+  }
+};
 </script>
+
+
 <style scoped>
+
 #wrap {
   min-width: 1024px;
 }
