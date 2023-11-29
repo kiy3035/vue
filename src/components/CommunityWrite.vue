@@ -7,7 +7,7 @@
       </button>
 
       <!-- Form -->
-      <form id="Writeform">
+      <form id="Writeform" style="max-width:100%;">
         <div class="title2">Write</div>
         <div class="box-content">
           <!-- 왼쪽 영역 -->
@@ -240,7 +240,7 @@ import { v4 as uuidv4 } from 'uuid';
 
         $.ajax({
           type: "POST",
-          url: "http://localhost:7001/write",
+          url: "http://localhost:7001/insert",
           data: JSON.stringify(postData),
           contentType: 'application/json',
           success: function() {
@@ -323,7 +323,6 @@ import { v4 as uuidv4 } from 'uuid';
 .focused .spin {
   width: 100%;
 }
-
 .blured label {
   line-height: 60px;
   font-size: 24px;

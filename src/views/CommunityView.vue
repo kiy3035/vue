@@ -106,7 +106,7 @@
               <strong class="tit_card">{{ item.title }}</strong>
               <span class="wrap_thumb"></span>
           </a>
-            <CommunityDetail v-if="item.showDetailPage" :key="item.id"  @closeForm="closeDetailForm(item.id)" />
+            <CommunityDetail v-if="item.showDetailPage" :key="item.id" :item="selectedItem" @closeForm="closeDetailForm(item.id)" />
       
 
           <span role="text" class="info_card">
@@ -164,6 +164,7 @@ export default {
       }
     },
     openDetailForm(item) {
+      this.selectedItem = item; // 선택된 아이템을 변수에 저장
       this.communityData.forEach(communityItem => {
         communityItem.showDetailPage = communityItem.id === item.id;
       });
@@ -173,6 +174,7 @@ export default {
       const closedItem = this.communityData.find(item => item.id === itemId);
       if (closedItem) {
         closedItem.showDetailPage = false; // 해당 아이템의 상태만 닫도록 수정
+        this.fetchData();
       }
     },
     openWriteForm() {
@@ -203,7 +205,8 @@ export default {
             tag1: community.tag1,
             tag2: community.tag2,
             tag3: community.tag3,
-            id: community.id
+            id: community.id,
+            email: community.email
           }));
         },
         error: (error) => {
@@ -239,6 +242,8 @@ export default {
     top: 0;
     left: 0;
   }
-
+  .link_item:hover {
+    cursor: pointer;
+  }
 
 </style>
