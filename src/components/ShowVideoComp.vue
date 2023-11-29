@@ -190,11 +190,11 @@ export default {
         }));
 
         // 일치하면 좋아요 누른 상태로 보이게
-        // for (var i = 0; i < this.videos.length; i++) {
-        //   if (this.noDupLikedList.includes(this.videos[i].id)) {
-        //     this.videos[i].likeIconColor = 'red';
-        //   }
-        // }
+        for (var i = 0; i < this.videos.length; i++) {
+          if (this.noDupLikedList.includes(this.videos[i].id)) {
+            this.videos[i].likeIconColor = 'red';
+          }
+        }
         
         this.$nextTick(() => this.initIntersectionObserver());
       } catch (error) {

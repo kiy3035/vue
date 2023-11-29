@@ -4,6 +4,8 @@ import HomeView from '../views/HomeView.vue';
 import MypageView from '../views/MypageView.vue';
 import CommunityView from '../views/CommunityView.vue';
 import RealGrid from '../views/RealGridTest.vue';
+import FescoLogin from '../views/FESCO/FescoLoginView.vue';
+import FescoBookingEntry from '../views/FESCO/FescoBookingEntryView.vue';
 
 
 const routes = [
@@ -26,6 +28,14 @@ const routes = [
   {
     path: '/realgrid',
     component: RealGrid,
+  },
+  {
+    path: '/fesco_login',
+    component: FescoLogin,
+  },
+  {
+    path: '/fesco_booking_entry',
+    component: FescoBookingEntry,
   },
 ]
 
