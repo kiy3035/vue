@@ -153,15 +153,17 @@ export default {
     },
     submitForm(event) {
       const file = this.selectedFile;
+      const userEmail = sessionStorage.getItem('userEmail');
 
       if (file) {
 
         var formData = new FormData(document.getElementById("videoForm"));
-
+        
         formData.append('videoFile', file);
         formData.append('type', file.type);
         formData.append('inp_dt', formatDate(file.lastModifiedDate ));
         formData.append('video_id', event._vts);
+        formData.append('userEmail', userEmail);
 
         // formData 출력
         for (const [key, value] of formData.entries()) {
@@ -186,8 +188,8 @@ export default {
           data: formData,
           processData: false,
           contentType: false,
-          success: function() {
-            alert("업로드맨");
+          success: function(response) {
+            alert(response);
             this.$router.go(0); // 현재 페이지 리랜더링
           }.bind(this),
           error: function(xhr, status, error) {
