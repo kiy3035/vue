@@ -776,7 +776,7 @@ data() {
       this.serviceTermOptions = data;
     });
     */
-	this.fetchData('A2').then(data => {
+	this.fetchData('SVC').then(data => {
 		this.serviceOptions = data.map(item => ({
 			value: item.clss_cd, // clss_cd를 value로 사용
 			// label: item.code_nm, // code_nm을 label로 사용
@@ -784,17 +784,17 @@ data() {
 		}));
 	});
 
-	this.fetchData('A3').then(data => {
+	this.fetchData('PKG').then(data => {
 		this.packageOptions = data.map(item => ({
 			value: item.clss_cd,
 			label: `${item.code_nm} (${item.code_cd})`
 		}));
 	});
 
-	this.fetchData('A6').then(data => {
+	this.fetchData('STM').then(data => {
 		this.serviceTermOptions = data.map(item =>({
 			value: item.clss_cd,
-			label: `${item.code_nm} (${item.code_cd})`
+			label: item.code_cd,
 		}));
 	});
 
