@@ -131,7 +131,9 @@
 							<th class="tT bl_ns">Service</th>
 							<td>
 								<div class="top2_sch" style="display:flex;">
-									<select id="SERVICE" name="SERVICE" class="combo w100" queryKey="Combo.compCd" isAll='Y' style="width:90%; margin-left:2%"></select>
+									<select id="SERVICE_TEST" name="SERVICE_TEST" class="combo w100" style="width:90%; margin-left:2%">
+										<option v-for="item in serviceOptions" :value="item.value" :key="item.value">{{ item.label }}</option>
+									</select>
 									<input type="checkbox" style="margin-left: -30px; margin-right:-35px;" id="SERVICE1" disabled>ES
 									<input type="checkbox" style="margin-left: -30px; margin-right:-35px;" id="SERVICE2" disabled>W
 								</div>
@@ -516,11 +518,15 @@
 									<tr>
 										<td style="border-bottom:0px;">
 											<div class="top2_sch">
-												<select id="SERVICE_TERM1" name="SERVICE_TERM1" class="combo w100" queryKey="Combo.compCd" isAll='Y' style="width:95%;"></select>
+												<select id="SERVICE_TERM1" name="SERVICE_TERM1" class="combo w100" style="width:95%;">
+													<option v-for="item in serviceTermOptions" :value="item.value" :key="item.value">{{ item.label }}</option>
+												</select>
 											</div>
 										</td>
 										<td style="border-bottom:0px;">
-											<select id="SERVICE_TERM2" name="SERVICE_TERM2" class="combo w100" queryKey="Combo.compCd" isAll='Y' style="width:95%;"></select>
+											<select id="SERVICE_TERM1" name="SERVICE_TERM1" class="combo w100" style="width:95%;">
+												<option v-for="item in serviceTermOptions" :value="item.value" :key="item.value">{{ item.label }}</option>
+											</select>
 										</td>
 									</tr>
 								</table>
@@ -565,7 +571,9 @@
 											</div>
 										</td>
 										<td style="border-bottom:0px;">
-											<select id="PKG" name="PKG" class="combo w100" queryKey="Combo.compCd" isAll='Y' style="width:95%;"></select>
+											<select id="PKG_TEST" name="PKG_TEST" class="combo w100" style="width:95%;">
+												<option v-for="item in packageOptions" :value="item.value" :key="item.value">{{ item.label }}</option>
+											</select>
 										</td>
 										<td style="border-bottom:0px;">/
 											<input type="text" id="POR2" name="POR2" class="w100" disabled style="width:80%">
@@ -608,9 +616,21 @@
 					</table>
 				</div>
 				
-				<div id="MasterGrid" class="grid_wrap" style="width: 100%;"> 
-					<button @click="deselectRows">deselect rows</button>
+				<div id="MasterGrid" class="grid_wrap" style="width: 100%;margin-top: -10px; margin-bottom: 10px;"> 
+					<button @click="addRow" style="width:5%;">Add Row</button>
 					<ag-grid-vue
+						class="ag-theme-alpine"
+						style="height: 200px"
+						:columnDefs="columnDefs.value"
+						:defaultColDef="defaultColDef"
+						:getRowClass="getRowClass"
+						rowData="rowData.value"
+						rowSelection="multiple"
+						animateRows="true"
+						@cell-clicked="cellWasClicked"
+						@grid-ready="onGridReady">
+					</ag-grid-vue>
+					<!-- <ag-grid-vue
 						class="ag-theme-alpine"
 						style="height: 500px"
 						:columnDefs="columnDefs.value"
@@ -620,7 +640,7 @@
 						animateRows="true"
 						@cell-clicked="cellWasClicked"
 						@grid-ready="onGridReady">
-					</ag-grid-vue>
+					</ag-grid-vue> -->
 				</div>
 
 			</div>
@@ -628,8 +648,10 @@
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue3";  // the AG Grid Vue Component
-import { reactive, onMounted, ref } from "vue";
+import { AgGridVue } from "ag-grid-vue3"; // the AG Grid Vue Component
+import { reactive, ref } from "vue";
+// import { reactive, onMounted, ref } from "vue";
+import axios from 'axios';
 
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
@@ -640,54 +662,142 @@ export default {
     AgGridVue,
   },
   setup() {
-    const gridApi = ref(null); // Optional - for accessing Grid's API
+  const gridApi = ref(null); // Optional - for accessing Grid's API
+  const rowData = ref([]);
 
-    // Obtain API from grid's onGridReady event
-    const onGridReady = (params) => {
-      gridApi.value = params.api;
+  // Obtain API from grid's onGridReady event
+  const onGridReady = (params) => {
+    gridApi.value = params.api;
+  };
+
+  const getRowClass = (params) => {
+    // params.node가 신규로 추가된 행이면, 클래스를 추가합니다.
+    if (params.node.added) {
+      return 'new-row'; // 'new-row'는 새로운 행에 대한 클래스입니다.
+    }
+
+    // 그 외의 경우 빈 문자열을 반환합니다.
+    return '';
+  };
+
+  // Each Column Definition results in one Column.
+  const columnDefs = reactive({
+    value: [
+      { field: "Prefix" },
+      { field: "Size / Type" },
+      { field: "Qty." },
+      { field: "F/E" },
+      { field: "UN No" },
+      { field: "CLASS" },
+      { field: "UN No2" },
+      { field: "CLASS2" },
+      { field: "UN No3" },
+      { field: "CLASS3" },
+      { field: "OH" },
+      { field: "OWR" },
+      { field: "Temperature" },
+      { field: "Vent" },
+    ],
+  });
+
+  // DefaultColDef sets props common to all Columns
+  const defaultColDef = {
+    sortable: true,
+    filter: true,
+    flex: 1
+  };
+
+  const addRow = () => {
+    const newItem = {
+      Prefix: "",
+      "Size / Type": "",
+      "Qty.": "",
+      "F/E": "",
+      "UN No": "",
+      "CLASS": "",
+      "UN No2": "",
+      "CLASS2": "",
+      "UN No3": "",
+      "CLASS3": "",
+      "OH": "",
+      "OWR": "",
+      "Temperature": "",
+      "Vent": "",
     };
+    rowData.value = [...rowData.value, newItem];
+    console.log('Added row:', newItem);
+    // Optional: Refresh the grid after adding a new row
+    if (gridApi.value) {
+      gridApi.value.setRowData(rowData.value);
+    }
+  };
 
-    const rowData = reactive({}); // Set rowData to Array of Objects, one Object per Row
+  // Example load data from server
+  // onMounted(() => {
+  //   fetch("https://www.ag-grid.com/example-assets/row-data.json")
+  //     .then((result) => result.json())
+  //     .then((remoteRowData) => (rowData.value = remoteRowData));
+  // });
 
-    // Each Column Definition results in one Column.
-    const columnDefs = reactive({
-      value: [
-           { field: "make" },
-           { field: "model" },
-           { field: "price" }
-      ],
-    });
+  return {
+    onGridReady,
+    columnDefs,
+    rowData,
+    defaultColDef,
+    addRow,
+    cellWasClicked: (event) => { // Example of consuming Grid Event
+      console.log("cell was clicked", event);
+    },
+    getRowClass, // 추가된 부분
+  };
+},
+data() {
+  return {
+    serviceOptions: [],
+    packageOptions: [],
+    serviceTermOptions: [],
+  };
+},
 
-    // DefaultColDef sets props common to all Columns
-    const defaultColDef = {
-      sortable: true,
-      filter: true,
-      flex: 1
-    };
-
-    // Example load data from server
-    onMounted(() => {
-      fetch("https://www.ag-grid.com/example-assets/row-data.json")
-        .then((result) => result.json())
-        .then((remoteRowData) => (rowData.value = remoteRowData));
-    });
-
-    return {
-      onGridReady,
-      columnDefs,
-      rowData,
-      defaultColDef,
-      cellWasClicked: (event) => { // Example of consuming Grid Event
-        console.log("cell was clicked", event);
-      },
-      deselectRows: () =>{
-        gridApi.value.deselectAll()
-      }
-    };
-  },
   mounted() {
     // 컴포넌트가 마운트될 때 실행되는 로직
     this.toggleNavbarElement(false); // .navbar 엘리먼트를 숨김
+
+    /*
+    this.fetchData('SVC').then(data => {
+      this.serviceOptions = data;
+    });
+
+    this.fetchData('PKG').then(data => {
+      this.packageOptions = data;
+    });
+
+    this.fetchData('STM').then(data => {
+      this.serviceTermOptions = data;
+    });
+    */
+	this.fetchData('A2').then(data => {
+		this.serviceOptions = data.map(item => ({
+			value: item.clss_cd, // clss_cd를 value로 사용
+			// label: item.code_nm, // code_nm을 label로 사용
+			label: `${item.code_nm} (${item.code_cd})`,
+		}));
+	});
+
+	this.fetchData('A3').then(data => {
+		this.packageOptions = data.map(item => ({
+			value: item.clss_cd,
+			label: `${item.code_nm} (${item.code_cd})`
+		}));
+	});
+
+	this.fetchData('A6').then(data => {
+		this.serviceTermOptions = data.map(item =>({
+			value: item.clss_cd,
+			label: `${item.code_nm} (${item.code_cd})`
+		}));
+	});
+
   },
   beforeUnmount() {
     // 컴포넌트가 언마운트되기 전에 실행되는 로직
@@ -701,9 +811,19 @@ export default {
         navbarElement.style.display = show ? 'block' : 'none';
       }
     },
-  }
+    fetchData(clssCd) {
+      // 서버에서 데이터를 가져오는 axios 호출
+      return axios.get(`http://localhost:7001/${clssCd}`)
+        .then(response => response.data)
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          return [];
+        });
+    },
+  },
 };
 </script>
+
 
 
 <style scoped>
