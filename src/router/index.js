@@ -6,6 +6,7 @@ import CommunityView from '../views/CommunityView.vue';
 import RealGrid from '../views/RealGridTest.vue';
 import FescoLogin from '../views/FESCO/FescoLoginView.vue';
 import FescoBookingEntry from '../views/FESCO/FescoBookingEntryView.vue';
+import FescoJoinTest from '../views/FESCO/FescoJoinTestView.vue';
 
 
 const routes = [
@@ -36,6 +37,10 @@ const routes = [
   {
     path: '/fesco_booking_entry',
     component: FescoBookingEntry,
+  },
+  {
+    path: '/fesco_joinTest',
+    component: FescoJoinTest,
   },
 ]
 
