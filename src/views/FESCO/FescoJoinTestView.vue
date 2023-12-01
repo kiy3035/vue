@@ -1,12 +1,10 @@
 <template>
-  <form @submit.prevent="login">
-    <label for="username">Username:</label>
-    <input type="text" id="username" v-model="username" autocomplete="off" required />
+  <form @submit.prevent="joinTest">
+    <label for="arapNo">arapNo:</label>
+    <input type="text" id="arapNo" v-model="arapNo" autocomplete="off" required />
     <br/>
-    <label for="password">Password:</label>
-    <input type="password" id="password" v-model="password" autocomplete="off" required/>
     <br/>
-    <button type="submit">Login</button>
+    <button type="submit">Go</button>
   </form>
 </template>
 
@@ -17,30 +15,22 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      username: '',
-      password: '',
+      arapNo: '',
     };
   },
   methods: {
-    login() {
-      console.log('Username:', this.username);
-      console.log('Password:', this.password);
+    joinTest() {
+      console.log('arapNo:', this.arapNo);
 
       const datas = {
-        username : this.username,
-        password : this.password,
+        arapNo : this.arapNo,
       }
 
-      const url = 'http://localhost:7001/FESCO/login'
+      const url = 'http://localhost:7001/FESCO/joinTest'
 
       axios.post(url, datas)
         .then((response) => {
-            if(response.data === 1){
-              alert("로그인 성공");
-              window.location.href = '/';
-            }else{
-              alert("로그인 실패");
-            }
+            alert(response.data)
         })
         .catch(error => {
           console.log('Error:', error);
