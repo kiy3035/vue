@@ -4,9 +4,9 @@
     <router-link to="/login" @click="logout" class="btn" style="top: 30px; right: 10px;"    
                  :data-text="loginInOut === 'Log In' ? 'Login' : 'Logout'"></router-link>
     <router-link to="/myPage" v-if="hideMyPage" class="btn" style="top: 30px; right: 10px;" data-text="My Page"></router-link>
-    <router-link to="/fesco_login" class="btn" style="top: 30px; right: 10px; width: 150px;" data-text="FESCO Login"></router-link>
+    <!-- <router-link to="/fesco_login" class="btn" style="top: 30px; right: 10px; width: 150px;" data-text="FESCO Login"></router-link>
     <router-link to="/fesco_booking_entry" class="btn" style="top: 30px; right: 10px; width: 300px;" data-text="FESCO Booking Entry"></router-link>
-    <router-link to="/fesco_joinTest" class="btn" style="top: 30px; right: 10px; width: 300px;" data-text="FESCO Join Test"></router-link>
+    <router-link to="/fesco_joinTest" class="btn" style="top: 30px; right: 10px; width: 300px;" data-text="FESCO Join Test"></router-link> -->
   </div>
 </template>
 
@@ -26,7 +26,7 @@
     console.log("로그인한 이메일" + this.storedEmail);
     if (this.storedEmail) {
       this.loginInOut = "Log Out";
-      this.hideMyPage = true; // 로그인 상태에서는 My Page 보이기
+      this.hideMyPage = true; // 로그인 상태에서는 My Page 보이게
     }else{
       this.loginInOut = "Log In";
     }
@@ -39,7 +39,6 @@
         this.loginInOut = "Log In";
         this.hideMyPage = false;
         console.log('hideMyPage 값:', this.hideMyPage);
-
       }
     },
   },

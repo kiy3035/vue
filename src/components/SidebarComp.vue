@@ -11,19 +11,19 @@
         <div class="l-navbar" id="nav-bar">
             <nav class="nav">
                 <div> 
-                    <a href="#" class="nav_logo"> 
+                    <router-link to="/" class="nav_logo"> 
                         <i class='bx bx-layer nav_logo-icon'></i> 
                         <span class="nav_logo-name">Home</span> 
-                    </a>
+                    </router-link>
                     <div class="nav_list"> 
                         <router-link to="/community" class="nav_link" exact>
                             <i class='bx bx-grid-alt nav_icon'></i> 
                             <span class="nav_name">Community</span> 
                         </router-link>
-                        <a href="#" class="nav_link"> 
+                        <router-link to="/myPage" class="nav_link"> 
                             <i class='bx bx-user nav_icon'></i> 
                             <span class="nav_name">Users</span> 
-                        </a>
+                        </router-link>
                         <a href="#" class="nav_link"> 
                             <i class='bx bx-message-square-detail nav_icon'></i> 
                             <span class="nav_name">Messages</span> 

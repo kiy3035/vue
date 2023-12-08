@@ -2,7 +2,7 @@
   <div>
     <div :class="{ 'dark-background': showComp }">
       <div style="margin-top:10%;" >
-        <input type="file" ref="videoInput" style="display: none" />
+        <input type="file" style="display: none" />
           <button class="btnAdd" ref="refBtnAdd">
             <font-awesome-icon 
               :icon="['fas', 'plus']" 
