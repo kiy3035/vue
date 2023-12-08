@@ -3,7 +3,7 @@
     <!-- CommunityDetail 컴포넌트 내용은 생략하고 필요한 경우에 채워넣으세요. -->
     <div class="item_card2">
       <div class="materialContainer2 ui">
-        <div class="box" style="background-image: url('https://yimgf-thinkzon.yesform.com/docimgs/public/1/63/62659/62658558.jpg'); background-size: 1690px 910px;">
+        <div class="box" style="background-image: url('https://img.freepik.com/premium-vector/cute-santa-claus-character-isolated-on-white_295036-185.jpg'); background-size: 1360px 610px; overflow: hidden;">
           <!-- 닫기 아이콘 -->
           <button class="close-button" @click="closeForm">
             <font-awesome-icon :icon="['fas', 'times']" />
@@ -28,7 +28,7 @@
                     v-model="input.title"
                     @focus="handleInputFocus('title')"
                     @blur="handleInputBlur('title')"
-                    :disabled="!isUserAuthorized"
+                    :disabled="!isUserAuthorized" style="color: #000;font-weight: bold;"
                   />
                   <span class="spin"></span>
                 </div>
@@ -36,7 +36,7 @@
                   <div class="label-icon-container">
                     <label for="nickname" :style="input.nicknameStyle">
                       <svg class="svg-inline--fa fa-user iconCSS" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
-                    </label><input type="text" name="nickname" id="nickname" v-model="input.nickname" :disabled="isUserAuthorized2"/>
+                    </label><input type="text" name="nickname" id="nickname" v-model="input.nickname" :disabled="isUserAuthorized2" style="color: #000;font-weight: bold;"/>
                     <span class="spin"></span>
                   </div>
                 </div>
@@ -52,7 +52,7 @@
             @input="handleTagInput('tag1')"
             @focus="handleInputFocus('tag1')"
             @blur="handleInputBlur('tag1')"
-            style="font-size: 16px; background: #f0f0f0; font-style: italic;"
+            style="font-size: 16px; background: #f0f0f0; font-style: italic; color: #000;font-weight: bold;"
             :disabled="!isUserAuthorized"
           />
           <span class="spin"></span>
@@ -68,7 +68,7 @@
             @input="handleTagInput('tag2')"
             @focus="handleInputFocus('tag2')"
             @blur="handleInputBlur('tag2')"
-            style="font-size: 16px; background: #f0f0f0; font-style: italic;"
+            style="font-size: 16px; background: #f0f0f0; font-style: italic; color: #000;font-weight: bold;"
             :disabled="!isUserAuthorized"
           />
           <span class="spin"></span>
@@ -84,7 +84,7 @@
             @input="handleTagInput('tag3')"
             @focus="handleInputFocus('tag3')"
             @blur="handleInputBlur('tag3')"
-            style="font-size: 16px; background: #f0f0f0; font-style: italic;"
+            style="font-size: 16px; background: #f0f0f0; font-style: italic; color: #000;font-weight: bold;"
             :disabled="!isUserAuthorized"
           />
           <span class="spin"></span>
