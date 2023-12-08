@@ -10,7 +10,7 @@
             src="https://t1.kakaocdn.net/kakaocorp/kakaocorp/admin/657726a1017800001.png?type=thumb&amp;opt=C72x72.fwebp"
             alt=""
           />
-          <strong class="tit_path" data-v-476b23f8="" style="font-weight: bold; font-size: xx-large">
+          <strong class="tit_path" data-v-476b23f8="" style="font-weight: bold; font-size: xx-large; color: #000;" >
             &nbsp; 커뮤니티
           </strong>
         </div>
@@ -246,4 +246,7 @@ export default {
     cursor: pointer;
   }
 
+  /* body {
+    background-image: url('https://img.freepik.com/premium-vector/cute-santa-claus-character-isolated-on-white_295036-185.jpg');
+  } */
 </style>
