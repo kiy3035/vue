@@ -1,6 +1,16 @@
 <template>
     <div class="form-container">
-        <form action="http://localhost:7001" method="post" id="updateForm" >
+        <form action="http://localhost:7001" method="post" id="updateForm" enctype="multipart/form-data">
+            <input type="file" ref="image" id="image" name="image" style="display:none;" @change="changedImg($event)">
+            <label>Image
+              <font-awesome-icon 
+                :icon="['fas', 'pen']" 
+                @click="inputImage"
+                style="cursor:pointer"/>
+            </label>
+            <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)" alt="Uploaded Image">
+
+            <br>
             <label for="email">Email</label>
             <input type="email" id="email" name="email" v-model="email" :readonly="isReadonly" required>
 
@@ -18,6 +28,7 @@
 
 <script>
 import $ from 'jquery';
+import axios from 'axios';
 
 export default {
   data() {
@@ -26,12 +37,40 @@ export default {
       password: '',
       password2: '',
       isReadonly: true,
+      selectedFile: null,
+      imageUrl: null
     };
   },
   methods: {
-    handleSubmit() {
-
+    inputImage(){
+      this.$refs.image.click();
     },
+    changedImg(event){
+      if (event.target.files.length > 0) {
+        this.selectedFile = event.target.files[0];
+        const file = this.$refs.image.files[0];
+        this.imageUrl = URL.createObjectURL(file);
+      }
+    },
+    async getUserImg(){
+
+      const url = 'http://localhost:7001/getUserImage';
+
+      const data = {
+        params: {
+          email: this.email,
+        },
+      };
+
+      axios.get(url, data)
+        .then((response) => {
+          console.log(response.data)
+          this.imageUrl = response.data;
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
+    }
   },
   created() {
     const storedEmail = sessionStorage.getItem('userEmail');
@@ -41,6 +80,7 @@ export default {
   },
   mounted() {
     document.getElementById("btnSubmit").addEventListener("click", submitForm);
+    this.getUserImg();
   },
 };
 
@@ -85,18 +125,24 @@ export default {
 
       formData.forEach(function (value, key) {
         formDataJSON[key] = value;
+        console.log(key, value)
       });
 
-      $.ajax({
-        type: "POST",
-        url: "http://localhost:7001/updateUserInfo",
-        data: JSON.stringify(formDataJSON),
-        contentType: 'application/json',
-        success: function() {
-          alert("정상적으로 수정되었습니다.");
-          window.location.href = '/';
+      const url = 'http://localhost:7001/updateUserInfo';
+      const axiosConfig = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      });
+      };
+
+      axios.post(url, formDataJSON, axiosConfig)
+        .then(() => {
+          alert("정보가 변경되었습니다.");
+          window.location.href = '/';
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
       
   }
 

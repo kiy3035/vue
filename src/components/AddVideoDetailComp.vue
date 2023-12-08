@@ -144,12 +144,10 @@ export default {
       }
     },
     fileChange(event){
-      
       if (event.target.files.length > 0) {
         this.selectedFile = event.target.files[0];
         this.showCheckIcon = true;
       }
-      
     },
     submitForm(event) {
       const file = this.selectedFile;
