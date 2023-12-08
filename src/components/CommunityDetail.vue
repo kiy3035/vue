@@ -28,7 +28,7 @@
                     v-model="input.title"
                     @focus="handleInputFocus('title')"
                     @blur="handleInputBlur('title')"
-                    :disabled="!isUserAuthorized" style="color: #000;font-weight: bold;"
+                    :disabled="!isUserAuthorized" style="color: #000;font-weight: bold; background-color: white;"
                   />
                   <span class="spin"></span>
                 </div>
@@ -36,7 +36,7 @@
                   <div class="label-icon-container">
                     <label for="nickname" :style="input.nicknameStyle">
                       <svg class="svg-inline--fa fa-user iconCSS" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
-                    </label><input type="text" name="nickname" id="nickname" v-model="input.nickname" :disabled="isUserAuthorized2" style="color: #000;font-weight: bold;"/>
+                    </label><input type="text" name="nickname" id="nickname" v-model="input.nickname" :disabled="isUserAuthorized2" style="color: #000;font-weight: bold; background-color: white;"/>
                     <span class="spin"></span>
                   </div>
                 </div>
