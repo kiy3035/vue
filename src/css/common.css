@@ -1,0 +1,33 @@
+  .alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* 초기에는 화면에서 숨기도록 설정 */
+    z-index: 1000;
+  }
+  
+  .alert-primary {
+    background-color: #d1e7ff;
+    border-color: #b0d4f1;
+    color: #0c4370;
+  }
+  
+  .alert-success {
+    background-color: #d1ffd1;
+    border-color: #b0f1b0;
+    color: #1e7e34;
+  }
+  
+  .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #664d03;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
+  

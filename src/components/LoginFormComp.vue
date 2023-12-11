@@ -98,6 +98,7 @@
 
 <script>
 import $ from 'jquery';
+import {gfnAlert} from '@/js/common.js';
 
   var type;
 
@@ -172,36 +173,36 @@ function validation() {
 
   if(type === "SIGN UP"){
     if(email === ''){
-      alert("email 을 입력하세요.");
+      gfnAlert("email 을 입력하세요.");
       $("#email").focus();
       return;
     }
     if(password !== '' && repeatPassword !== ''){
       if(password !== repeatPassword) {
-        alert("비밀번호가 일치하지 않습니다.");
+        gfnAlert("비밀번호가 일치하지 않습니다.");
         $("#password").focus();
         return;
       }
     }
     if(password === '' || repeatPassword === ''){
-      alert("password 을 입력하세요.");
+      gfnAlert("password 을 입력하세요.");
       $("#password").focus();
       return;
     }
   }
   else if(type === "SIGN IN"){
     if(email === '' && password === ''){
-      alert("email 을 입력하세요.");
+      gfnAlert("email 을 입력하세요.");
       $("#email").focus();
       return;
     }
     if(email === '' && password !== ''){
-      alert("email 을 입력하세요.");
+      gfnAlert("email 을 입력하세요.");
       $("#email").focus();
       return;
     }
     if(password === '' && email !== ''){
-      alert("password 를 입력하세요.");
+      gfnAlert("password 를 입력하세요.");
       $("#password").focus();
       return;
     }
@@ -235,7 +236,7 @@ function submitForm(event) {
         data: JSON.stringify(formDataJSON),
         contentType: 'application/json',
         success: function() {
-          alert("회원가입을 축하드립니다.");
+          gfnAlert("회원가입을 축하드립니다.");
           window.location.href = '/login';
         }
       });
@@ -247,16 +248,16 @@ function submitForm(event) {
         contentType: 'application/json',
         success: function(response) {
           if (response.includes("@")) {
-            alert("로그인 성공");
+            gfnAlert("로그인 성공");
             sessionStorage.setItem('userEmail', response);
             window.location.href = '/';
           }else{
-            alert("로그인 실패.\n아이디와 비밀번호를 확인하세요.");
+            gfnAlert("로그인 실패.\n아이디와 비밀번호를 확인하세요.");
           }
         },
         error: function(xhr, status, error) {
           // 서버와의 통신 중 에러가 발생했을 때의 처리
-          alert("에러 발생: " + error);
+          gfnAlert("에러 발생: " + error);
         }
       });
     }

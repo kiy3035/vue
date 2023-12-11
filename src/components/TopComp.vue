@@ -35,7 +35,7 @@
     logout() {
       if(this.loginInOut === "Log Out"){
         sessionStorage.removeItem('userEmail');
-        alert("로그아웃 되었습니다.");
+        this.gfnAlert("로그아웃 되었습니다.");
         this.loginInOut = "Log In";
         this.hideMyPage = false;
         console.log('hideMyPage 값:', this.hideMyPage);

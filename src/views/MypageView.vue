@@ -2,13 +2,14 @@
     <div class="form-container">
         <form action="http://localhost:7001" method="post" id="updateForm" enctype="multipart/form-data">
             <input type="file" ref="image" id="image" name="image" style="display:none;" @change="changedImg($event)">
-            <label>Image
+            <label>Profile Image
               <font-awesome-icon 
                 :icon="['fas', 'pen']" 
                 @click="inputImage"
                 style="cursor:pointer"/>
             </label>
-            <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)" alt="Uploaded Image">
+            <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)">
+            <img v-if="changeImageUrl" :src="changeImageUrl">
 
             <br>
             <label for="email">Email</label>
@@ -29,6 +30,8 @@
 <script>
 import $ from 'jquery';
 import axios from 'axios';
+import {gfnAlert} from '@/js/common.js';
+
 
 export default {
   data() {
@@ -38,7 +41,9 @@ export default {
       password2: '',
       isReadonly: true,
       selectedFile: null,
-      imageUrl: null
+      imageUrl: null,
+      changeImageUrl: null,
+
     };
   },
   methods: {
@@ -49,7 +54,8 @@ export default {
       if (event.target.files.length > 0) {
         this.selectedFile = event.target.files[0];
         const file = this.$refs.image.files[0];
-        this.imageUrl = URL.createObjectURL(file);
+        this.imageUrl = null;
+        this.changeImageUrl = URL.createObjectURL(file);
       }
     },
     async getUserImg(){
@@ -64,7 +70,7 @@ export default {
 
       axios.get(url, data)
         .then((response) => {
-          console.log(response.data)
+          console.log(response.data);
           this.imageUrl = response.data;
         })
         .catch(error => {
@@ -89,18 +95,8 @@ export default {
     var password = $("#password").val();
     var password2 = $("#password2").val();
 
-    if(password === ""){
-      alert("패스워드 입력란이 비어있습니다.");
-      $("#password").focus();
-      return;
-    }
-    if(password2 === ""){
-      alert("패스워드 확인란이 비어있습니다.");
-      $("#password2").focus();
-      return;
-    }
     if(password !== password2){
-      alert("비밀번호가 일치하지 않습니다.");
+      gfnAlert('비밀번호가 일치하지 않습니다.');
       $("#password2").focus();
       return;
     }
@@ -137,7 +133,7 @@ export default {
 
       axios.post(url, formDataJSON, axiosConfig)
         .then(() => {
-          alert("정보가 변경되었습니다.");
+          gfnAlert("정보가 변경되었습니다.");
           window.location.href = '/';
         })
         .catch(error => {

@@ -5,7 +5,9 @@
                 <i class='bx bx-menu' id="header-toggle"></i> 
             </div>
             <div class="header_img"> 
-                <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTA4MDdfMSAg/MDAxNTY1MTQyNzkzNDYy.zod5wXpr-P3Hv2T1R0tlZNzYuaLG-KS4bh_pbr_rmDog.H653hrO-lfdGV86Aij_KDbdLxo8FE02lTBCEkj4vzI8g.PNG.ilt9525/%EC%B0%B0%EB%A6%AC_%EC%95%84%EB%8B%B4_%EB%A6%AC%EB%B2%84%ED%92%80.png?type=w800" alt=""> 
+                <router-link to="/myPage">
+                    <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)">
+                </router-link>    
             </div>
         </header>
         <div class="l-navbar" id="nav-bar">
@@ -56,44 +58,78 @@
 
 
 <script>
+
+import axios from 'axios';
+
 export default {
-  mounted() {
-    const showNavbar = (toggleId, navId, bodyId, headerId) => {
-      const toggle = document.getElementById(toggleId);
-      const nav = document.getElementById(navId);
-      const bodypd = document.getElementById(bodyId);
-      const headerpd = document.getElementById(headerId);
+    data(){
+        return{
+            email: sessionStorage.getItem('userEmail') || '',
+            imageUrl: null
+        }
+    },
+    mounted() {
+        if(this.email !== ""){
+            this.getUserImg();
+        }
+        const showNavbar = (toggleId, navId, bodyId, headerId) => {
+        const toggle = document.getElementById(toggleId);
+        const nav = document.getElementById(navId);
+        const bodypd = document.getElementById(bodyId);
+        const headerpd = document.getElementById(headerId);
 
-      // Validate that all variables exist
-      if (toggle && nav && bodypd && headerpd) {
-        toggle.addEventListener('click', () => {
-          // show navbar
-          nav.classList.toggle('show');
-          // change icon
-          toggle.classList.toggle('bx-x');
-          // add padding to body
-          bodypd.classList.toggle('body-pd');
-          // add padding to header
-          headerpd.classList.toggle('body-pd');
-        });
-      }
-    };
+        // Validate that all variables exist
+        if (toggle && nav && bodypd && headerpd) {
+            toggle.addEventListener('click', () => {
+            // show navbar
+            nav.classList.toggle('show');
+            // change icon
+            toggle.classList.toggle('bx-x');
+            // add padding to body
+            bodypd.classList.toggle('body-pd');
+            // add padding to header
+            headerpd.classList.toggle('body-pd');
+            });
+        }
+        };
 
-    showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
+        showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
 
-    /*===== LINK ACTIVE =====*/
-    const linkColor = document.querySelectorAll('.nav_link');
+        /*===== LINK ACTIVE =====*/
+        const linkColor = document.querySelectorAll('.nav_link');
 
-    function colorLink() {
-      if (linkColor) {
-        linkColor.forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-      }
-    }
+        function colorLink() {
+        if (linkColor) {
+            linkColor.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        }
+        }
 
-    linkColor.forEach(l => l.addEventListener('click', colorLink));
+        linkColor.forEach(l => l.addEventListener('click', colorLink));
   },
+  methods: {
+      async getUserImg(){
+
+      const url = 'http://localhost:7001/getUserImage';
+
+      const data = {
+        params: {
+          email: this.email,
+        },
+      };
+
+      axios.get(url, data)
+        .then((response) => {
+          console.log(response.data);
+          this.imageUrl = response.data;
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
+    }
+  }
 };
+
 </script>
 
 
@@ -266,7 +302,7 @@ export default {
         }
 
         .header_img img {
-            width: 45px;
+            width: 75px;
         }
 
         .l-navbar {
