@@ -98,7 +98,7 @@ export default {
     inputComment(data){
 
       if(this.commentText === ''){
-        alert("댓글을 입력하세요.");
+        this.gfnAlert("댓글을 입력하세요.");
         return;
       }
 

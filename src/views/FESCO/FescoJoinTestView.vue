@@ -30,7 +30,7 @@ export default {
 
       axios.post(url, datas)
         .then((response) => {
-            alert(response.data)
+            this.gfnAlert(response.data)
         })
         .catch(error => {
           console.log('Error:', error);

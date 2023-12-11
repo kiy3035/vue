@@ -145,8 +145,29 @@ export default {
     },
     fileChange(event){
       if (event.target.files.length > 0) {
-        this.selectedFile = event.target.files[0];
-        this.showCheckIcon = true;
+
+        const file = event.target.files[0];
+        const fileName = file.name;
+
+        // 동영상 확장자
+        const allowedExtensions = ['mp4', 'avi', 'wmv', 'mkv', 'mov'];
+
+        // 파일 이름에서 마지막 점(.)의 인덱스를 찾아 확장자를 추출
+        const lastDotIndex = fileName.lastIndexOf('.');
+
+        if (lastDotIndex !== -1) {
+          const fileExtension = fileName.substring(lastDotIndex + 1).toLowerCase();
+
+          // 동영상 확장자일 때
+          if (allowedExtensions.includes(fileExtension)) {
+            this.selectedFile = file;
+            this.showCheckIcon = true;
+          } else {
+            this.gfnAlert('올바른 동영상 파일 형식이 아닙니다.');
+            this.showCheckIcon = false;
+            event.target.value = null; // 파일 선택 초기화
+          }
+        }
       }
     },
     submitForm(event) {
@@ -169,13 +190,13 @@ export default {
         }
 
         if(this.input.title === ''){
-          alert("제목을 입력하세요.");
+          this.gfnAlert("제목을 입력하세요.");
           this.$refs.videoTitle.focus();
           return;
         }
 
         if(this.input.content === ''){
-          alert("내용을 입력하세요.");
+          this.gfnAlert("내용을 입력하세요.");
           this.$refs.videoContent.focus();
           return;
         }
@@ -187,16 +208,16 @@ export default {
           processData: false,
           contentType: false,
           success: function(response) {
-            alert(response);
+            this.gfnAlert(response);
             this.$router.go(0); // 현재 페이지 리랜더링
           }.bind(this),
           error: function(xhr, status, error) {
-            alert("에러 발생: " + error);
+            this.gfnAlert("에러 발생: " + error);
           }
         });
         
       }else{
-        alert("동영상을 추가하세요.");
+        this.gfnAlert("동영상을 추가하세요.");
         return;
       }
     },

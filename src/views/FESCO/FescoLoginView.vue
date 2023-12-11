@@ -36,10 +36,10 @@ export default {
       axios.post(url, datas)
         .then((response) => {
             if(response.data === 1){
-              alert("로그인 성공");
+              this.gfnAlert("로그인 성공");
               window.location.href = '/';
             }else{
-              alert("로그인 실패");
+              this.gfnAlert("로그인 실패");
             }
         })
         .catch(error => {
