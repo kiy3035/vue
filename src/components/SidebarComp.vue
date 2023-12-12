@@ -26,10 +26,10 @@
                             <i class='bx bx-user nav_icon'></i> 
                             <span class="nav_name">Users</span> 
                         </router-link>
-                        <a href="#" class="nav_link"> 
+                        <router-link to="/chat" class="nav_link" exact>
                             <i class='bx bx-message-square-detail nav_icon'></i> 
                             <span class="nav_name">Messages</span> 
-                        </a> 
+                        </router-link>
                         <a href="#" class="nav_link">
                             <i class='bx bx-bookmark nav_icon'></i> 
                             <span class="nav_name">Bookmark</span> 
