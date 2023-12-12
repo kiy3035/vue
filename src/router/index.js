@@ -3,6 +3,8 @@ import LoginView from '../views/LoginView.vue';
 import HomeView from '../views/HomeView.vue';
 import MypageView from '../views/MypageView.vue';
 import CommunityView from '../views/CommunityView.vue';
+import ChatListView from '../views/ChatView.vue';
+
 import RealGrid from '../views/RealGridTest.vue';
 import FescoLogin from '../views/FESCO/FescoLoginView.vue';
 import FescoBookingEntry from '../views/FESCO/FescoBookingEntryView.vue';
@@ -26,6 +28,13 @@ const routes = [
     path: '/community',
     component: CommunityView,
   },
+  {
+    path: '/chat',
+    component: ChatListView,
+  },
+
+
+
   {
     path: '/realgrid',
     component: RealGrid,

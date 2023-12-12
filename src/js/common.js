@@ -25,7 +25,7 @@ function gfnAlert(message) {
   setTimeout(() => {
     alertDiv.classList.remove('show');
     document.body.removeChild(alertDiv);
-  }, 2000);
+  }, 3000);
 }
 
 

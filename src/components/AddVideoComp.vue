@@ -53,10 +53,10 @@ export default {
 
     watchEffect(() => {
       if (props.receivedValue === "D3D3D3" && refBtnAdd.value) {
-          refBtnAdd.value.style.backgroundColor = "#D3D3D3";
+          // refBtnAdd.value.style.backgroundColor = "#D3D3D3";
       }
       if (props.receivedValue === "noFocus" && refBtnAdd.value) {
-          refBtnAdd.value.style.backgroundColor = "#ffffff";
+          // refBtnAdd.value.style.backgroundColor = "#ffffff";
       }
       
     });
