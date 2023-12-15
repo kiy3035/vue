@@ -11,7 +11,7 @@
     border-radius: 8px;
     overflow: hidden;
     overflow-y: auto;
-    height: 700px;
+    height: 600px;
     width: 100%;
     padding: 20px;
     overflow-y: auto;
@@ -32,7 +32,7 @@
     padding: 10px;
     margin-bottom: 10px;
     align-self: flex-end;
-    max-width: 70%; /* 최대 가로 길이 설정 */
+    max-width: 50%; /* 최대 가로 길이 설정 */
     word-wrap: break-word; /* 긴 단어를 가로길이를 넘어가지 않도록 줄 바꿈 처리 */
     text-align: right;
 
@@ -45,7 +45,7 @@
     padding: 10px;
     margin-bottom: 10px;
     align-self: flex-start;
-    max-width: 70%; /* 최대 가로 길이 설정 */
+    max-width: 50%; /* 최대 가로 길이 설정 */
     word-wrap: break-word; /* 긴 단어를 가로길이를 넘어가지 않도록 줄 바꿈 처리 */
     text-align: left;
   }
@@ -83,4 +83,9 @@
   svg:hover {
     fill: #999999;
     cursor: pointer;
+  }
+
+  .message-time{
+    color:#999999;
+    font-size: 11px;
   }

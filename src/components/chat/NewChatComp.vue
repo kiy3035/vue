@@ -3,15 +3,18 @@
   <div class="chat-container">
     <div class="chat-messages">
       {{selectedFriendName}}
-      <!-- <p v-if="connected">소켓이 연결되어 있습니다</p>
-      <p v-else>소켓이 연결되어 있지 않습니다</p> -->
         <div
             v-for="(message, index) in messages"
             :key="index"
             :class="{'my-message': message.sender === 'me', 'your-message': message.sender !== 'me'}"
         >
-            {{ message.message }}
+        <div class="message-content">
+          {{ message.message }}
         </div>
+        <div class="message-time">
+          {{ message.time }}
+        </div>
+      </div>
     </div>
 
     <!-- 메시지 입력 폼 -->
@@ -60,14 +63,13 @@ import axios from 'axios';
 
 export default {
   props: {
-    selectedFriendName: String
+    selectedFriendName: String,
   },
   data() {
     return {
       message: '',
       messages: [],
       socket: null,
-      // connected: false,
       userEmail: null,
     };
   },
@@ -90,8 +92,14 @@ export default {
       this.message = '';
     },
     getAllMessages(){
-      const myId = this.userEmail;
-      const otherId = this.selectedFriendName;
+      console.log(this.selectedFriendName)
+
+      var myId = this.userEmail;
+      var otherId = this.selectedFriendName;
+
+      if(otherId === undefined){
+        otherId = this.selectedFriendName;
+      }
 
       const url = `http://localhost:7001/getAllMessages?myId=${myId}&otherId=${otherId}`;
 
@@ -103,18 +111,19 @@ export default {
             if(this.userEmail == response.data[i].MY_ID){
               var messageFromMe = {
                 sender: "me",
-                message: response.data[i].MESSAGE
+                message: response.data[i].MESSAGE,
+                time: extractTimeFromDate(response.data[i].INP_DATE),
               };
               this.messages.push(messageFromMe);
             }else{
               var messageFromOther = {
                 sender: "other",
-                message: response.data[i].MESSAGE
+                message: response.data[i].MESSAGE,
+                time: extractTimeFromDate(response.data[i].INP_DATE),
               };
               this.messages.push(messageFromOther);
             }
           }
-
         })
         .catch(error => {
           console.error(error);
@@ -127,23 +136,31 @@ export default {
     this.getAllMessages();
 
     this.socket = new WebSocket('ws://localhost:7001/ws/chat');
-
-    this.socket.addEventListener('open', () => {
-      // this.connected = true;
-    });
-
-    this.socket.addEventListener('close', () => {
-      // this.connected = false;
-    });
-
-    
-  },
-  beforeUnmount() {
-    // if (this.socket) {
-    //   this.socket.disconnect();
-    // }
   },
 };
+
+function extractTimeFromDate(time) {
+
+  // 받은 날짜 문자열을 Date 객체로 변환
+  const dateObject = new Date(time);
+
+  // 한국 시간대로 변환
+  dateObject.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+
+  // 시간과 분을 가져오기
+  const hours = dateObject.getHours();
+  const minutes = dateObject.getMinutes();
+
+  // 오전/오후 구분
+  const period = hours < 12 ? '오전' : '오후';
+
+  // 12시간제로 변환
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+
+  // 오전/오후와 시간, 분을 문자열로 조합하여 반환
+  return `${period} ${formattedHours}:${formattedMinutes}`;
+}
 
 </script>
 

@@ -1,7 +1,9 @@
 <template>
-  <div class="chat-list-container">
+<div >
+  <div class="chat-list-container" v-if="abc">
     <h1>Chat List</h1>
         <button class="btn btn-primary new-chat" @click="clickFriendsListComp">New Chat</button>
+        <div v-if="ifNoMessage"><br>현재 진행중인 채팅이 없습니다.<br>친구들과 새 채팅을 해보세요.😄</div>
     <ul>
       <li v-for="(chat, index) in chatList" :key="index" @click="selectChat(index)">
         <div class="chat-thumbnail">
@@ -9,11 +11,12 @@
         </div>
         <div class="chat-info">
           <div class="chat-id">{{ chat.id }}</div>
-          <div class="last-message">{{ chat.lastMessage }}</div>
+          <div class="last-message">{{ truncateText(chat.lastMessage, 25) }}</div>
           <div class="last-time">{{ chat.time }}</div>
         </div>
       </li>
     </ul>
+  </div>
 
     <div v-if="showFriendsListComp" class="modal">
       <div class="modal-content">
@@ -22,23 +25,34 @@
       </div>
     </div>
 
+    <div>
+        <NewChatComp v-if="showNewChatComp" :selectedFriendName="selectedFriend" />
+    </div>
+
   </div>
 </template>
 
 
 <script>
 import FriendsListComp from '@/components/chat/FriendsListComp.vue';
+import NewChatComp from '@/components/chat/NewChatComp.vue';
 import axios from 'axios';
 
 export default {
   components: {
     FriendsListComp,
+    NewChatComp,
   },
   data() {
     return {
       userEmail: null,
       showFriendsListComp: false,
       chatList: [],
+      ifNoMessage: false,
+      showNewChatComp: false,
+      myId: null,
+      otherId: null,
+      abc: true,
     };
   },
   mounted(){
@@ -46,6 +60,12 @@ export default {
     this.getChatList();
   },
   methods: {
+    truncateText(text, maxLength) {
+      if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...';
+      }
+      return text;
+    },
     getChatList(){
       const myId = this.userEmail;
       const url = `http://localhost:7001/getLastMessage?myId=${myId}`;
@@ -53,14 +73,26 @@ export default {
       axios.get(url)
         .then(response => {
           console.log(response.data);
+          if(response.data.length === 0){
+            this.ifNoMessage = true;
+          }
+
           for(var i = 0; i < response.data.length; i++){
-              var data = {
-                id : response.data[i].OTHER_ID,
+            
+            var data = {
+                id : '',
                 lastMessage : response.data[i].MESSAGE,
                 time : dateFormat(response.data[i].INP_DATE),
                 img : response.data[i].IMG_PATH,
-              }
-              this.chatList.push(data);
+            }
+            
+            if(this.userEmail === response.data[i].OTHER_ID){
+              data.id = response.data[i].MY_ID;
+            }else{
+              data.id = response.data[i].OTHER_ID;
+            }
+              
+            this.chatList.push(data);
           }
         })
     },
@@ -70,8 +102,10 @@ export default {
     closeFriendsListComp() {
       this.showFriendsListComp = false;
     },
-    selectChat() {
-      // 채팅방 선택 로직 추가
+    selectChat(index) {
+      this.selectedFriend = this.chatList[index].id;
+      this.abc= false;
+      this.showNewChatComp = true;
     },
     
   },
@@ -171,7 +205,7 @@ li {
   text-align: left;
   font-weight: bold;
   font-size: 20px;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: serif;
 }
 
 .last-time {

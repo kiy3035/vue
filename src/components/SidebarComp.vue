@@ -193,7 +193,8 @@ export default {
         width: 35px;
         height: 35px;
         display: flex;
-        justify-content: center;
+        justify-content: center; /* 가로 정렬 중앙 */
+        align-items: center; /* 세로 정렬 중앙 */
         border-radius: 50%;
         overflow: hidden;
     }
