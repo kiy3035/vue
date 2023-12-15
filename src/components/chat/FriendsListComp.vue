@@ -3,7 +3,7 @@
     <h2>Friends List</h2>
     <div class="friend-item" v-for="friend in friends" :key="friend.id">
       <input type="radio" :id="'friend_' + friend.id" v-model="selectedFriend" :value="friend.id">
-      <label :for="'friend_' + friend.id">{{ friend.name }}</label>
+      <label :for="'friend_' + friend.id" style="margin-left:10px;">{{ friend.email }}</label>
     </div>
     <button class="btn btn-primary" @click="openNewChat">Go</button>
 
@@ -19,6 +19,7 @@
 
 <script>
 import NewChatComp from '@/components/chat/NewChatComp';
+import axios from 'axios';
 
 export default {
   components: {
@@ -26,22 +27,43 @@ export default {
   },
   data() {
     return {
-      friends: [
-        { id: 1, name: '친구 1' },
-        { id: 2, name: '친구 2' },
-        { id: 3, name: '친구 3' },
-      ],
+      userEmail: null,
+      friends: [],
       selectedFriend: null,
       showNewChatComp: false,
     };
   },
+  mounted(){
+    this.getFriendsList();
+    this.userEmail = sessionStorage.getItem('userEmail');
+  },
   methods: {
+    getFriendsList(){
+      const url = 'http://localhost:7001/getFriendsList';
+
+      axios.get(url)
+        .then(response => {
+          console.log(response.data);
+          for(var i = 0; i < response.data.length; i++){
+            if(response.data[i].EMAIL !== this.userEmail){
+              var data = {
+                id : i,
+                email : response.data[i].EMAIL
+              }
+              this.friends.push(data);
+            }
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     openNewChat() {
       if (this.selectedFriend !== null) {
         const selectedFriend = this.friends.find(friend => friend.id === parseInt(this.selectedFriend));
-        alert(`선택한 친구: ${selectedFriend.name}`);
+        console.log(`선택한 친구: ${selectedFriend.email}`);
         this.showNewChatComp = true;
-        this.selectedFriend = selectedFriend.name;
+        this.selectedFriend = selectedFriend.email;
       } else {
         alert('친구를 선택하세요.');
       }
@@ -87,6 +109,10 @@ export default {
   right: 10px;
 }
 
+.close-chat :hover{
+  color: #e10d0d;
+}
+
 .friends-list-container {
   /* max-width: 50%;
   max-height: 150%; */
@@ -102,5 +128,4 @@ export default {
   margin-bottom: 10px;
 }
 
-/* 추가적인 스타일링을 필요에 따라 여기에 추가하세요 */
 </style>

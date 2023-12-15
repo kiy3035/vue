@@ -5,12 +5,12 @@
     <ul>
       <li v-for="(chat, index) in chatList" :key="index" @click="selectChat(index)">
         <div class="chat-thumbnail">
-          <!-- 채팅방 썸네일 이미지 -->
-          <img src="https://via.placeholder.com/40" alt="채팅방 썸네일">
+          <img :src="require(`@/assets/${chat.img}`)" alt="채팅방 썸네일">
         </div>
         <div class="chat-info">
-          <div class="chat-title">{{ chat.title }}</div>
+          <div class="chat-id">{{ chat.id }}</div>
           <div class="last-message">{{ chat.lastMessage }}</div>
+          <div class="last-time">{{ chat.time }}</div>
         </div>
       </li>
     </ul>
@@ -28,6 +28,7 @@
 
 <script>
 import FriendsListComp from '@/components/chat/FriendsListComp.vue';
+import axios from 'axios';
 
 export default {
   components: {
@@ -35,15 +36,34 @@ export default {
   },
   data() {
     return {
+      userEmail: null,
       showFriendsListComp: false,
-      chatList: [
-        { title: '친구 1', lastMessage: '안녕하세요!' },
-        { title: '친구 2', lastMessage: '뭐해?' },
-        { title: '친구 3', lastMessage: '밥 먹었어?' },
-      ],
+      chatList: [],
     };
   },
+  mounted(){
+    this.userEmail = sessionStorage.getItem('userEmail');
+    this.getChatList();
+  },
   methods: {
+    getChatList(){
+      const myId = this.userEmail;
+      const url = `http://localhost:7001/getLastMessage?myId=${myId}`;
+
+      axios.get(url)
+        .then(response => {
+          console.log(response.data);
+          for(var i = 0; i < response.data.length; i++){
+              var data = {
+                id : response.data[i].OTHER_ID,
+                lastMessage : response.data[i].MESSAGE,
+                time : dateFormat(response.data[i].INP_DATE),
+                img : response.data[i].IMG_PATH,
+              }
+              this.chatList.push(data);
+          }
+        })
+    },
     clickFriendsListComp(){
       this.showFriendsListComp = true;
     },
@@ -53,8 +73,28 @@ export default {
     selectChat() {
       // 채팅방 선택 로직 추가
     },
+    
   },
 };
+
+  function dateFormat(time){
+    var dateObject = new Date(time);
+
+    // 한국 시간대로 변환
+    var koreanDateFormat = new Intl.DateTimeFormat('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/Seoul'
+    });
+
+    // 한국 시간으로 형식화된 문자열 반환
+    return koreanDateFormat.format(dateObject);
+    }
+
 </script>
 
 
@@ -90,6 +130,10 @@ export default {
   right: 10px;
 }
 
+.close :hover{
+  color: #560e0e;
+}
+
 .chat-list-container {
   padding: 5% 30%
 }
@@ -109,22 +153,35 @@ li {
 
 .chat-thumbnail img {
   border-radius: 50%;
+  width: 50px;
+  height: 50px;
 }
 
 .chat-info {
   margin-left: 10px;
 }
 
-.chat-title {
+.chat-id {
+  text-align: left;
   font-weight: bold;
 }
 
 .last-message {
   color: #888;
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.last-time {
+  color: #888;
+  text-align: left;
+  font-size: 13px;
 }
 
 .new-chat{
-    margin-top: 30px;
-    margin-bottom: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 </style>

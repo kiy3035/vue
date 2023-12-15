@@ -16,14 +16,14 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import * as CommonFunctions from '@/js/common.js'; // common.js 파일 import
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from 'axios';
 
-
 library.add(faPlus, faTimes, faVideo, faCheck, faPlay, faComment, faThumbsUp, faCalendar, faUser, faFileLines, faPen, faXmark, faTrashCan, faExclamationTriangle);
+
 
 const app = createApp(App);
 

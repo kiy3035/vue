@@ -1,13 +1,16 @@
 <template>
+
   <div class="chat-container">
-    <!-- 채팅 메시지 표시 영역 -->
     <div class="chat-messages">
+      {{selectedFriendName}}
+      <!-- <p v-if="connected">소켓이 연결되어 있습니다</p>
+      <p v-else>소켓이 연결되어 있지 않습니다</p> -->
         <div
-            v-for="message in messages"
-            :key="message.id"
+            v-for="(message, index) in messages"
+            :key="index"
             :class="{'my-message': message.sender === 'me', 'your-message': message.sender !== 'me'}"
         >
-            {{ message.content }}
+            {{ message.message }}
         </div>
     </div>
 
@@ -17,10 +20,10 @@
         class="form__input"
         type="text"
         placeholder="메세지를 입력하세요."
-        v-model.trim="newMessage"
-        @keyup.enter="submitMessage"
+        v-model.trim="message"
+        @keyup.enter="sendMessage"
       />
-      <div @click="submitMessage" class="form__submit">
+      <div @click="sendMessage" class="form__submit">
         <svg
           width="30"
           height="30"
@@ -53,99 +56,99 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+  props: {
+    selectedFriendName: String
+  },
   data() {
     return {
-      messages: [],       // 채팅 메시지 배열
-      newMessage: "",      // 입력된 새로운 메시지
-      nextMessageId: 1,    // 다음 메시지의 고유 ID
+      message: '',
+      messages: [],
+      socket: null,
+      // connected: false,
+      userEmail: null,
     };
   },
   methods: {
-    submitMessage() {
-      if (this.newMessage) {
-        // 입력된 메시지를 배열에 추가
-        this.messages.push({
-          id: this.nextMessageId++,
-          sender: "me",
-          content: this.newMessage,
-        });
+    sendMessage() {
+      const newMessage = {
+        sender: "me",
+        message: this.message
+      };
 
-        // 입력 폼 초기화
-        this.newMessage = "";
-      }
+      const chatData = {
+        myId: this.userEmail,
+        otherId: this.selectedFriendName,
+        message: this.message
+      };
+
+      this.socket.send(JSON.stringify(chatData));
+
+      this.messages.push(newMessage);
+      this.message = '';
+    },
+    getAllMessages(){
+      const myId = this.userEmail;
+      const otherId = this.selectedFriendName;
+
+      const url = `http://localhost:7001/getAllMessages?myId=${myId}&otherId=${otherId}`;
+
+      axios.get(url)
+        .then(response => {
+          console.log(response.data);
+
+          for(var i = 0; i < response.data.length; i++){
+            if(this.userEmail == response.data[i].MY_ID){
+              var messageFromMe = {
+                sender: "me",
+                message: response.data[i].MESSAGE
+              };
+              this.messages.push(messageFromMe);
+            }else{
+              var messageFromOther = {
+                sender: "other",
+                message: response.data[i].MESSAGE
+              };
+              this.messages.push(messageFromOther);
+            }
+          }
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
   },
+  mounted() {
+    this.userEmail = sessionStorage.getItem('userEmail');
+
+    this.getAllMessages();
+
+    this.socket = new WebSocket('ws://localhost:7001/ws/chat');
+
+    this.socket.addEventListener('open', () => {
+      // this.connected = true;
+    });
+
+    this.socket.addEventListener('close', () => {
+      // this.connected = false;
+    });
+
+    
+  },
+  beforeUnmount() {
+    // if (this.socket) {
+    //   this.socket.disconnect();
+    // }
+  },
 };
+
 </script>
 
+
 <style scoped>
-.chat-container {
-  max-width: 600px;
-  width: 100%;
-  margin: auto;
-  margin-bottom: 20px;
+  @import '@/css/newChatForm.css';
 
-}
-
-.chat-messages {
-  margin: 30px 0 30px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  overflow-y: auto;
-  height: 700px;
-  width: 100%;
-}
-
-.chat-message {
-  padding: 8px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-}
-
-.my-message {
-  text-align: right;
-  /* 추가적인 내 메세지에 대한 스타일 조정 */
-}
-
-.your-message {
-  text-align: left;
-  /* 추가적인 상대방 메세지에 대한 스타일 조정 */
-}
-
-.form {
-  display: flex;
-  justify-content: space-between;
-  padding: 1.4rem;
-  background: #ffffff;
-  border-radius: 30px 30px 24px 24px;
-  box-shadow: 0px -5px 30px rgba(0, 0, 0, 0.05);
-}
-
-.form__input {
-  border: none;
-  padding: 0.5rem;
-  font-size: 16px;
-  width: calc(100% - 60px);
-}
-
-.form__input:focus {
-  outline: none;
-}
-
-.form__submit {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-svg {
-  transition: 0.3s;
-}
-
-svg:hover {
-  fill: #999999;
-}
 </style>
