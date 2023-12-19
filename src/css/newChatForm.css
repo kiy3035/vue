@@ -1,16 +1,26 @@
-.chat-container {
+  .chat-container {
     max-width: 600px;
     width: 100%;
     margin: auto;
     margin-bottom: 20px;
   }
-  
+
+  .selected-friend {
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    z-index: 1;
+  }
+
   .chat-messages {
     margin: 30px 0 30px;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
-    overflow-y: auto;
     height: 600px;
     width: 100%;
     padding: 20px;
@@ -35,7 +45,6 @@
     max-width: 50%; /* 최대 가로 길이 설정 */
     word-wrap: break-word; /* 긴 단어를 가로길이를 넘어가지 않도록 줄 바꿈 처리 */
     text-align: right;
-
   }
   
   .your-message {
@@ -50,6 +59,44 @@
     text-align: left;
   }
   
+  .message-date {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .date-text {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #bbacdc;
+    border-radius: 15px;
+
+  }
+
+  .message-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-message .message-time{
+    display: flex;
+    color:#999999;
+    font-size: 11px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .your-message .message-time{
+    display: flex;
+    color:#999999;
+    font-size: 11px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+  }
+
+
   .form {
     display: flex;
     justify-content: space-between;
@@ -83,9 +130,4 @@
   svg:hover {
     fill: #999999;
     cursor: pointer;
-  }
-
-  .message-time{
-    color:#999999;
-    font-size: 11px;
   }
