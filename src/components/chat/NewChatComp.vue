@@ -1,20 +1,22 @@
 <template>
-
-  <div class="chat-container">
+  <div class="chat-container" ref="chatContainer" >
     <div class="chat-messages">
-      {{selectedFriendName}}
-        <div
-            v-for="(message, index) in messages"
-            :key="index"
-            :class="{'my-message': message.sender === 'me', 'your-message': message.sender !== 'me'}"
-        >
-        <div class="message-content">
-          {{ message.message }}
+        <div class="selected-friend">
+          {{selectedFriendName}}
         </div>
-        <div class="message-time">
-          {{ message.time }}
+        <div v-for="(message, index) in messages" :key="index">
+          <div v-if="shouldShowDate(index, message)" class="message-date">
+            <span class="date-text">{{ message.firstMessage }}</span>
+          </div>
+          <div class="message-bubble">
+            <div :class="{'my-message': message.sender === 'me', 'your-message': message.sender === 'other'}">
+                {{ message.message }}
+              <div class="message-time">
+                {{ message.time }}
+              </div>
+            </div>  
+          </div>
         </div>
-      </div>
     </div>
 
     <!-- 메시지 입력 폼 -->
@@ -71,13 +73,23 @@ export default {
       messages: [],
       socket: null,
       userEmail: null,
+      dateArray: [],
     };
   },
   methods: {
+    scrollToBottom() { // 안돼서 해야함
+      const chatContainer = this.$refs.chatContainer;
+      if (chatContainer) {
+        console.log("스크롤바 함순데 안됨 ㅡㅡ")
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }    
+    },
     sendMessage() {
       const newMessage = {
         sender: "me",
-        message: this.message
+        message: this.message,
+        time: extractTimeFromDate(new Date),
+        firstMessage: setYYMMDD(new Date)  // YYYY MM DD 요일
       };
 
       const chatData = {
@@ -87,13 +99,36 @@ export default {
       };
 
       this.socket.send(JSON.stringify(chatData));
-
+      if(newMessage.message == ""){
+        alert("내용을 입력하세요.");
+        return;
+      }
       this.messages.push(newMessage);
       this.message = '';
+      this.scrollToBottom;
+    },
+    // 오늘 날짜인지 확인하는 메소드
+    isToday(date) {
+      const today = new Date();
+      return (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      );
+    },
+    shouldShowDate(index, message) {
+      console.log("index:             " + index)
+      console.log("message:             " + JSON.stringify(message))
+
+      if (index === 0) {
+        return true; // 첫 번째 메시지는 항상 날짜를 표시
+      }
+
+    // 이전 메시지의 firstMessage와 현재 메시지의 firstMessage 비교
+    const prevFirstMessage = this.messages[index - 1].firstMessage;
+    return message.firstMessage !== prevFirstMessage;
     },
     getAllMessages(){
-      console.log(this.selectedFriendName)
-
       var myId = this.userEmail;
       var otherId = this.selectedFriendName;
 
@@ -112,22 +147,27 @@ export default {
               var messageFromMe = {
                 sender: "me",
                 message: response.data[i].MESSAGE,
-                time: extractTimeFromDate(response.data[i].INP_DATE),
+                time: extractTimeFromDate(response.data[i].INP_DATE), // 오후 HH:MM
+                firstMessage: setYYMMDD(response.data[i].INP_DATE)  // YYYY MM DD 요일
               };
               this.messages.push(messageFromMe);
+              console.log(this.messages)
             }else{
               var messageFromOther = {
                 sender: "other",
                 message: response.data[i].MESSAGE,
                 time: extractTimeFromDate(response.data[i].INP_DATE),
+                firstMessage: setYYMMDD(response.data[i].INP_DATE)
               };
               this.messages.push(messageFromOther);
             }
           }
+
         })
         .catch(error => {
           console.error(error);
         });
+          this.scrollToBottom();
     },
   },
   mounted() {
@@ -160,6 +200,21 @@ function extractTimeFromDate(time) {
 
   // 오전/오후와 시간, 분을 문자열로 조합하여 반환
   return `${period} ${formattedHours}:${formattedMinutes}`;
+}
+
+function setYYMMDD(dateString) {
+  const date = new Date(dateString);
+
+  const options = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    weekday: 'long',
+  };
+
+  const formattedDate = date.toLocaleDateString('ko-KR', options);
+
+  return formattedDate;
 }
 
 </script>

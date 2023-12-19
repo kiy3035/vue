@@ -127,7 +127,7 @@ export default {
 
     // 한국 시간으로 형식화된 문자열 반환
     return koreanDateFormat.format(dateObject);
-    }
+  }
 
 </script>
 
