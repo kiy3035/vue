@@ -23,7 +23,7 @@
       <!-- 제목 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoTitle', 'blured' : inputBlured === 'videoTitle' }">
          <label for="videoTitle" :style="input.titleStyle">Title</label>
-         <input type="text" name="videoTitle" id="videoTitle" v-model="input.title" ref="videoTitle"
+         <input type="text" name="videoTitle" id="videoTitle" v-model="input.title" ref="videoTitle" autocomplete="off"
                 @focus="handleInputFocus('videoTitle')"
                 @blur="handleInputBlur('videoTitle')">
          <span class="spin"></span>
@@ -32,11 +32,17 @@
       <!-- 내용 -->
       <div class="input" :class="{ 'focused': inputFocused === 'videoContent', 'blured' : inputBlured === 'videoContent' }">
          <label for="videoContent" :style="input.contentStyle">Content</label>
-         <input type="text" name="videoContent" id="videoContent" v-model="input.content" ref="videoContent"
+         <input type="text" name="videoContent" id="videoContent" v-model="input.content" ref="videoContent" autocomplete="off"
                 @focus="handleInputFocus('videoContent')"
                 @blur="handleInputBlur('videoContent')">
          <span class="spin"></span>
       </div>
+
+      <!-- 카테고리 -->
+      <label for="selectCategory" style="margin-top:30px;">Category</label>
+        <select id="selectCategory" v-model="selectedCategory" style="margin-left:10px;" ref="category">
+          <option v-for="category in categories" :key="category.id" :value="category.name">{{ category.name }}</option>
+        </select>
 
       <!-- GO 버튼 -->
       <div class="button submit">
@@ -99,6 +105,16 @@ export default {
         titleStyle: {},
         contentStyle: {},
       },
+      selectedCategory: null,
+      categories: [
+        { id: 1, name: 'Sports' },
+        { id: 2, name: 'Games' },
+        { id: 3, name: 'Food' },
+        { id: 4, name: 'Beauty' },
+        { id: 5, name: 'Fashion' },
+        { id: 6, name: 'Technology' },
+        { id: 7, name: 'Travel' },
+      ]
     };
   },
   components: {
@@ -173,6 +189,7 @@ export default {
     submitForm(event) {
       const file = this.selectedFile;
       const userEmail = sessionStorage.getItem('userEmail');
+      const category = this.selectedCategory;
 
       if (file) {
 
@@ -183,6 +200,7 @@ export default {
         formData.append('inp_dt', formatDate(file.lastModifiedDate ));
         formData.append('video_id', event._vts);
         formData.append('userEmail', userEmail);
+        formData.append('category', category);
 
         // formData 출력
         for (const [key, value] of formData.entries()) {
@@ -192,6 +210,12 @@ export default {
         if(this.input.title === ''){
           this.gfnAlert("제목을 입력하세요.");
           this.$refs.videoTitle.focus();
+          return;
+        }
+
+        if(this.selectedCategory === null){
+          this.gfnAlert("카테고리를 선택하세요.");
+          this.$refs.category.focus();
           return;
         }
 
@@ -215,7 +239,6 @@ export default {
             this.gfnAlert("에러 발생: " + error);
           }
         });
-        
       }else{
         this.gfnAlert("동영상을 추가하세요.");
         return;

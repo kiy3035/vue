@@ -20,18 +20,27 @@
                       
                       <form>
                         <div class="icon-container">
-                          <font-awesome-icon icon="calendar" class="iconCSS"/>
+                          <font-awesome-icon icon="calendar" class="iconCSS" @mouseover="handleMouseOver(index)" @mouseout="handleMoustOut"/>
+                          <div v-if="showTooltip" class="tooltip" />날짜
                           <input type="text" name="inpDT" id="inpDT" :value="formatVideoDate(video.inpDT)" readonly>
                         </div>
 
                         <div class="icon-container">
-                          <font-awesome-icon icon="user" class="iconCSS"/>
+                          <font-awesome-icon icon="user" class="iconCSS" @mouseover="handleMouseOver('user')" @mouseout="handleMoustOut"/>
+                          <div v-if="showTooltip2" class="tooltip" />작성자
                           <input type="text" name="email" id="email" v-model="video.email" readonly>
                         </div>
                         
                         <div class="icon-container">
-                          <font-awesome-icon icon="file-lines" class="iconCSS"/>
-                          <textarea class="content-textarea" name="content" id="content" v-model="video.content" readonly></textarea>
+                          <font-awesome-icon icon="bars" class="iconCSS" @mouseover="handleMouseOver('bars')" @mouseout="handleMoustOut"/>
+                          <div v-if="showTooltip3" class="tooltip" />카테고리
+                          <input type="text" name="category" id="category" v-model="video.category" readonly />
+                        </div>
+
+                        <div class="icon-container">
+                          <font-awesome-icon icon="file-lines" class="iconCSS" @mouseover="handleMouseOver('file-lines')" @mouseout="handleMoustOut"/>
+                          <div v-if="showTooltip4" class="tooltip" />내용
+                          <textarea class="content-textarea" name="content" id="content" v-model="video.content" readonly />
                         </div>
 
                         <div id="form-controls">
@@ -76,11 +85,8 @@ export default {
       noDupLikedList: [], // 위에 배열에서 중복 제거한 값
       showComp: false,
       clickedVideo: null,
-        // video: {
-        //   id: '',
-        //   title: '',
-        //   userEmail: '',
-        // },
+      tooltipText: '',
+      showTooltip: false,
     };
   },
   components: {
@@ -112,6 +118,28 @@ export default {
 
   },
   methods: {
+    handleMouseOver(icon){
+                console.log(icon)
+
+      switch(icon){
+        case 'calendar':
+          this.showTooltip = true;
+          break;
+        case 'user':
+          this.showTooltip = true;
+          break;
+        case 'bars':
+          this.showTooltip = true;
+          break;
+        case 'file-lines':
+          this.showTooltip = true;
+          break;
+      }
+    },
+    handleMoustOut(){
+      // console.log("마우스아웃")
+      // this.showTooltip = false;
+    },
     handleCommentCount(videoId){
       const url = 'http://localhost:7001/getCommentCount';
 
@@ -187,6 +215,7 @@ export default {
           // url: video.video_url,
           likeCount: video.like_count,
           commentCount: video.comment_count,
+          category: video.category,
         }));
 
         // 일치하면 좋아요 누른 상태로 보이게
@@ -316,6 +345,7 @@ export default {
     width: 30px;
     height: 40px;
     margin-right: 10px;
+    cursor: default;
   }
 
   #form-controls [name="bottomIcon"] :hover{
@@ -330,6 +360,23 @@ export default {
   #playIcon :hover{
     color: #966fbf;
     cursor: pointer;
+  }
+
+  .tooltip {
+    position: fixed;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 6px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 1000;
+  }
+
+  .tooltip.active {
+    visibility: visible;
+    opacity: 1;
   }
 
 </style>
