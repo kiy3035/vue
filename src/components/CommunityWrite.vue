@@ -25,15 +25,15 @@
               />
               <span class="spin"></span>
             </div>
-            <div class="input" :class="{ 'focused': inputFocused === 'nickname', 'blured' : inputBlured === 'nickname' }">
+            <div class="input">
               <div class="label-icon-container">
-                <label for="nickname" :style="input.nicknameStyle">
+                <label for="nickname" style="line-height:18px;font-size:18px;">
                   <svg class="svg-inline--fa fa-user iconCSS" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
                 </label><input
                   type="text"
                   name="nickname"
                   id="nickname"
-                  v-model="input.nickname"
+                  v-model="nickname"
                   />
                 
                 <span class="spin"></span>
@@ -129,19 +129,44 @@ import { v4 as uuidv4 } from 'uuid';
           tag3: '#',
           title: '',
           cont:'',
-          nicknameStyle:{},
           tag1Style:{'line-height': '18px',
             'font-size': '18px'},
           titleStyle:{},
           contStyle:{},
         },
+        nickname: '',
       };
     },
     components: {
   
     },
     mounted() {
-  
+      var self = this;
+      console.log(sessionStorage.getItem('userEmail'));
+      $.ajax({
+        url: 'http://localhost:7001/communityNickname',
+        method: 'GET',
+        dataType: 'json',
+        data: {email: sessionStorage.getItem('userEmail')},
+        success: function(data) {
+          // 데이터를 Vue 데이터에 할당
+          self.communityData = data;
+          // 닉네임을 data 속성에 저장
+          self.nickname = data[0].nickname;
+          // 가져온 닉네임을 input 요소에 설정
+          var nicknameInput = document.getElementById('nickname');
+          if (nicknameInput) {
+              nicknameInput.value = data[0].nickname;
+              nicknameInput.setAttribute('readonly', true);
+          } else {
+              console.error('Nickname input element not found.');
+          }
+          console.log(data[0].nickname);
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        },
+      });
     },
     methods: {
       createPost() {
@@ -174,15 +199,6 @@ import { v4 as uuidv4 } from 'uuid';
         this.inputFocused = null;
         this.inputBlured = val;
 
-        // 닉네임 값이 있을 때
-        if (this.input.nickname !== '') {
-            this.input.nicknameStyle = {
-            'line-height': '18px',
-            'font-size': '18px',
-            };
-        } else {
-            this.input.nicknameStyle = {};
-        }
         // 제목 값이 있을 때
         if (this.input.title !== '') {
             this.input.titleStyle = {
@@ -230,6 +246,11 @@ import { v4 as uuidv4 } from 'uuid';
         }
         if(postData.cont === ''){
           alert("내용을 입력하세요.");
+          $("#cont").focus();
+          return;
+        }
+        if(postData.tag1 === '' || postData.tag2 === '' || postData.tag3 === ''){
+          alert("해쉬태그는 필수입니다.");
           $("#cont").focus();
           return;
         }
