@@ -232,7 +232,7 @@ export default {
           processData: false,
           contentType: false,
           success: function(response) {
-            this.gfnAlert(response);
+            alert(response);
             this.$router.go(0); // 현재 페이지 리랜더링
           }.bind(this),
           error: function(xhr, status, error) {

@@ -1,7 +1,7 @@
 <template>  
   <div id="app">
-    <LayoutComp/>
-    <SidebarComp/>
+    <LayoutComp @childData="receiveDataFromChild"/>         <!--    @ 자식 => 부모     -->
+    <SidebarComp :ParentsToChild="ParentsToChildValue"/>   <!--    : 부모 => 자식     -->
     <div id="content">
       <router-view></router-view>
     </div>
@@ -17,6 +17,17 @@ export default {
     LayoutComp,
     SidebarComp,
   },
+  data(){
+    return{
+      ParentsToChildValue: null,
+    }
+  },
+  methods: {
+    receiveDataFromChild(value) {
+      console.log("!!:" + value); // 자식으로부터 받은 데이터 처리
+      this.ParentsToChildValue = value;
+    },
+  }
 
 };
 
