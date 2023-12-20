@@ -1,8 +1,8 @@
 <template>
   <div style="float:right;">
     <router-link to="/" class="btn" style="top: 30px; right: 10px;" data-text="Home"></router-link>
-    <router-link to="/login" @click="logout" class="btn" style="top: 30px; right: 10px;"    
-                 :data-text="loginInOut === 'Log In' ? 'Login' : 'Logout'"></router-link>
+    <router-link to="/login" @click="clickLogOutBtn" class="btn" style="top: 30px; right: 10px;"    
+                 :data-text="loginInOut === 'Log In' ? 'Login' : 'Logout'" ></router-link>
     <router-link to="/myPage" v-if="hideMyPage" class="btn" style="top: 30px; right: 10px;" data-text="My Page"></router-link>
     <!-- <router-link to="/fesco_login" class="btn" style="top: 30px; right: 10px; width: 150px;" data-text="FESCO Login"></router-link>
     <router-link to="/fesco_booking_entry" class="btn" style="top: 30px; right: 10px; width: 300px;" data-text="FESCO Booking Entry"></router-link>
@@ -13,7 +13,7 @@
 
 <script>
 
-  export default {
+export default {
   data() {
     return {
       loginInOut: "Log In",
@@ -32,13 +32,13 @@
     }
   },
   methods: {
-    logout() {
+    clickLogOutBtn() {
       if(this.loginInOut === "Log Out"){
         sessionStorage.removeItem('userEmail');
-        this.gfnAlert("로그아웃 되었습니다.");
+        alert("로그아웃 되었습니다.");
         this.loginInOut = "Log In";
         this.hideMyPage = false;
-        console.log('hideMyPage 값:', this.hideMyPage);
+        this.$emit('childData', 'paramLogOut');
       }
     },
   },

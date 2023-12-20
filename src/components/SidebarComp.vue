@@ -22,11 +22,11 @@
                             <i class='bx bx-grid-alt nav_icon'></i> 
                             <span class="nav_name">Community</span> 
                         </router-link>
-                        <router-link to="/myPage" class="nav_link"> 
+                        <router-link to="/myPage" class="nav_link" v-if="showMypage"> 
                             <i class='bx bx-user nav_icon'></i> 
-                            <span class="nav_name">Users</span> 
+                            <span class="nav_name">My Page</span> 
                         </router-link>
-                        <router-link to="/chat" class="nav_link" exact>
+                        <router-link to="/chat" class="nav_link" v-if="showMessages" exact>
                             <i class='bx bx-message-square-detail nav_icon'></i> 
                             <span class="nav_name">Messages</span> 
                         </router-link>
@@ -40,7 +40,7 @@
                         </a> 
                         <router-link to="/realgrid" class="nav_link" exact>
                             <i class='bx bx-bar-chart-alt-2 nav_icon'></i> 
-                            <span class="nav_name">Community</span> 
+                            <span class="nav_name">Admin</span> 
                         </router-link> 
                     </div>
                 </div> 
@@ -60,52 +60,73 @@
 <script>
 
 import axios from 'axios';
+// import { ref, watchEffect } from 'vue';
+// import { watch } from 'vue';
 
 export default {
-    data(){
-        return{
-            email: sessionStorage.getItem('userEmail') || '',
-            imageUrl: null
-        }
+  data(){
+    return{
+        email: sessionStorage.getItem('userEmail') || '',
+        imageUrl: null,
+        showMypage: false,
+        showMessages: false,
+    }
+  },
+  props: {
+    ParentsToChild: String // 부모페이지로 부터 받은 값
+  },
+  watch: {
+    ParentsToChild(val) {
+      if(val){ // 로그아웃 될 때 다 숨김
+        this.showMypage = false;
+        this.showMessages = false;
+        this.imageUrl = null;
+      }
     },
-    mounted() {
-        if(this.email !== ""){
-            this.getUserImg();
-        }
-        const showNavbar = (toggleId, navId, bodyId, headerId) => {
-        const toggle = document.getElementById(toggleId);
-        const nav = document.getElementById(navId);
-        const bodypd = document.getElementById(bodyId);
-        const headerpd = document.getElementById(headerId);
+  },
+  mounted() {
+    if(this.email !== ""){
+        this.getUserImg();
+        this.showMypage = true;
+        this.showMessages = true;
+    }else{
+        this.showMypage = false;
+        this.showMessages = false;
+    }
+    const showNavbar = (toggleId, navId, bodyId, headerId) => {
+    const toggle = document.getElementById(toggleId);
+    const nav = document.getElementById(navId);
+    const bodypd = document.getElementById(bodyId);
+    const headerpd = document.getElementById(headerId);
 
-        // Validate that all variables exist
-        if (toggle && nav && bodypd && headerpd) {
-            toggle.addEventListener('click', () => {
-            // show navbar
-            nav.classList.toggle('show');
-            // change icon
-            toggle.classList.toggle('bx-x');
-            // add padding to body
-            bodypd.classList.toggle('body-pd');
-            // add padding to header
-            headerpd.classList.toggle('body-pd');
-            });
-        }
-        };
+    // Validate that all variables exist
+    if (toggle && nav && bodypd && headerpd) {
+        toggle.addEventListener('click', () => {
+        // show navbar
+        nav.classList.toggle('show');
+        // change icon
+        toggle.classList.toggle('bx-x');
+        // add padding to body
+        bodypd.classList.toggle('body-pd');
+        // add padding to header
+        headerpd.classList.toggle('body-pd');
+        });
+    }
+    };
 
-        showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
+    showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header');
 
-        /*===== LINK ACTIVE =====*/
-        const linkColor = document.querySelectorAll('.nav_link');
+    /*===== LINK ACTIVE =====*/
+    const linkColor = document.querySelectorAll('.nav_link');
 
-        function colorLink() {
-        if (linkColor) {
-            linkColor.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-        }
-        }
+    function colorLink() {
+    if (linkColor) {
+        linkColor.forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+    }
+    }
 
-        linkColor.forEach(l => l.addEventListener('click', colorLink));
+    linkColor.forEach(l => l.addEventListener('click', colorLink));
   },
   methods: {
       async getUserImg(){

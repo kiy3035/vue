@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <AddVideoComp :receivedValue="receivedValueFromShow"/>  <!--    : 부모 => 자식     -->
+    <AddVideoComp :receivedValue="receivedValueFromShow" v-if="showIcon"/>  <!--    : 부모 => 자식     -->
     <ShowVideoComp @valueFromShow="handleValueFromShow"/>   <!--    @ 자식 => 부모     -->
   </div>
 </template>
@@ -15,6 +15,18 @@ export default {
   components: {
     AddVideoComp,
     ShowVideoComp,
+  },
+  data(){
+    return{
+      userEmail: null,
+      showIcon: false,
+    }
+  },
+  mounted(){
+    this.userEmail = sessionStorage.getItem("userEmail");
+    if(this.userEmail){
+      this.showIcon = true;
+    }
   },
   setup() {
       // ShowVideoComp 에서 받은 값을 저장하는 ref
@@ -32,6 +44,7 @@ export default {
       receivedValueFromShow,
       handleValueFromShow
     };
-  }
+  },
+
 };
 </script>

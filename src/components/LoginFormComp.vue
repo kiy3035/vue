@@ -24,7 +24,7 @@
       <div style="margin-left:50px;">
         <!-- 이메일 -->
           <div class="first-input input__block first-input__block">
-            <input type="email" class="input" id="email" name="email" placeholder="Email" />
+            <input type="email" class="input" id="email" name="email" placeholder="Email" required/>
           </div>
           <br><br>
 
@@ -167,7 +167,7 @@ function validation() {
 
   type = $(".h1man").text(); // signin, signup
   var email = $("#email").val();
-  // var nickname = $("#email").val();
+  var nickname = $("#nickname").val();
   var password = $("#password").val();
   var repeatPassword = $("#repeat__password").val();
 
@@ -187,6 +187,11 @@ function validation() {
     if(password === '' || repeatPassword === ''){
       gfnAlert("password 을 입력하세요.");
       $("#password").focus();
+      return;
+    }
+    if(nickname === ''){
+      gfnAlert("nickname 을 입력하세요.");
+      $("#nickname").focus();
       return;
     }
   }
@@ -236,7 +241,7 @@ function submitForm(event) {
         data: JSON.stringify(formDataJSON),
         contentType: 'application/json',
         success: function() {
-          gfnAlert("회원가입을 축하드립니다.");
+          alert("회원가입을 축하드립니다.");
           window.location.href = '/login';
         }
       });
@@ -248,16 +253,16 @@ function submitForm(event) {
         contentType: 'application/json',
         success: function(response) {
           if (response.includes("@")) {
-            gfnAlert("로그인 성공");
+            alert("로그인 성공");
             sessionStorage.setItem('userEmail', response);
             window.location.href = '/';
           }else{
-            gfnAlert("로그인 실패.\n아이디와 비밀번호를 확인하세요.");
+            alert("로그인 실패.\n아이디와 비밀번호를 확인하세요.");
           }
         },
         error: function(xhr, status, error) {
           // 서버와의 통신 중 에러가 발생했을 때의 처리
-          gfnAlert("에러 발생: " + error);
+          alert("에러 발생: " + error);
         }
       });
     }
