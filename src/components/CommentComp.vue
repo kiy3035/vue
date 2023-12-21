@@ -195,7 +195,7 @@ export default {
     left: 50%;
     width: 60%;
     transform: translateX(-50%);
-    margin-top: 10px;
+    margin-top: 70px;
   }
 
   .icon-container2 input {

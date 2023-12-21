@@ -20,26 +20,26 @@
                       
                       <form>
                         <div class="icon-container">
-                          <font-awesome-icon icon="calendar" class="iconCSS" @mouseover="handleMouseOver(index)" @mouseout="handleMoustOut"/>
-                          <div v-if="showTooltip" class="tooltip" />날짜
+                          <font-awesome-icon icon="calendar" class="iconCSS" />
+                          <div v-if="showTooltip" class="tooltip" />
                           <input type="text" name="inpDT" id="inpDT" :value="formatVideoDate(video.inpDT)" readonly>
                         </div>
 
                         <div class="icon-container">
-                          <font-awesome-icon icon="user" class="iconCSS" @mouseover="handleMouseOver('user')" @mouseout="handleMoustOut"/>
-                          <div v-if="showTooltip2" class="tooltip" />작성자
+                          <font-awesome-icon icon="user" class="iconCSS" />
+                          <div v-if="showTooltip2" class="tooltip" />
                           <input type="text" name="email" id="email" v-model="video.email" readonly>
                         </div>
                         
                         <div class="icon-container">
-                          <font-awesome-icon icon="bars" class="iconCSS" @mouseover="handleMouseOver('bars')" @mouseout="handleMoustOut"/>
-                          <div v-if="showTooltip3" class="tooltip" />카테고리
+                          <font-awesome-icon icon="bars" class="iconCSS" />
+                          <div v-if="showTooltip3" class="tooltip" />
                           <input type="text" name="category" id="category" v-model="video.category" readonly />
                         </div>
 
                         <div class="icon-container">
-                          <font-awesome-icon icon="file-lines" class="iconCSS" @mouseover="handleMouseOver('file-lines')" @mouseout="handleMoustOut"/>
-                          <div v-if="showTooltip4" class="tooltip" />내용
+                          <font-awesome-icon icon="file-lines" class="iconCSS" />
+                          <div v-if="showTooltip4" class="tooltip" />
                           <textarea class="content-textarea" name="content" id="content" v-model="video.content" readonly />
                         </div>
 
@@ -47,7 +47,7 @@
                           <button type="button" class="like-comment">
                               <input v-model="video.id" style="display:none;">
                               <input v-model="video.title" style="display:none;">
-                              <font-awesome-icon icon="thumbs-up" class="iconCSS" id="like" name="bottomIcon" @click="clickLike(video)" :style="{ color: video.likeIconColor }"/>
+                              <font-awesome-icon icon="thumbs-up" class="iconCSS-bottom" id="like" name="bottomIcon" @click="clickLike(video)" :style="{ color: video.likeIconColor }"/>
                               <div style="margin-right: 15px;">{{ video.likeCount }}</div>
                           </button>
                           <button type="button" class="like-comment">
@@ -85,8 +85,6 @@ export default {
       noDupLikedList: [], // 위에 배열에서 중복 제거한 값
       showComp: false,
       clickedVideo: null,
-      tooltipText: '',
-      showTooltip: false,
     };
   },
   components: {
@@ -118,28 +116,6 @@ export default {
 
   },
   methods: {
-    handleMouseOver(icon){
-                console.log(icon)
-
-      switch(icon){
-        case 'calendar':
-          this.showTooltip = true;
-          break;
-        case 'user':
-          this.showTooltip = true;
-          break;
-        case 'bars':
-          this.showTooltip = true;
-          break;
-        case 'file-lines':
-          this.showTooltip = true;
-          break;
-      }
-    },
-    handleMoustOut(){
-      // console.log("마우스아웃")
-      // this.showTooltip = false;
-    },
     handleCommentCount(videoId){
       const url = 'http://localhost:7001/getCommentCount';
 
@@ -346,6 +322,13 @@ export default {
     height: 40px;
     margin-right: 10px;
     cursor: default;
+  }
+
+  .iconCSS-bottom {
+    width: 30px;
+    height: 40px;
+    margin-right: 10px;
+    cursor: pointer;
   }
 
   #form-controls [name="bottomIcon"] :hover{
