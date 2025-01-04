@@ -6,7 +6,8 @@
             </div>
             <div class="header_img"> 
                 <router-link to="/myPage">
-                    <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)">
+                    <!-- <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)"> -->
+                    <img v-if="imageUrl && imageExists(imageUrl)" :src="require(`C:/kiy3035/vue/vue_backend/demo/vue_front/src/assets/${imageUrl}`)">
                 </router-link>    
             </div>
         </header>
@@ -129,6 +130,15 @@ export default {
     linkColor.forEach(l => l.addEventListener('click', colorLink));
   },
   methods: {
+    imageExists(imageUrl) {
+        try {
+            // require(`@/assets/${imageUrl}`);
+            require(`C:/kiy3035/vue/vue_backend/demo/vue_front/src/assets/${imageUrl}`);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    },
       async getUserImg(){
 
       const url = 'http://localhost:7001/getUserImage';

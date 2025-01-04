@@ -7,7 +7,7 @@
     <ul>
       <li v-for="(chat, index) in chatList" :key="index" @click="selectChat(index)">
         <div class="chat-thumbnail">
-          <img :src="require(`@/assets/${chat.img}`)" alt="채팅방 썸네일">
+        <img v-if="chat.img && imageExists(chat.img)" :src="require(`@/assets/${chat.img}`)" alt="채팅방 썸네일">
         </div>
         <div class="chat-info">
           <div class="chat-id">{{ chat.id }}</div>
@@ -60,6 +60,14 @@ export default {
     this.getChatList();
   },
   methods: {
+     imageExists(imageUrl) {
+      try {
+        require(`@/assets/${imageUrl}`);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
     truncateText(text, maxLength) {
       if (text.length > maxLength) {
         return text.substring(0, maxLength) + '...';

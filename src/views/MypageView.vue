@@ -8,7 +8,8 @@
                 @click="inputImage"
                 style="cursor:pointer"/>
             </label>
-            <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)">
+            <!-- <img v-if="imageUrl" :src="require(`@/assets/${imageUrl}`)"> -->
+            <img v-if="imageUrl && imageExists(imageUrl)" :src="require(`@/assets/${imageUrl}`)">
             <img v-if="changeImageUrl" :src="changeImageUrl">
 
             <br>
@@ -47,6 +48,14 @@ export default {
     };
   },
   methods: {
+    imageExists(imageUrl) {
+      try {
+        require(`@/assets/${imageUrl}`);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
     inputImage(){
       this.$refs.image.click();
     },
